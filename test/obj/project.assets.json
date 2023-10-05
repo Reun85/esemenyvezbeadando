@@ -1661,14 +1661,14 @@
           "lib/netstandard1.3/System.Xml.XDocument.dll": {}
         }
       },
-      "beadando/1.0.0": {
+      "Model/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "compile": {
-          "bin/placeholder/beadando.dll": {}
+          "bin/placeholder/Model.dll": {}
         },
         "runtime": {
-          "bin/placeholder/beadando.dll": {}
+          "bin/placeholder/Model.dll": {}
         }
       }
     }
@@ -6204,10 +6204,10 @@
         "system.xml.xdocument.nuspec"
       ]
     },
-    "beadando/1.0.0": {
+    "Model/1.0.0": {
       "type": "project",
-      "path": "../beadando/beadando.csproj",
-      "msbuildProject": "../beadando/beadando.csproj"
+      "path": "../Model/Model.csproj",
+      "msbuildProject": "../Model/Model.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -6215,7 +6215,7 @@
       "MSTest.TestAdapter >= 2.2.7",
       "MSTest.TestFramework >= 2.2.7",
       "Microsoft.NET.Test.Sdk >= 16.11.0",
-      "beadando >= 1.0.0",
+      "Model >= 1.0.0",
       "coverlet.collector >= 3.1.0"
     ]
   },
@@ -6225,9 +6225,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/reun/all/elte/3/es/Gy/test/test.csproj",
-      "projectName": "test",
-      "projectPath": "/home/reun/all/elte/3/es/Gy/test/test.csproj",
+      "projectUniqueName": "/home/reun/all/elte/3/es/Gy/test/Tester.csproj",
+      "projectName": "Tester",
+      "projectPath": "/home/reun/all/elte/3/es/Gy/test/Tester.csproj",
       "packagesPath": "/home/reun/.nuget/packages/",
       "outputPath": "/home/reun/all/elte/3/es/Gy/test/obj/",
       "projectStyle": "PackageReference",
@@ -6244,8 +6244,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "/home/reun/all/elte/3/es/Gy/beadando/beadando.csproj": {
-              "projectPath": "/home/reun/all/elte/3/es/Gy/beadando/beadando.csproj"
+            "/home/reun/all/elte/3/es/Gy/Model/Model.csproj": {
+              "projectPath": "/home/reun/all/elte/3/es/Gy/Model/Model.csproj"
             }
           }
         }

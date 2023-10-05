@@ -1,15 +1,17 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test;
-using RobotPigs;
+using RobotPigs.Pers;
+using RobotPigs.Model;
 
 public class Common {
-  public static void PosEq(Pos p2, Pos p1) {
+  /// This is just candy to write out what fails.
+  public static void PosEq(Pos p1, Pos p2) {
 
     Assert.AreEqual(p1.x, p2.x);
     Assert.AreEqual(p1.y, p2.y);
   }
-  public static void PosEqWithDir(Pos p2, Pos p1) {
+  public static void PosEqWithDir(Pos p1, Pos p2) {
 
     Assert.AreEqual(p1.x, p2.x);
     Assert.AreEqual(p1.y, p2.y);
@@ -27,64 +29,67 @@ public class BoardTest {
   [TestMethod]
   public void PlrPosTest1() {
     Board b = new Board(6); // No errors
-    Common.PosEqWithDir(b.Plr1.Pos, new Pos(2, 3, Pos.Dir.East));
-    Common.PosEq(b.Plr2.Pos, new Pos(4, 3, Pos.Dir.West));
+    Common.PosEqWithDir(new Pos(2, 3, Pos.Dir.East), b.Plr1.Pos);
+    Common.PosEqWithDir(new Pos(4, 3, Pos.Dir.West), b.Plr2.Pos);
   }
   [TestMethod]
   public void PlrPosTest2() {
     Board b = new Board(7); // No errors
-    Common.PosEq(b.Plr1.Pos, new Pos(2, 3, Pos.Dir.East));
-    Common.PosEq(b.Plr2.Pos, new Pos(4, 3, Pos.Dir.West));
+    Common.PosEqWithDir(new Pos(2, 3, Pos.Dir.East), b.Plr1.Pos);
+    Common.PosEqWithDir(new Pos(4, 3, Pos.Dir.West), b.Plr2.Pos);
   }
   [TestMethod]
   public void PlrPosTest3() {
     Board b = new Board(8); // No errors
-    Common.PosEq(b.Plr1.Pos, new Pos(3, 4, Pos.Dir.East));
-    Common.PosEq(b.Plr2.Pos, new Pos(5, 4, Pos.Dir.West));
+    Common.PosEqWithDir(new Pos(3, 4, Pos.Dir.East), b.Plr1.Pos);
+    Common.PosEqWithDir(new Pos(5, 4, Pos.Dir.West), b.Plr2.Pos);
   }
   [TestMethod]
   public void PerformTest1() {
-    Board b = new Board(8); // No errors
+    Model m = new Model(null); // No errors
+    m.NewGame(8);
     String[] inp1 = { "fordulj balra", "fordulj balra", "fordulj balra",
                       "fordulj balra", "fordulj balra" };
     String[] inp2 = { "ütés", "tűz", "előre", "fordulj balra", "ütés" };
-    b.Plr1.parse(inp1);
-    b.Plr2.parse(inp2);
-    b.preparetoperform();
-    Assert.AreEqual(true, b.performnext());
-    Assert.AreEqual(3, b.Plr1.Hp);
-    Assert.AreEqual(true, b.performnext());
-    Assert.AreEqual(2, b.Plr1.Hp);
-    Assert.AreEqual(true, b.performnext());
-    Assert.AreEqual(2, b.Plr1.Hp);
-    Common.PosEqWithDir(b.Plr2.Pos, new Pos(4, 4, Pos.Dir.West));
-    Assert.AreEqual(true, b.performnext());
-    Assert.AreEqual(2, b.Plr1.Hp);
-    Assert.AreEqual(false, b.performnext());
-    Assert.AreEqual(1, b.Plr1.Hp);
-    Assert.AreEqual(3, b.Plr2.Hp);
+    m._board!.Plr1.parse(inp1);
+    m._board!.Plr2.parse(inp2);
+    m.PreparetoPerform();
+    Assert.AreEqual(true, m.PerformNext());
+    Assert.AreEqual(3, m._board!.Plr1.Hp);
+    Assert.AreEqual(true, m.PerformNext());
+    Assert.AreEqual(2, m._board!.Plr1.Hp);
+    Assert.AreEqual(true, m.PerformNext());
+    Assert.AreEqual(2, m._board!.Plr1.Hp);
+    Common.PosEqWithDir(new Pos(4, 4, Pos.Dir.West), m._board.Plr2.Pos);
+    Assert.AreEqual(true, m.PerformNext());
+    Assert.AreEqual(2, m._board!.Plr1.Hp);
+    Assert.AreEqual(false, m.PerformNext());
+    Assert.AreEqual(1, m._board!.Plr1.Hp);
+    Assert.AreEqual(3, m._board!.Plr2.Hp);
   }
 
   [TestMethod]
   public void PerformTest2() {
-    Board b = new Board(8); // No errors
+    Model m = new Model(null); // No errors
+    m.NewGame(8);
     String[] inp1 = { "fordulj balra", "előre", "hátra", "fordulj balra",
                       "fordulj balra" };
     String[] inp2 = { "ütés", "tűz", "tűz", "tűz", "ütés" };
-    b.Plr1.parse(inp1);
-    b.Plr2.parse(inp2);
-    b.preparetoperform();
-    Assert.AreEqual(true, b.performnext());
-    Assert.AreEqual(3, b.Plr1.Hp);
-    Assert.AreEqual(true, b.performnext());
-    Assert.AreEqual(3, b.Plr1.Hp);
-    Assert.AreEqual(true, b.performnext());
-    Assert.AreEqual(2, b.Plr1.Hp);
-    Assert.AreEqual(true, b.performnext());
-    Assert.AreEqual(1, b.Plr1.Hp);
-    Assert.AreEqual(false, b.performnext());
-    Assert.AreEqual(1, b.Plr1.Hp);
-    Assert.AreEqual(3, b.Plr2.Hp);
+    m._board!.Plr1.parse(inp1);
+    m._board!.Plr2.parse(inp2);
+    m.PreparetoPerform();
+    Assert.AreEqual(true, m.PerformNext());
+    Assert.AreEqual(3, m._board!.Plr1.Hp);
+    Assert.AreEqual(true, m.PerformNext());
+    Assert.AreEqual(3, m._board!.Plr1.Hp);
+    Assert.AreEqual(true, m.PerformNext());
+    Assert.AreEqual(2, m._board!.Plr1.Hp);
+    Common.PosEqWithDir(new Pos(5, 4, Pos.Dir.West), m._board.Plr2.Pos);
+    Assert.AreEqual(true, m.PerformNext());
+    Assert.AreEqual(1, m._board!.Plr1.Hp);
+    Assert.AreEqual(false, m.PerformNext());
+    Assert.AreEqual(1, m._board!.Plr1.Hp);
+    Assert.AreEqual(3, m._board!.Plr2.Hp);
   }
 }
 [TestClass]
@@ -93,76 +98,76 @@ public class PosTest {
   public void AddRelativeDirTest1() {
     Pos.Dir d = Pos.Dir.East;
     Pos.Dir r = Pos.AddRelativeDirections(Pos.MovDir.Forward, d);
-    Assert.AreEqual(r, Pos.Dir.East);
+    Assert.AreEqual(Pos.Dir.East, r);
   }
   [TestMethod]
   public void AddRelativeDirTest2() {
     Pos.Dir d = Pos.Dir.South;
     Pos.Dir r = Pos.AddRelativeDirections(Pos.MovDir.Right, d);
-    Assert.AreEqual(r, Pos.Dir.West);
+    Assert.AreEqual(Pos.Dir.West, r);
   }
   [TestMethod]
   public void AddRelativeDirTest3() {
     Pos.Dir d = Pos.Dir.South;
     Pos.Dir r = Pos.AddRelativeDirections(Pos.MovDir.Back, d);
-    Assert.AreEqual(r, Pos.Dir.North);
+    Assert.AreEqual(Pos.Dir.North, r);
   }
 
   [TestMethod]
   public void MoveTest1() {
     Board b = new Board(8);
     Pos p = new Pos(5, 6, Pos.Dir.West);
-    Pos n = p.move(Pos.MovDir.Left, b);
-    Common.PosEq(n, new Pos(5, 7));
+    Pos n = p.move(Pos.MovDir.Left, b.n);
+    Common.PosEqWithDir(new Pos(5, 7, Pos.Dir.West), n);
   }
   [TestMethod]
   public void MoveTest2() {
     Board b = new Board(8);
     Pos p = new Pos(5, 6, Pos.Dir.East);
-    Pos n = p.move(Pos.MovDir.Back, b);
-    Common.PosEq(n, new Pos(4, 6));
+    Pos n = p.move(Pos.MovDir.Back, b.n);
+    Common.PosEqWithDir(new Pos(4, 6, Pos.Dir.East), n);
   }
   [TestMethod]
   public void MoveTest3() {
     Board b = new Board(8);
     Pos p = new Pos(3, 4, Pos.Dir.South);
-    Pos n = p.move(Pos.MovDir.Left, b);
-    Common.PosEq(n, new Pos(4, 4));
+    Pos n = p.move(Pos.MovDir.Left, b.n);
+    Common.PosEqWithDir(new Pos(4, 4, Pos.Dir.South), n);
   }
   [TestMethod]
   public void MoveTest4() {
     Board b = new Board(8);
     Pos p = new Pos(3, 4, Pos.Dir.South);
-    Pos n = p.move(Pos.MovDir.Forward, b);
-    Common.PosEq(n, new Pos(3, 5));
+    Pos n = p.move(Pos.MovDir.Forward, b.n);
+    Common.PosEqWithDir(new Pos(3, 5, Pos.Dir.South), n);
   }
   [TestMethod]
   public void MoveTestHitWallBottom() {
     Board b = new Board(8);
     Pos p = new Pos(5, 7, Pos.Dir.West);
-    Pos n = p.move(Pos.MovDir.Left, b);
-    Common.PosEq(n, new Pos(5, 7));
+    Pos n = p.move(Pos.MovDir.Left, b.n);
+    Common.PosEqWithDir(new Pos(5, 7, Pos.Dir.West), n);
   }
   [TestMethod]
   public void MoveTestHitWallRight() {
     Board b = new Board(8);
     Pos p = new Pos(7, 5, Pos.Dir.West);
-    Pos n = p.move(Pos.MovDir.Back, b);
-    Common.PosEq(n, new Pos(7, 5));
+    Pos n = p.move(Pos.MovDir.Back, b.n);
+    Common.PosEqWithDir(new Pos(7, 5, Pos.Dir.West), n);
   }
   [TestMethod]
   public void MoveTestHitWallLeft() {
     Board b = new Board(8);
     Pos p = new Pos(0, 7, Pos.Dir.South);
-    Pos n = p.move(Pos.MovDir.Right, b);
-    Common.PosEq(n, new Pos(0, 7));
+    Pos n = p.move(Pos.MovDir.Right, b.n);
+    Common.PosEqWithDir(new Pos(0, 7, Pos.Dir.South), n);
   }
   [TestMethod]
   public void MoveTestHitWallTop() {
     Board b = new Board(8);
     Pos p = new Pos(5, 0, Pos.Dir.South);
-    Pos n = p.move(Pos.MovDir.Back, b);
-    Common.PosEq(n, new Pos(5, 0));
+    Pos n = p.move(Pos.MovDir.Back, b.n);
+    Common.PosEqWithDir(new Pos(5, 0, Pos.Dir.South), n);
   }
 
   [TestMethod]
