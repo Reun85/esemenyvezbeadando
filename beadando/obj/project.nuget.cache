@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "utQyCDVDrcIRlJZbjXRwiKmP6Yjo8IB7Ngsy+d0nzpRlfp+QPUMSL0UrOmnHrXgpiSlrjIIhJVTVuCNn2smTWQ==",
+  "success": true,
+  "projectFilePath": "/home/reun/all/elte/3/es/Gy/beadando/beadando.csproj",
+  "expectedPackageFiles": [
+    "/home/reun/.nuget/packages/microsoft.aspnetcore.app.ref/6.0.22/microsoft.aspnetcore.app.ref.6.0.22.nupkg.sha512"
+  ],
+  "logs": []
+}
