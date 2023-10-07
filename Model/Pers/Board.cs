@@ -15,6 +15,6 @@ public class Board {
     this.Plr1 = new Pig(new Pos(center - 1, center, Pos.Dir.East));
     this.Plr2 = new Pig(new Pos(center + 1, center, Pos.Dir.West));
   }
-  public bool isReady() { return Plr1.ready && Plr2.ready; }
+  public bool isReady() { return Plr1.Ready && Plr2.Ready; }
 }
 }

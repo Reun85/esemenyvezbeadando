@@ -46,50 +46,50 @@ public class BoardTest {
   }
   [TestMethod]
   public void PerformTest1() {
-    Model m = new Model(null); // No errors
+    GameModel m = new GameModel(null); // No errors
     m.NewGame(8);
     String[] inp1 = { "fordulj balra", "fordulj balra", "fordulj balra",
                       "fordulj balra", "fordulj balra" };
     String[] inp2 = { "ütés", "tűz", "előre", "fordulj balra", "ütés" };
-    m._board!.Plr1.parse(inp1);
-    m._board!.Plr2.parse(inp2);
+    m.Board!.Plr1.parse(inp1);
+    m.Board!.Plr2.parse(inp2);
     m.PreparetoPerform();
     Assert.AreEqual(true, m.PerformNext());
-    Assert.AreEqual(3, m._board!.Plr1.Hp);
+    Assert.AreEqual(3, m.Board!.Plr1.Hp);
     Assert.AreEqual(true, m.PerformNext());
-    Assert.AreEqual(2, m._board!.Plr1.Hp);
+    Assert.AreEqual(2, m.Board!.Plr1.Hp);
     Assert.AreEqual(true, m.PerformNext());
-    Assert.AreEqual(2, m._board!.Plr1.Hp);
-    Common.PosEqWithDir(new Pos(4, 4, Pos.Dir.West), m._board.Plr2.Pos);
+    Assert.AreEqual(2, m.Board!.Plr1.Hp);
+    Common.PosEqWithDir(new Pos(4, 4, Pos.Dir.West), m.Board.Plr2.Pos);
     Assert.AreEqual(true, m.PerformNext());
-    Assert.AreEqual(2, m._board!.Plr1.Hp);
+    Assert.AreEqual(2, m.Board!.Plr1.Hp);
     Assert.AreEqual(false, m.PerformNext());
-    Assert.AreEqual(1, m._board!.Plr1.Hp);
-    Assert.AreEqual(3, m._board!.Plr2.Hp);
+    Assert.AreEqual(1, m.Board!.Plr1.Hp);
+    Assert.AreEqual(3, m.Board!.Plr2.Hp);
   }
 
   [TestMethod]
   public void PerformTest2() {
-    Model m = new Model(null); // No errors
+    GameModel m = new GameModel(null); // No errors
     m.NewGame(8);
     String[] inp1 = { "fordulj balra", "előre", "hátra", "fordulj balra",
                       "fordulj balra" };
     String[] inp2 = { "ütés", "tűz", "tűz", "tűz", "ütés" };
-    m._board!.Plr1.parse(inp1);
-    m._board!.Plr2.parse(inp2);
+    m.Board!.Plr1.parse(inp1);
+    m.Board!.Plr2.parse(inp2);
     m.PreparetoPerform();
     Assert.AreEqual(true, m.PerformNext());
-    Assert.AreEqual(3, m._board!.Plr1.Hp);
+    Assert.AreEqual(3, m.Board!.Plr1.Hp);
     Assert.AreEqual(true, m.PerformNext());
-    Assert.AreEqual(3, m._board!.Plr1.Hp);
+    Assert.AreEqual(3, m.Board!.Plr1.Hp);
     Assert.AreEqual(true, m.PerformNext());
-    Assert.AreEqual(2, m._board!.Plr1.Hp);
-    Common.PosEqWithDir(new Pos(5, 4, Pos.Dir.West), m._board.Plr2.Pos);
+    Assert.AreEqual(2, m.Board!.Plr1.Hp);
+    Common.PosEqWithDir(new Pos(5, 4, Pos.Dir.West), m.Board.Plr2.Pos);
     Assert.AreEqual(true, m.PerformNext());
-    Assert.AreEqual(1, m._board!.Plr1.Hp);
+    Assert.AreEqual(1, m.Board!.Plr1.Hp);
     Assert.AreEqual(false, m.PerformNext());
-    Assert.AreEqual(1, m._board!.Plr1.Hp);
-    Assert.AreEqual(3, m._board!.Plr2.Hp);
+    Assert.AreEqual(1, m.Board!.Plr1.Hp);
+    Assert.AreEqual(3, m.Board!.Plr2.Hp);
   }
 }
 [TestClass]
@@ -342,4 +342,51 @@ public class PigTest {
       Assert.Fail("Should not have failed to parse.");
     }
   }
+}
+
+[TestClass]
+public class RobotDataAccessTest
+{
+
+    [TestMethod]
+    public void Test1()
+    {
+        GameModel m = new GameModel(new RobotPigsDataAccess());
+        m.NewGame(8);
+
+        m.SaveAsync("Testser").Wait();
+
+        // Make sure
+        m = new GameModel(new RobotPigsDataAccess());
+        m.LoadGameAsync("Testser").Wait();
+        Assert.AreEqual(3, m.Board!.Plr1.Hp);
+        Assert.AreEqual(3, m.Board!.Plr2.Hp);
+        Common.PosEqWithDir(new Pos(5, 4, Pos.Dir.West), m.Board.Plr2.Pos);
+        Common.PosEqWithDir(new Pos(3, 4, Pos.Dir.East), m.Board.Plr1.Pos);
+
+    }
+
+    [TestMethod]
+    public void Test2()
+    {
+        GameModel m = new GameModel(new RobotPigsDataAccess());
+        m.NewGame(8);
+        String[] inp1 = { "fordulj balra", "előre", "hátra", "fordulj balra",
+                      "fordulj balra" };
+        String[] inp2 = { "ütés", "tűz", "tűz", "tűz", "előre" };
+        m.Board!.Plr1.parse(inp1);
+        m.Board!.Plr2.parse(inp2);
+        m.PreparetoPerform();
+        while (m.PerformNext()) ;
+        m.SaveAsync("Testser").Wait();
+
+        // Make sure
+        m = new GameModel(new RobotPigsDataAccess());
+        m.LoadGameAsync("Testser").Wait();
+        Assert.AreEqual(1, m.Board!.Plr1.Hp);
+        Assert.AreEqual(3, m.Board!.Plr2.Hp);
+        Common.PosEqWithDir(new Pos(4, 4, Pos.Dir.West), m.Board.Plr2.Pos);
+        Common.PosEqWithDir(new Pos(3, 4, Pos.Dir.North), m.Board.Plr1.Pos);
+    }
+    
 }
