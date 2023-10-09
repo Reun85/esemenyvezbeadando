@@ -39,6 +39,9 @@
             _openFileDialog = new OpenFileDialog();
             _saveFileDialog = new SaveFileDialog();
             splitContainer1 = new SplitContainer();
+            GameArea = new Panel();
+            Automatic = new CheckBox();
+            NextButton = new Button();
             activeplr = new Label();
             label2 = new Label();
             button2 = new Button();
@@ -49,6 +52,7 @@
             label1 = new Label();
             _menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
+            splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
             SuspendLayout();
@@ -111,13 +115,13 @@
             // 
             // _openFileDialog
             // 
-            _openFileDialog.Filter = "Sudoku tábla (*.stl)|*.stl";
-            _openFileDialog.Title = "Sudoku játék betöltése";
+            _openFileDialog.Filter = "Harcos Robotok tábla (*.stl)|*.stl";
+            _openFileDialog.Title = "Harcos Robotok tábla betöltése";
             // 
             // _saveFileDialog
             // 
-            _saveFileDialog.Filter = "Sudoku tábla (*.stl)|*.stl";
-            _saveFileDialog.Title = "Sudoku játék mentése";
+            _saveFileDialog.Filter = "Harcos Robotok tábla (*.stl)|*.stl";
+            _saveFileDialog.Title = "Harcos Robotok tábla betöltése mentése";
             // 
             // splitContainer1
             // 
@@ -126,8 +130,14 @@
             splitContainer1.Name = "splitContainer1";
             splitContainer1.Orientation = Orientation.Horizontal;
             // 
+            // splitContainer1.Panel1
+            // 
+            splitContainer1.Panel1.Controls.Add(GameArea);
+            // 
             // splitContainer1.Panel2
             // 
+            splitContainer1.Panel2.Controls.Add(Automatic);
+            splitContainer1.Panel2.Controls.Add(NextButton);
             splitContainer1.Panel2.Controls.Add(activeplr);
             splitContainer1.Panel2.Controls.Add(label2);
             splitContainer1.Panel2.Controls.Add(button2);
@@ -139,6 +149,33 @@
             splitContainer1.Size = new Size(610, 590);
             splitContainer1.SplitterDistance = 443;
             splitContainer1.TabIndex = 1;
+            // 
+            // GameArea
+            // 
+            GameArea.Location = new Point(88, 24);
+            GameArea.Name = "GameArea";
+            GameArea.Size = new Size(440, 380);
+            GameArea.TabIndex = 3;
+            // 
+            // Automatic
+            // 
+            Automatic.AutoSize = true;
+            Automatic.Location = new Point(268, 70);
+            Automatic.Name = "Automatic";
+            Automatic.Size = new Size(52, 19);
+            Automatic.TabIndex = 11;
+            Automatic.Text = "Auto";
+            Automatic.UseVisualStyleBackColor = true;
+            Automatic.CheckedChanged += Automatic_CheckedChanged;
+            // 
+            // NextButton
+            // 
+            NextButton.Location = new Point(258, 10);
+            NextButton.Name = "NextButton";
+            NextButton.Size = new Size(74, 54);
+            NextButton.TabIndex = 10;
+            NextButton.Text = "Kezdés";
+            NextButton.UseVisualStyleBackColor = true;
             // 
             // activeplr
             // 
@@ -163,7 +200,7 @@
             button2.Location = new Point(140, 50);
             button2.Name = "button2";
             button2.Size = new Size(74, 54);
-            button2.TabIndex = 7;
+            button2.TabIndex = 2;
             button2.Text = "Rögzítés";
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
@@ -173,7 +210,7 @@
             input.Location = new Point(12, 27);
             input.Name = "input";
             input.Size = new Size(113, 104);
-            input.TabIndex = 5;
+            input.TabIndex = 1;
             input.Text = "";
             // 
             // Plr2Health
@@ -225,6 +262,7 @@
             Text = "Harcos robotmalacok csatája";
             _menuStrip.ResumeLayout(false);
             _menuStrip.PerformLayout();
+            splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
             splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
@@ -254,5 +292,8 @@
         private Label label2;
         private Button button2;
         private RichTextBox input;
+        private Panel GameArea;
+        private Button NextButton;
+        private CheckBox Automatic;
     }
 }
