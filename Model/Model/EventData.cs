@@ -20,7 +20,12 @@ namespace RobotPigs.Model
               set => _pos = value;
         }
 
+        
+        
+        
+        /// <summary>
         /// 1 or 2.
+        /// </summary>
         public int Id
         {
             get => _id;

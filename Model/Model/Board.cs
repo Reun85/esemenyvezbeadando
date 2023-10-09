@@ -19,8 +19,8 @@ namespace RobotPigs.Model
 
         public event EventHandler<EventData>? Moves;
 
-        public Board? Board { get => _board; set => _board = value; }
-        public IRobotPigsDataAccess? DataAccess { get => _dataAccess; set => _dataAccess = value; }
+        public Board? Board { get => _board; private set => _board = value; }
+        public IRobotPigsDataAccess? DataAccess { get => _dataAccess; private set => _dataAccess = value; }
 
         public GameModel(Pers.IRobotPigsDataAccess? dataaccess)
         {

@@ -56,7 +56,7 @@
             button1.Location = new Point(25, 124);
             button1.Name = "button1";
             button1.Size = new Size(99, 43);
-            button1.TabIndex = 2;
+            button1.TabIndex = 3;
             button1.Text = "Cancel";
             button1.UseVisualStyleBackColor = true;
             button1.Click += button1_Click;
@@ -66,7 +66,7 @@
             button2.Location = new Point(154, 124);
             button2.Name = "button2";
             button2.Size = new Size(99, 43);
-            button2.TabIndex = 3;
+            button2.TabIndex = 2;
             button2.Text = "OK";
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;

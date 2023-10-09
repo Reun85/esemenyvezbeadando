@@ -2,9 +2,6 @@
 
 namespace RobotPigs.Pers
 {
-    /// <summary>
-    /// Sudoku fájlkezelő típusa.
-    /// </summary>
     public class RobotPigsDataAccess : IRobotPigsDataAccess
     {
         /// <summary>

@@ -10,9 +10,8 @@ namespace RobotPigs.WFA
         private Label[,] _grid = new Label[0, 0];
         private System.Windows.Forms.Timer? _round;
         public int N { get; set; } = 6;
-
-        public static readonly String[] orientation = { "⇑",         "⇒",
-                                              "⇓",         "⇐"};
+        public bool active { get; set; } = false;
+        public static readonly String[] orientation = { "⇑", "⇒", "⇓", "⇐" };
 
         public static readonly Color[] colors = { Color.OrangeRed, Color.GreenYellow, Color.SkyBlue };
         public static readonly Color backcolor = Color.Gray;
@@ -21,7 +20,7 @@ namespace RobotPigs.WFA
 
         private void MenuFileNewGame_Click(Object sender, EventArgs e)
         {
-            
+
             NewGame();
         }
         public Game()
@@ -72,11 +71,10 @@ namespace RobotPigs.WFA
             }
             else
             {
-                Close();
             }
-            
+
         }
-            
+
 
         public bool isValidSize(int n)
         {
@@ -86,7 +84,7 @@ namespace RobotPigs.WFA
             }
             int smaller = min(GameArea.Size.Width, GameArea.Size.Height);
             int size = max(smaller / n, 40);
-            if (size < 20 || size*n>smaller) 
+            if (size < 20 || size * n > smaller)
             {
                 throw new ArgumentException("Túl nagy számot választottatok!");
             }
@@ -245,8 +243,11 @@ namespace RobotPigs.WFA
 
         private void Game_GameOver(Object? sender, EventData e)
         {
+            active = false;
+            _menuFileSaveGame.Enabled = false;
             if (_round != null)
                 _round.Stop();
+            _round = null;
             splitContainer1.Panel2.Enabled = false;
             if (e.Id == 3 && MessageBox.Show("Döntetlen!" + Environment.NewLine + "Szeretnétek új játékot indítani?",
                             "Harcos robotmalacok csatája",
@@ -254,7 +255,6 @@ namespace RobotPigs.WFA
                             "Harcos robotmalacok csatája",
                             MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No))
             {
-                Close();
             }
             else
             {
@@ -276,7 +276,7 @@ namespace RobotPigs.WFA
 
         #region files
 
-       
+
 
         private async void MenuFileLoadGame_Click(Object sender, EventArgs e)
         {
@@ -337,6 +337,7 @@ namespace RobotPigs.WFA
         #region Round
         private void StartRound()
         {
+            _menuFileSaveGame.Enabled = false;
             button2.Enabled = false;
             input.Enabled = false;
             _model.PreparetoPerform();
@@ -368,7 +369,7 @@ namespace RobotPigs.WFA
                 NextButton.Click += NewRoundEvent;
                 NextButton.Click -= Round;
             }
-            if (Automatic.Checked && _round == null)
+            else if (Automatic.Checked && _round == null && active)
             {
                 _round = new System.Windows.Forms.Timer();
                 _round.Interval = 1000;
@@ -398,10 +399,11 @@ namespace RobotPigs.WFA
 
         private void NewRound()
         {
+            active = true;
             ClearScreen();
             if (
                 _round != null)
-                _round.Dispose();
+                _round.Stop();
             _round = null;
             NextButton.Click -= NewRoundEvent;
             NextButton.Click -= Round;
@@ -411,6 +413,8 @@ namespace RobotPigs.WFA
             button2.Enabled = true;
             button2.Text = "Rögzítés";
             input.Enabled = true;
+
+            _menuFileSaveGame.Enabled = true;
             activep = 1;
             activeplr.Text = activep.ToString() + "es";
         }
@@ -460,11 +464,12 @@ namespace RobotPigs.WFA
             {
                 if (!Automatic.Checked)
                 {
-                    if (_round != null) { 
-                    _round.Dispose();
-                    NextButton.Enabled = true;
+                    if (_round != null)
+                    {
+                        _round.Stop();
+                        NextButton.Enabled = true;
                         _round = null;
-                }
+                    }
                 }
             }
         }
@@ -489,5 +494,10 @@ namespace RobotPigs.WFA
         }
 
         #endregion stuff
+
+        private void Plr2Health_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

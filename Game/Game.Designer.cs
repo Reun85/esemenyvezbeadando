@@ -72,8 +72,8 @@
             // 
             _menuFile.DropDownItems.AddRange(new ToolStripItem[] { _menuFileNewGame, toolStripMenuItem1, _menuFileLoadGame, _menuFileSaveGame, toolStripMenuItem2, _menuFileExit });
             _menuFile.Name = "_menuFile";
-            _menuFile.Size = new Size(37, 19);
-            _menuFile.Text = "File";
+            _menuFile.Size = new Size(45, 19);
+            _menuFile.Text = "Játék";
             // 
             // _menuFileNewGame
             // 
@@ -160,7 +160,7 @@
             // Automatic
             // 
             Automatic.AutoSize = true;
-            Automatic.Location = new Point(268, 70);
+            Automatic.Location = new Point(283, 78);
             Automatic.Name = "Automatic";
             Automatic.Size = new Size(52, 19);
             Automatic.TabIndex = 11;
@@ -170,7 +170,7 @@
             // 
             // NextButton
             // 
-            NextButton.Location = new Point(258, 10);
+            NextButton.Location = new Point(273, 18);
             NextButton.Name = "NextButton";
             NextButton.Size = new Size(74, 54);
             NextButton.TabIndex = 10;
@@ -207,6 +207,8 @@
             // 
             // input
             // 
+            input.CausesValidation = false;
+            input.DetectUrls = false;
             input.Location = new Point(12, 27);
             input.Name = "input";
             input.Size = new Size(113, 104);
@@ -216,16 +218,17 @@
             // Plr2Health
             // 
             Plr2Health.AutoSize = true;
-            Plr2Health.Location = new Point(494, 89);
+            Plr2Health.Location = new Point(515, 89);
             Plr2Health.Name = "Plr2Health";
             Plr2Health.Size = new Size(13, 15);
             Plr2Health.TabIndex = 4;
             Plr2Health.Text = "3";
+            Plr2Health.Click += Plr2Health_Click;
             // 
             // Plr1Health
             // 
             Plr1Health.AutoSize = true;
-            Plr1Health.Location = new Point(494, 38);
+            Plr1Health.Location = new Point(515, 38);
             Plr1Health.Name = "Plr1Health";
             Plr1Health.Size = new Size(13, 15);
             Plr1Health.TabIndex = 3;
@@ -234,7 +237,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(351, 89);
+            label3.Location = new Point(372, 89);
             label3.Name = "label3";
             label3.Size = new Size(126, 15);
             label3.TabIndex = 2;
@@ -243,7 +246,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(351, 38);
+            label1.Location = new Point(372, 38);
             label1.Name = "label1";
             label1.Size = new Size(124, 15);
             label1.TabIndex = 0;

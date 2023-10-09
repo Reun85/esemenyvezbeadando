@@ -25,11 +25,6 @@ public class Common
 [TestClass]
 public class BoardTest
 {
-    [TestMethod]
-    public void BasicTest1()
-    {
-        Board b = new Board(6); // No errors
-    }
 
     [TestMethod]
     public void PlrPosTest1()
@@ -464,7 +459,10 @@ public class RobotDataAccessTest
 
         m.SaveAsync("Testser").Wait();
 
-        // Make sure
+        
+        
+        
+        //Make sure
         m = new GameModel(new RobotPigsDataAccess());
         m.LoadGameAsync("Testser").Wait();
         Assert.AreEqual(3, m.Board!.Plr1.Hp);
