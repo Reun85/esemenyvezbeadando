@@ -5,6 +5,7 @@ namespace RobotPigs.Model
         private Pers.Pig? _p;
         private Pers.Pos? _pos;
         private int _id;
+        private int BoardSize;
 
         public Pers.Pig? P
         {

@@ -1,4 +1,3 @@
-#nullable enable
 
 namespace RobotPigs.Pers
 {
@@ -13,36 +12,42 @@ namespace RobotPigs.Pers
         {
             try
             {
-                using (StreamReader reader = new StreamReader(path)) // fájl megnyitása
+                using StreamReader reader = new(path); // fájl megnyitása
+                String line = await reader.ReadLineAsync() ?? String.Empty;
+                String[] numbers;
+                Int32 boardSize = System.Int32.Parse(line);
+
+
+                Pig[] plrs = new Pig[2];
+                int[] buff = new int[4];
+                for (int i = 0; i < 2; i++)
                 {
-                    String line = await reader.ReadLineAsync() ?? String.Empty;
-                    String[] numbers;
-                    Int32 boardSize = System.Int32.Parse(line);
-                    Board board = new Board(boardSize);
-
-                    Pig[] plrs = new Pig[2];
-                    int[] buff = new int[4];
-                    for (int i = 0; i < 2; i++)
+                    line = await reader.ReadLineAsync() ?? String.Empty;
+                    numbers = line.Split(' ');
+                    for (int j = 0; j < 4; j++)
                     {
-                        line = await reader.ReadLineAsync() ?? String.Empty;
-                        numbers = line.Split(' ');
-                        for (int j = 0; j < 4; j++)
-                        {
-                            buff[j] = System.Int32.Parse(numbers[j]);
-                        }
-                        plrs[i] = new Pers.Pig(
-                            new Pers.Pos(buff[0], buff[1], (Pers.Pos.Dir)buff[2]));
-                        plrs[i].Hp = buff[3];
+                        buff[j] = System.Int32.Parse(numbers[j]);
                     }
-
-                    board.Plr1 = plrs[0];
-                    board.Plr2 = plrs[1];
-                    return board;
+                    plrs[i] = new Pig(
+                        new Pers.Pos(buff[0], buff[1], (Pers.Pos.Direction)buff[2]))
+                    {
+                        Hp = buff[3]
+                    };
                 }
+
+                return new Board(boardSize, plrs[0], plrs[1]);
             }
-            catch
+            catch (FileNotFoundException ex)
             {
-                throw new BoardDataException();
+                throw new BoardDataException("Could not find file.", ex);
+            }
+            catch (IOException ex)
+            {
+                throw new BoardDataException("There was an error reading from file", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new BoardDataException("Exception",ex);
             }
         }
 
@@ -55,26 +60,32 @@ namespace RobotPigs.Pers
         {
             try
             {
-                using (StreamWriter writer = new StreamWriter(path)) // fájl megnyitása
-                {
-                    await writer.WriteLineAsync(Convert.ToString(board.n));
+                using StreamWriter writer = new(path); // fájl megnyitása
+                await writer.WriteLineAsync(Convert.ToString(board.N));
 
-                    await writer.WriteAsync(board.Plr1.Pos.x + " ");
-                    await writer.WriteAsync(board.Plr1.Pos.y + " ");
-                    await writer.WriteAsync((int)board.Plr1.Pos.dir + " ");
-                    await writer.WriteAsync(board.Plr1.Hp + " ");
-                    await writer.WriteLineAsync();
+                await writer.WriteAsync(board.Plr1.Pos.X + " ");
+                await writer.WriteAsync(board.Plr1.Pos.Y + " ");
+                await writer.WriteAsync((int)board.Plr1.Pos.Dir + " ");
+                await writer.WriteAsync(board.Plr1.Hp + " ");
+                await writer.WriteLineAsync();
 
-                    await writer.WriteAsync(board.Plr2.Pos.x + " ");
-                    await writer.WriteAsync(board.Plr2.Pos.y + " ");
-                    await writer.WriteAsync((int)board.Plr2.Pos.dir + " ");
-                    await writer.WriteAsync(board.Plr2.Hp + " ");
-                    await writer.WriteLineAsync();
-                }
+                await writer.WriteAsync(board.Plr2.Pos.X + " ");
+                await writer.WriteAsync(board.Plr2.Pos.Y + " ");
+                await writer.WriteAsync((int)board.Plr2.Pos.Dir + " ");
+                await writer.WriteAsync(board.Plr2.Hp + " ");
+                await writer.WriteLineAsync();
             }
-            catch
+            catch (FileNotFoundException ex)
             {
-                throw new BoardDataException();
+                throw new BoardDataException("Could not find file.", ex);
+            }
+            catch (IOException ex)
+            {
+                throw new BoardDataException("There was an error reading from file", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new BoardDataException("Exception", ex);
             }
         }
     }
