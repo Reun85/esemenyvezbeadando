@@ -2,3 +2,5 @@ obj
 bin
 .vs
 TestResults
+/test/bin/Debug/net6.0/CoverletSourceRootsMapping
+/Model/Model/EventData.cs
