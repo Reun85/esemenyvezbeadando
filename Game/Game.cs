@@ -352,6 +352,10 @@ namespace RobotPigs.WFA
                 _round.Start();
                 NextButton.Enabled = false;
             }
+            else
+            {
+                Round(this, EventArgs.Empty);
+            }
         }
 
         private int activep = 1;
@@ -493,9 +497,5 @@ namespace RobotPigs.WFA
 
         #endregion stuff
 
-        private void Plr2Health_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }

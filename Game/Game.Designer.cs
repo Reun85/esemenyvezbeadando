@@ -40,12 +40,12 @@
             _saveFileDialog = new SaveFileDialog();
             splitContainer1 = new SplitContainer();
             GameArea = new Panel();
+            input = new TextBox();
             Automatic = new CheckBox();
             NextButton = new Button();
             activeplr = new Label();
             label2 = new Label();
             button2 = new Button();
-            input = new RichTextBox();
             Plr2Health = new Label();
             Plr1Health = new Label();
             label3 = new Label();
@@ -72,6 +72,7 @@
             // 
             _menuFile.DropDownItems.AddRange(new ToolStripItem[] { _menuFileNewGame, toolStripMenuItem1, _menuFileLoadGame, _menuFileSaveGame, toolStripMenuItem2, _menuFileExit });
             _menuFile.Name = "_menuFile";
+            _menuFile.ShortcutKeys = Keys.F2;
             _menuFile.Size = new Size(45, 19);
             _menuFile.Text = "Játék";
             // 
@@ -126,6 +127,7 @@
             // splitContainer1
             // 
             splitContainer1.Dock = DockStyle.Fill;
+            splitContainer1.IsSplitterFixed = true;
             splitContainer1.Location = new Point(0, 29);
             splitContainer1.Name = "splitContainer1";
             splitContainer1.Orientation = Orientation.Horizontal;
@@ -136,12 +138,12 @@
             // 
             // splitContainer1.Panel2
             // 
+            splitContainer1.Panel2.Controls.Add(input);
             splitContainer1.Panel2.Controls.Add(Automatic);
             splitContainer1.Panel2.Controls.Add(NextButton);
             splitContainer1.Panel2.Controls.Add(activeplr);
             splitContainer1.Panel2.Controls.Add(label2);
             splitContainer1.Panel2.Controls.Add(button2);
-            splitContainer1.Panel2.Controls.Add(input);
             splitContainer1.Panel2.Controls.Add(Plr2Health);
             splitContainer1.Panel2.Controls.Add(Plr1Health);
             splitContainer1.Panel2.Controls.Add(label3);
@@ -149,6 +151,7 @@
             splitContainer1.Size = new Size(610, 590);
             splitContainer1.SplitterDistance = 443;
             splitContainer1.TabIndex = 1;
+            splitContainer1.TabStop = false;
             // 
             // GameArea
             // 
@@ -157,13 +160,22 @@
             GameArea.Size = new Size(440, 380);
             GameArea.TabIndex = 3;
             // 
+            // input
+            // 
+            input.BorderStyle = BorderStyle.FixedSingle;
+            input.Location = new Point(12, 27);
+            input.Multiline = true;
+            input.Name = "input";
+            input.Size = new Size(105, 104);
+            input.TabIndex = 1;
+            // 
             // Automatic
             // 
             Automatic.AutoSize = true;
             Automatic.Location = new Point(283, 78);
             Automatic.Name = "Automatic";
             Automatic.Size = new Size(52, 19);
-            Automatic.TabIndex = 11;
+            Automatic.TabIndex = 4;
             Automatic.Text = "Auto";
             Automatic.UseVisualStyleBackColor = true;
             Automatic.CheckedChanged += Automatic_CheckedChanged;
@@ -173,7 +185,7 @@
             NextButton.Location = new Point(273, 18);
             NextButton.Name = "NextButton";
             NextButton.Size = new Size(74, 54);
-            NextButton.TabIndex = 10;
+            NextButton.TabIndex = 3;
             NextButton.Text = "Kezdés";
             NextButton.UseVisualStyleBackColor = true;
             // 
@@ -205,16 +217,6 @@
             button2.UseVisualStyleBackColor = true;
             button2.Click += button2_Click;
             // 
-            // input
-            // 
-            input.CausesValidation = false;
-            input.DetectUrls = false;
-            input.Location = new Point(12, 27);
-            input.Name = "input";
-            input.Size = new Size(113, 104);
-            input.TabIndex = 1;
-            input.Text = "";
-            // 
             // Plr2Health
             // 
             Plr2Health.AutoSize = true;
@@ -223,7 +225,6 @@
             Plr2Health.Size = new Size(13, 15);
             Plr2Health.TabIndex = 4;
             Plr2Health.Text = "3";
-            Plr2Health.Click += Plr2Health_Click;
             // 
             // Plr1Health
             // 
@@ -294,9 +295,9 @@
         private Label activeplr;
         private Label label2;
         private Button button2;
-        private RichTextBox input;
         private Panel GameArea;
         private Button NextButton;
         private CheckBox Automatic;
+        private TextBox input;
     }
 }
