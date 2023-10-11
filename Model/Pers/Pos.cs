@@ -4,100 +4,96 @@ namespace RobotPigs.Pers
 {
     public struct Pos
     {
-        public int x { get; private set; }
-        public int y { get; private set; }
-        public Dir dir { get; private set; }
+        public int X { get; private set; }
+        public int Y { get; private set; }
+        public Direction Dir { get; private set; }
 
-        public Pos(int x, int y, Dir d = Dir.East)
+        public Pos(int x, int y, Direction d = Direction.East)
         {
-            this.x = x;
-            this.y = y;
-            this.dir = d;
+            this.X = x;
+            this.Y = y;
+            this.Dir = d;
         }
 
-        public static bool sameplace(Pos lhs, Pos rhs)
+        public static bool SamePlace(Pos lhs, Pos rhs)
         {
-            return lhs.x == rhs.x && lhs.y == rhs.y;
+            return lhs.X == rhs.X && lhs.Y == rhs.Y;
         }
 
-        public enum Dir
+        public enum Direction
         { North = 0, East = 1, South = 2, West = 3 }
 
-        public enum MovDir
+        public enum MovementDirection
         { Forward = 0, Right = 1, Back = 2, Left = 3 }
 
-        private int max(int a, int b)
+        private int Max(int a, int b)
         { return a > b ? a : b; }
 
-        private int min(int a, int b)
+        private int Min(int a, int b)
         { return a < b ? a : b; }
 
-        public Pos move(MovDir movement, int n)
+        public Pos Move(MovementDirection movement, int n)
         {
-            Dir d = AddRelativeDirections(movement, this.dir);
+            Direction d = AddRelativeDirections(movement, this.Dir);
             switch (d)
             {
-                case Dir.North:
-                    return new Pos(x, max(y - 1, 0), this.dir);
+                case Direction.North:
+                    return new Pos(X, Max(Y - 1, 0), this.Dir);
 
-                case Dir.East:
-                    return new Pos(min(x + 1, n - 1), y, this.dir);
+                case Direction.East:
+                    return new Pos(Min(X + 1, n - 1), Y, this.Dir);
 
-                case Dir.South:
-                    return new Pos(x, min(y + 1, n - 1), this.dir);
-
-                default: // Dir.West, csak különben azt hiszi a C# hogy nincs visszatérési
-                         // érték minden úton :c
-                    return new Pos(max(x - 1, 0), y, this.dir);
+                case Direction.South:
+                    return new Pos(X, Min(Y + 1, n - 1), this.Dir);
+                default: // C# compiler is drunk. Thinks not all path return.....
+                    return new Pos(Max(X - 1, 0), Y, this.Dir);
             }
         }
 
-        public Pos turn(MovDir d)
+        public Pos Turn(MovementDirection d)
         {
-            return new Pos(this.x, this.y, AddRelativeDirections(d, this.dir));
+            return new Pos(this.X, this.Y, AddRelativeDirections(d, this.Dir));
         }
 
-        public static Dir AddRelativeDirections(MovDir mov, Dir dir)
+        public static Direction AddRelativeDirections(MovementDirection mov, Direction dir)
         {
             // Mágia, össze adjuk a két relatív irányt és abszolút irányt kapunk.
-            return (Dir)(((int)mov + (int)dir) % 4);
+            return (Direction)(((int)mov + (int)dir) % 4);
         }
 
-        public bool inview(Pos rhs)
+        public bool InView(Pos rhs)
         {
-            switch (this.dir)
+            switch (this.Dir)
             {
-                case Pos.Dir.North:
-                    return rhs.x == this.x && rhs.y <= this.y;
+                case Pos.Direction.North:
+                    return rhs.X == this.X && rhs.Y <= this.Y;
 
-                case Pos.Dir.East:
-                    return rhs.y == this.y && rhs.x >= this.x;
+                case Pos.Direction.East:
+                    return rhs.Y == this.Y && rhs.X >= this.X;
 
-                case Pos.Dir.South:
-                    return rhs.x == this.x && rhs.y >= this.y;
+                case Pos.Direction.South:
+                    return rhs.X == this.X && rhs.Y >= this.Y;
 
-                case Pos.Dir.West:
-                    return rhs.y == this.y && rhs.x <= this.x;
+                default: // C# compiler is drunk. Thinks not all path return.....
+                    return rhs.Y == this.Y && rhs.X <= this.X;
 
-                default:
-                    return false;
             }
         }
 
-        public bool inradius(Pos rhs, int r = 1)
+        public bool InRadius(Pos rhs, int r = 1)
         {
-            return this.x + r >= rhs.x && this.x - r <= rhs.x && this.y + r >= rhs.y &&
-                   this.y - r <= rhs.y;
+            return this.X + r >= rhs.X && this.X - r <= rhs.X && this.Y + r >= rhs.Y &&
+                   this.Y - r <= rhs.Y;
         }
 
         public static bool operator !=(Pos lhs, Pos rhs)
         {
-            return !Pos.sameplace(lhs, rhs) || lhs.dir != rhs.dir;
+            return !Pos.SamePlace(lhs, rhs) || lhs.Dir != rhs.Dir;
         }
 
         public static bool operator ==(Pos lhs, Pos rhs)
         {
-            return Pos.sameplace(lhs, rhs) && lhs.dir == rhs.dir;
+            return Pos.SamePlace(lhs, rhs) && lhs.Dir == rhs.Dir;
         }
 
         public override bool Equals(object? obj)

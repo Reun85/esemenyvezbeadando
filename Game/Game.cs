@@ -49,7 +49,7 @@ namespace RobotPigs.WFA
             {
                 splitContainer1.Panel2.Enabled = true;
                 _menuFileSaveGame.Enabled = true;
-                bool same = _model.Board != null && _model.Board.n == N;
+                bool same = _model.N != null && _model.N == N;
                 _model.NewGame(N);
                 if (!same)
                 {
@@ -93,7 +93,7 @@ namespace RobotPigs.WFA
         private bool GenerateTable()
         {
             // Board shouldn't be null here.
-            if (_model.Board == null)
+            if (_model.N == null)
             {
                 return false; // maybe recursive
             }
@@ -114,40 +114,40 @@ namespace RobotPigs.WFA
             for (int i = 0; i < n; i++)
                 for (int j = 0; j < n; j++)
                 {
-                    _grid[i, j] = new Label();
-                    _grid[i, j].Location = new Point(startingposx + size * i, startingposy + size * j);
-                    _grid[i, j].Size = new Size(size, size);
-                    _grid[i, j].Font = new Font(FontFamily.GenericMonospace, size * 3 / 4, FontStyle.Bold);
-                    _grid[i, j].BorderStyle = BorderStyle.FixedSingle;
-                    _grid[i, j].Parent = GameArea;
+                    _grid[i, j] = new()
+                    {
+                        Location = new Point(startingposx + size * i, startingposy + size * j),
+                        Size = new Size(size, size),
+                        Font = new Font(FontFamily.GenericMonospace, size * 3 / 4, FontStyle.Bold),
+                        BorderStyle = BorderStyle.FixedSingle,
+                        Parent = GameArea
+                    };
                 }
             return true;
         }
 
         private bool SetupTable()
         {
-            if (_model.Board == null)
-            {
-                return false; // maybe recursive
-            }
-            int n = _model.Board.n;
+            if (_model.N == null)
+                return false;
+            int n = (int)_model.N;
             for (int i = 0; i < n; i++)
                 for (int j = 0; j < n; j++)
                 {
                     _grid[i, j].BackColor = backcolor;
                     _grid[i, j].Text = "";
                 }
-            Pos p1 = _model.Board.Plr1.Pos;
-            Label plr1 = _grid[p1.x, p1.y];
-            plr1.Text = orientation[(int)p1.dir];
+            Pos p1 = _model.Plr1!.Pos;
+            Label plr1 = _grid[p1.X, p1.Y];
+            plr1.Text = orientation[(int)p1.Dir];
             plr1.ForeColor = colors[0];
-            Plr1Health.Text = _model.Board.Plr1.Hp.ToString();
+            Plr1Health.Text = _model.Plr1!.Hp.ToString();
 
-            Pos p2 = _model.Board.Plr2.Pos;
-            Label plr2 = _grid[p2.x, p2.y];
-            plr2.Text = orientation[(int)p2.dir];
+            Pos p2 = _model.Plr2!.Pos;
+            Label plr2 = _grid[p2.X, p2.Y];
+            plr2.Text = orientation[(int)p2.Dir];
             plr2.ForeColor = colors[1];
-            Plr2Health.Text = _model.Board.Plr2.Hp.ToString();
+            Plr2Health.Text = _model.Plr2!.Hp.ToString();
 
             return true;
         }
@@ -158,15 +158,15 @@ namespace RobotPigs.WFA
 
         private void Hits(object? sender, EventData e)
         {
-            if (e.P != null && e.Pos != null && _model.Board != null)
+            if (e.P != null && e.Pos != null)
             {
-                int n = _model.Board.n;
+                int n = (int)_model.N!;
                 Pos p = (Pos)e.Pos;
-                for (int i = p.x - 1; i <= p.x + 1; i++)
+                for (int i = p.X - 1; i <= p.X + 1; i++)
                 {
-                    for (int j = p.y - 1; j <= p.y + 1; j++)
+                    for (int j = p.Y - 1; j <= p.Y + 1; j++)
                     {
-                        if ((i != p.x || j != p.y) && i >= 0 && i < n && j >= 0 && j < n)
+                        if ((i != p.X || j != p.Y) && i >= 0 && i < n && j >= 0 && j < n)
                         {
                             if (_grid[i, j].BackColor == colors[0])
                                 _grid[i, j].BackColor = colors[2];
@@ -180,19 +180,20 @@ namespace RobotPigs.WFA
 
         private void Fires(object? sender, EventData e)
         {
-            if (e.P != null && e.Pos != null && _model.Board != null)
+            if (e.P != null && e.Pos != null)
             {
-                int n = _model.Board.n;
+                if (_model.N == null) return;
+                int n = (int)_model.N;
                 Pos p = (Pos)e.Pos;
-                int dir = (int)p.dir;
+                int dir = (int)p.Dir;
 
                 if (dir == 1 || dir == 3)
                 {
                     int change = dir == 1 ? 1 : -1;
-                    int j = p.y;
-                    for (int i = p.x; i >= 0 && i < n; i += change)
+                    int j = p.Y;
+                    for (int i = p.X; i >= 0 && i < n; i += change)
                     {
-                        if (i != p.x || j != p.y)
+                        if (i != p.X || j != p.Y)
                         {
                             if (_grid[i, j].BackColor == colors[0])
                                 _grid[i, j].BackColor = colors[2];
@@ -204,10 +205,10 @@ namespace RobotPigs.WFA
                 else
                 {
                     int change = dir == 0 ? -1 : 1;
-                    int i = p.x;
-                    for (int j = p.y; j >= 0 && j < n; j += change)
+                    int i = p.X;
+                    for (int j = p.Y; j >= 0 && j < n; j += change)
                     {
-                        if (i != p.x || j != p.y)
+                        if (i != p.X || j != p.Y)
                         {
                             if (_grid[i, j].BackColor == colors[0])
                                 _grid[i, j].BackColor = colors[2];
@@ -231,11 +232,11 @@ namespace RobotPigs.WFA
                     Label l;
                     if (p != newpos)
                     {
-                        l = _grid[p.x, p.y];
+                        l = _grid[p.X, p.Y];
                         l.Text = "";//forecolor doesn't need to be changed
                     }
-                    l = _grid[newpos.x, newpos.y];
-                    l.Text = orientation[(int)newpos.dir];
+                    l = _grid[newpos.X, newpos.Y];
+                    l.Text = orientation[(int)newpos.Dir];
                     l.ForeColor = colors[e.Id - 1];
                 }
             }
@@ -245,8 +246,7 @@ namespace RobotPigs.WFA
         {
             active = false;
             _menuFileSaveGame.Enabled = false;
-            if (_round != null)
-                _round.Stop();
+            _round?.Stop();
             _round = null;
             splitContainer1.Panel2.Enabled = false;
             if (e.Id == 3 && MessageBox.Show("Döntetlen!" + Environment.NewLine + "Szeretnétek új játékot indítani?",
@@ -287,7 +287,7 @@ namespace RobotPigs.WFA
                     await _model.LoadGameAsync(_openFileDialog.FileName);
                     _menuFileSaveGame.Enabled = true;
                     splitContainer1.Panel2.Enabled = true;
-                    N = _model.Board!.n;
+                    N = (int)_model.N!;
                     foreach (var item in _grid)
                     {
                         item.Dispose();
@@ -340,13 +340,13 @@ namespace RobotPigs.WFA
             _menuFileSaveGame.Enabled = false;
             button2.Enabled = false;
             input.Enabled = false;
-            _model.PreparetoPerform();
+            _model.PrepareToPerform();
             NextButton.Text = "Következő";
             NextButton.Click += Round;
             NextButton.Click -= NextButton_Click;
             if (Automatic.Checked)
             {
-                _round = new System.Windows.Forms.Timer();
+                _round = new();
                 _round.Interval = 1000;
                 _round.Tick += Round;
                 _round.Start();
@@ -371,7 +371,7 @@ namespace RobotPigs.WFA
             }
             else if (Automatic.Checked && _round == null && active)
             {
-                _round = new System.Windows.Forms.Timer();
+                _round = new();
                 _round.Interval = 1000;
                 _round.Tick += Round;
                 _round.Start();
@@ -381,9 +381,9 @@ namespace RobotPigs.WFA
 
         private void ClearScreen()
         {
-            if (_model.Board != null)
+            if (_model.N != null)
             {
-                int n = _model.Board.n;
+                int n = (int)_model.N;
                 for (int i = 0; i < n; i++)
                     for (int j = 0; j < n; j++)
                     {
@@ -401,9 +401,7 @@ namespace RobotPigs.WFA
         {
             active = true;
             ClearScreen();
-            if (
-                _round != null)
-                _round.Stop();
+            _round?.Stop();
             _round = null;
             NextButton.Click -= NewRoundEvent;
             NextButton.Click -= Round;
@@ -429,19 +427,19 @@ namespace RobotPigs.WFA
             inp = inp.TakeWhile(x => x.Length > 0).ToArray();
             try
             {
-                Pig.validate(inp);
+                Pig.Validate(inp);
                 input.Text = "";
                 if (activep == 1)
                 {
                     activep = 2;
                     activeplr.Text = activep.ToString() + "es";
-                    if (_model.Board != null)// cannot happen, but compiler likes it
-                        _model.Board.Plr1.parse(inp);
+                    if (_model.N != null)// cannot happen, but compiler likes it
+                        _model.Plr1Parse(inp);
                 }
                 else if (activep == 2)
                 {
-                    if (_model.Board != null)// cannot happen, but compiler likes it
-                        _model.Board.Plr2.parse(inp);
+                    if (_model.N != null)// cannot happen, but compiler likes it
+                        _model.Plr2Parse(inp);
                     activeplr.Text = "";
                     activep = 3;
                     button2.Enabled = false;

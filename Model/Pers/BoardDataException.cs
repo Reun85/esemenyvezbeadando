@@ -1,8 +1,18 @@
+
+using System.Runtime.Serialization;
+
 namespace RobotPigs.Pers
 {
-    public class BoardDataException : Exception
+    public class BoardDataException : IOException
     {
-        public BoardDataException()
-        { }
+
+
+        public BoardDataException(string? message) : base(message)
+        {
+        }
+
+        public BoardDataException(string? message, Exception? innerException) : base(message, innerException)
+        {
+        }
     }
 }

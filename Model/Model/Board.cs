@@ -7,6 +7,8 @@ namespace RobotPigs.Model
     public class GameModel
     {
         private Pers.Board? _board;
+
+        
         private Pers.IRobotPigsDataAccess? _dataAccess;
 
         public event EventHandler<EventData>? HpChange;
@@ -19,29 +21,50 @@ namespace RobotPigs.Model
 
         public event EventHandler<EventData>? Moves;
 
-        public Board? Board { get => _board; private set => _board = value; }
-        public IRobotPigsDataAccess? DataAccess { get => _dataAccess; private set => _dataAccess = value; }
 
-        public GameModel(Pers.IRobotPigsDataAccess? dataaccess)
+        public GameModel(Pers.IRobotPigsDataAccess? DataAccess)
         {
-            _dataAccess = dataaccess;
+            _dataAccess = DataAccess;
         }
 
         public void NewGame(int size)
         { _board = new Pers.Board(size); }
 
-        private int _performind = 0;
+        private int _PerformInd = 0;
 
-        public bool PreparetoPerform()
+
+        public int? N { get => _board?.N; } // We cant always propagate errors
+        public Pig? Plr1 { get => _board?.Plr1; } // We cant always propagate errors
+        public Pig? Plr2 { get => _board?.Plr2; } // We cant always propagate errors
+
+
+        public void Plr1Parse(String[] inp)
+        {
+            if(_board == null || _board.Plr1 == null)
+            {
+                throw new NullReferenceException();
+            }
+            _board.Plr1.Parse(inp);
+        }
+        public void Plr2Parse(String[] inp)
+        {
+            if (_board == null || _board.Plr1 == null)
+            {
+                throw new NullReferenceException();
+            }
+            _board.Plr2.Parse(inp);
+        }
+
+        public bool PrepareToPerform()
         {
             if (_board == null)
             {
                 throw new InvalidOperationException("Create a new game with NewGame!");
             }
 
-            if (_board.isReady())
+            if (_board.IsReady)
             {
-                _performind = 0;
+                _PerformInd = 0;
                 return true;
             }
             return false;
@@ -53,38 +76,38 @@ namespace RobotPigs.Model
             {
                 throw new InvalidOperationException("Create a new game with NewGame!");
             }
-            if (_performind >= Pers.Pig.ORDERSIZE)
+            if (_PerformInd >= Pers.Pig.ORDERSIZE)
                 return false;
-            if (!_board.isReady())
+            if (!_board.IsReady)
             {
                 throw new MissingFieldException(
                     "One of the players does not have orders set.");
             }
 
-            Pers.Action act1 = createaction(_board.Plr1, _performind);
-            Pers.Action act2 = createaction(_board.Plr2, _performind);
+            Pers.Action act1 = _board.Plr1.CreateAction(_PerformInd,_board.N);
+            Pers.Action act2 = _board.Plr2.CreateAction(_PerformInd, _board.N);
             if (act1.Type == Pers.Action.ActionType.Move &&
                 act2.Type == Pers.Action.ActionType.Move &&
-                Pers.Pos.sameplace(act1.NewPos, act2.NewPos))
+                Pers.Pos.SamePlace(act1.NewPos, act2.NewPos))
             {
                 // Attempt to move to same place ignore.
             }
             else
             {
-                if ((act1.Type == Pers.Action.ActionType.Move && !Pers.Pos.sameplace(act1.NewPos, act2.NewPos) )|| act1.Type == Pers.Action.ActionType.Turn  && _board.Plr1.Pos != act1.NewPos)
+                if ((act1.Type == Pers.Action.ActionType.Move && !Pers.Pos.SamePlace(act1.NewPos, act2.NewPos) )|| act1.Type == Pers.Action.ActionType.Turn  && _board.Plr1.Pos != act1.NewPos)
                 {
                     Moves?.Invoke(this, new EventData(_board.Plr1, 1, act1.NewPos));
-                    _board.Plr1.setPos(act1.NewPos);
+                    _board.Plr1.SetPos(act1.NewPos);
                 }
-                if ((act2.Type == Pers.Action.ActionType.Move && !Pers.Pos.sameplace(act1.NewPos, act2.NewPos) )|| act2.Type == Pers.Action.ActionType.Turn && _board.Plr2.Pos != act2.NewPos)
+                if ((act2.Type == Pers.Action.ActionType.Move && !Pers.Pos.SamePlace(act1.NewPos, act2.NewPos) )|| act2.Type == Pers.Action.ActionType.Turn && _board.Plr2.Pos != act2.NewPos)
                 {
                     Moves?.Invoke(this, new EventData(_board.Plr2, 2, act2.NewPos));
-                    _board.Plr2.setPos(act2.NewPos);
+                    _board.Plr2.SetPos(act2.NewPos);
                 }
             }
 
-            perform(_board.Plr1, 1, act1, _board.Plr2);
-            perform(_board.Plr2, 2, act2, _board.Plr1);
+            Perform(_board.Plr1, 1, act1, _board.Plr2);
+            Perform(_board.Plr2, 2, act2, _board.Plr1);
             if (_board.Plr1.Hp == 0 && _board.Plr2.Hp == 0)
             {
                 Loses?.Invoke(this, new EventData(null, 3));
@@ -97,94 +120,32 @@ namespace RobotPigs.Model
             {
                 Loses?.Invoke(this, new EventData(_board.Plr2, 2));
             }
-            _performind++;
-            return _performind < Pers.Pig.ORDERSIZE;
+            _PerformInd++;
+            return _PerformInd < Pers.Pig.ORDERSIZE;
         }
+        
 
-        private Pers.Action createaction(Pers.Pig p, int orderind)
+        private void TakeDmg(Pers.Pig p, int pignum)
         {
-            if (_board == null)
-            {
-                throw new InvalidOperationException("Create a new game with NewGame!");
-            }
-            if (!p.Ready)
-            {
-                throw new MissingFieldException((nameof(p)), " is not ready!");
-            }
-            // These default should never be necessary, but just to be
-            // sure.
-            Pers.Pos newpos;
-            Pers.Action.ActionType type;
-            switch (p.Orders[orderind])
-            {
-                case "előre":
-                    newpos = p.Pos.move(Pers.Pos.MovDir.Forward, _board.n);
-                    type = Pers.Action.ActionType.Move;
-                    break;
-
-                case "hátra":
-                    newpos = p.Pos.move(Pers.Pos.MovDir.Back, _board.n);
-                    type = Pers.Action.ActionType.Move;
-                    break;
-
-                case "balra":
-                    newpos = p.Pos.move(Pers.Pos.MovDir.Left, _board.n);
-                    type = Pers.Action.ActionType.Move;
-                    break;
-
-                case "jobbra":
-                    newpos = p.Pos.move(Pers.Pos.MovDir.Right, _board.n);
-                    type = Pers.Action.ActionType.Move;
-                    break;
-
-                case "fordulj balra":
-                    newpos = p.Pos.turn(Pers.Pos.MovDir.Left);
-                    type = Pers.Action.ActionType.Turn;
-                    break;
-
-                case "fordulj jobbra":
-                    newpos = p.Pos.turn(Pers.Pos.MovDir.Right);
-                    type = Pers.Action.ActionType.Turn;
-                    break;
-
-                case "tűz":
-                    newpos = p.Pos;
-                    type = Pers.Action.ActionType.Fire;
-                    break;
-
-                case "ütés":
-                    newpos = p.Pos;
-                    type = Pers.Action.ActionType.Hit;
-                    break;
-
-                default:
-                    throw new ArgumentException(
-                        $"\"{p.Orders[orderind]}\" command not recognised. Did you validate this with Pig.validate?");
-            }
-            return new Pers.Action(type, newpos);
-        }
-
-        private void takedmg(Pers.Pig p, int pignum)
-        {
-            p.takedmg();
+            p.TakeDmg();
             HpChange?.Invoke(this, new EventData(p, pignum));
         }
 
-        private void perform(Pers.Pig p, int pignum, Pers.Action act,
+        private void Perform(Pers.Pig p, int pignum, Pers.Action act,
                              Pers.Pig other)
         {
             if (act.Type == Pers.Action.ActionType.Fire)
             {
                 Fires?.Invoke(this, new EventData(p, pignum));
-                if (p.Pos.inview(other.Pos))
-                    takedmg(other, pignum == 1 ? 2 : 1);
+                if (p.Pos.InView(other.Pos))
+                    TakeDmg(other, pignum == 1 ? 2 : 1);
             }
             if (act.Type == Pers.Action.ActionType.Hit)
             {
                 Hits?.Invoke(this, new EventData(p, pignum));
-                if (p.Pos.inradius(other.Pos))
+                if (p.Pos.InRadius(other.Pos))
                 {
-                    takedmg(other, pignum == 1 ? 2 : 1);
+                    TakeDmg(other, pignum == 1 ? 2 : 1);
                 }
             }
         }

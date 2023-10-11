@@ -2,8 +2,8 @@ namespace RobotPigs.Pers
 {
     public interface IRobotPigsDataAccess
     {
-        Task<Board> LoadAsync(String path);
+        Task<Board> LoadAsync(string path);
 
-        Task SaveAsync(String path, Board table);
+        Task SaveAsync(string path, Board table);
     }
 }
