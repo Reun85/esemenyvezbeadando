@@ -428,6 +428,7 @@ namespace RobotPigs.WFA
         {
             String[] inp = input.Lines;
             inp = inp.SkipWhile(x => x.Length == 0).TakeWhile(x => x.Length > 0).ToArray();
+            
             try
             {
 

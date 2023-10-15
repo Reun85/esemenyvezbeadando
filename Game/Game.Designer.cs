@@ -40,6 +40,8 @@
             _saveFileDialog = new SaveFileDialog();
             splitContainer1 = new SplitContainer();
             GameArea = new Panel();
+            label5 = new Label();
+            label4 = new Label();
             input = new TextBox();
             Automatic = new CheckBox();
             NextButton = new Button();
@@ -138,6 +140,8 @@
             // 
             // splitContainer1.Panel2
             // 
+            splitContainer1.Panel2.Controls.Add(label5);
+            splitContainer1.Panel2.Controls.Add(label4);
             splitContainer1.Panel2.Controls.Add(input);
             splitContainer1.Panel2.Controls.Add(Automatic);
             splitContainer1.Panel2.Controls.Add(NextButton);
@@ -159,6 +163,24 @@
             GameArea.Name = "GameArea";
             GameArea.Size = new Size(440, 380);
             GameArea.TabIndex = 3;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(123, 119);
+            label5.Name = "label5";
+            label5.Size = new Size(467, 15);
+            label5.TabIndex = 11;
+            label5.Text = "Parancsok: \"előre\", \"hátra\",\"jobbra\",\"balra\",\"fordulj jobbra\", \"fordulj balra\", \"ütés\", \"tűz\"";
+            // 
+            // label4
+            // 
+            label4.AutoSize = true;
+            label4.Location = new Point(123, 100);
+            label4.Name = "label4";
+            label4.Size = new Size(245, 15);
+            label4.TabIndex = 10;
+            label4.Text = "Parancsaid 5 egymást követő sorban ad meg!";
             // 
             // input
             // 
@@ -209,7 +231,7 @@
             // 
             // SetOrders
             // 
-            SetOrders.Location = new Point(140, 50);
+            SetOrders.Location = new Point(138, 41);
             SetOrders.Name = "SetOrders";
             SetOrders.Size = new Size(74, 54);
             SetOrders.TabIndex = 2;
@@ -220,7 +242,7 @@
             // Plr2Health
             // 
             Plr2Health.AutoSize = true;
-            Plr2Health.Location = new Point(515, 89);
+            Plr2Health.Location = new Point(559, 80);
             Plr2Health.Name = "Plr2Health";
             Plr2Health.Size = new Size(13, 15);
             Plr2Health.TabIndex = 4;
@@ -229,7 +251,7 @@
             // Plr1Health
             // 
             Plr1Health.AutoSize = true;
-            Plr1Health.Location = new Point(515, 38);
+            Plr1Health.Location = new Point(559, 29);
             Plr1Health.Name = "Plr1Health";
             Plr1Health.Size = new Size(13, 15);
             Plr1Health.TabIndex = 3;
@@ -238,7 +260,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(372, 89);
+            label3.Location = new Point(416, 80);
             label3.Name = "label3";
             label3.Size = new Size(126, 15);
             label3.TabIndex = 2;
@@ -247,7 +269,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(372, 38);
+            label1.Location = new Point(416, 29);
             label1.Name = "label1";
             label1.Size = new Size(124, 15);
             label1.TabIndex = 0;
@@ -299,5 +321,7 @@
         private Button NextButton;
         private CheckBox Automatic;
         private TextBox input;
+        private Label label5;
+        private Label label4;
     }
 }
