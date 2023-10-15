@@ -2,12 +2,13 @@
 
 using System.Text;
 
-namespace RobotPigs.Pers
+namespace RobotPigs.Persistence
 {
     public class Pig
     {
         public const int HP = 3;
         public const int ORDERSIZE = 5;
+        private Board _board;
 
         public String[] Orders
         {
@@ -42,16 +43,20 @@ namespace RobotPigs.Pers
 
         public bool IsReady { get => _ready; set => _ready = value; }
 
-        public Pig(Pos pos)
+        public Pig(Pos pos, Board b)
         {
             Pos = pos;
             Hp = HP;
+            _board = b;
         }
 
         public void SetPos(Pos p)
-        { Pos = p; }
+        {
+            if (p.X >= 0 && p.Y >= 0 && p.X < _board.N && p.Y < _board.N)
+                Pos = p;
+        }
 
-        public Action CreateAction(int orderind,int boardSize)
+        public Action CreateAction(int orderind)
         {
             if (!this.IsReady)
             {
@@ -59,58 +64,58 @@ namespace RobotPigs.Pers
             }
             // These default should never be necessary, but just to be
             // sure.
-            Pers.Pos newpos;
-            Pers.Action.ActionType type;
+            Persistence.Pos newpos;
+            Persistence.Action.ActionType type;
             switch (Orders[orderind])
             {
                 case "előre":
-                    newpos = Pos.Move(Pers.Pos.MovementDirection.Forward, boardSize);
-                    type = Pers.Action.ActionType.Move;
+                    newpos = Pos.Move(Persistence.Pos.MovementDirection.Forward, _board.N);
+                    type = Persistence.Action.ActionType.Move;
                     break;
 
                 case "hátra":
-                    newpos = Pos.Move(Pers.Pos.MovementDirection.Back, boardSize);
-                    type = Pers.Action.ActionType.Move;
+                    newpos = Pos.Move(Persistence.Pos.MovementDirection.Back, _board.N);
+                    type = Persistence.Action.ActionType.Move;
                     break;
 
                 case "balra":
-                    newpos = Pos.Move(Pers.Pos.MovementDirection.Left, boardSize);
-                    type = Pers.Action.ActionType.Move;
+                    newpos = Pos.Move(Persistence.Pos.MovementDirection.Left, _board.N);
+                    type = Persistence.Action.ActionType.Move;
                     break;
 
                 case "jobbra":
-                    newpos = Pos.Move(Pers.Pos.MovementDirection.Right, boardSize);
-                    type = Pers.Action.ActionType.Move;
+                    newpos = Pos.Move(Persistence.Pos.MovementDirection.Right, _board.N);
+                    type = Persistence.Action.ActionType.Move;
                     break;
 
                 case "fordulj balra":
-                    newpos = Pos.Turn(Pers.Pos.MovementDirection.Left);
-                    type = Pers.Action.ActionType.Turn;
+                    newpos = Pos.Turn(Persistence.Pos.MovementDirection.Left);
+                    type = Persistence.Action.ActionType.Turn;
                     break;
 
                 case "fordulj jobbra":
-                    newpos = Pos.Turn(Pers.Pos.MovementDirection.Right);
-                    type = Pers.Action.ActionType.Turn;
+                    newpos = Pos.Turn(Persistence.Pos.MovementDirection.Right);
+                    type = Persistence.Action.ActionType.Turn;
                     break;
 
                 case "tűz":
                     newpos = Pos;
-                    type = Pers.Action.ActionType.Fire;
+                    type = Persistence.Action.ActionType.Fire;
                     break;
 
                 case "ütés":
                     newpos = Pos;
-                    type = Pers.Action.ActionType.Hit;
+                    type = Persistence.Action.ActionType.Hit;
                     break;
 
                 default:
                     throw new ArgumentException(
                         $"\"{Orders[orderind]}\" command not recognised. Did you validate this with Pig.validate?");
             }
-            return new Pers.Action(type, newpos);
+            return new Persistence.Action(type, newpos);
         }
 
-        public static void Validate(String[] inp)
+        private static void Validate(String[] inp)
         {
             if (inp.Length != ORDERSIZE)
             {
@@ -131,11 +136,11 @@ namespace RobotPigs.Pers
             for (int i = 0; i < allowed.Length - 1; i++)
             {
                 ret.Append(allowed[i]);
-                ret.Append(",");
+                ret.Append(", ");
             }
             if (allowed.Length > 1)
             {
-                ret.Append(allowed[allowed.Length - 1]);
+                ret.Append(allowed[^1]);
             }
             return ret.ToString();
         }
@@ -146,7 +151,11 @@ namespace RobotPigs.Pers
         /// <throws>
         /// ArgumentOutOfRangeException => Not enough lines
         /// ArgumentException => what text could not be parsed.
+        ///
         /// </throws>
+        /// Due to how commands will have a different effect based on the current state of the board
+        /// they will actually only be parsed when its time.
+        /// Nevertheless they are validated way before.
         public void Parse(String[] inp)
         {
             Validate(inp);

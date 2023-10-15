@@ -1,16 +1,16 @@
 ﻿using RobotPigs.Model;
-using RobotPigs.Pers;
+using RobotPigs.Persistence;
 
 namespace RobotPigs.WFA
 {
     public partial class Game : Form
     {
-        private IRobotPigsDataAccess _dataAccess;
-        private GameModel _model;
+        private readonly IRobotPigsDataAccess _dataAccess;
+        private readonly GameModel _model;
         private Label[,] _grid = new Label[0, 0];
         private System.Windows.Forms.Timer? _round;
         public int N { get; set; } = 6;
-        public bool active { get; set; } = false;
+        public bool Active { get; set; } = false;
         public static readonly String[] orientation = { "⇑", "⇒", "⇓", "⇐" };
 
         public static readonly Color[] colors = { Color.OrangeRed, Color.GreenYellow, Color.SkyBlue };
@@ -18,7 +18,7 @@ namespace RobotPigs.WFA
 
         #region setup
 
-        private void MenuFileNewGame_Click(Object sender, EventArgs e)
+        public void MenuFileNewGame_Click(Object sender, EventArgs e)
         {
 
             NewGame();
@@ -42,14 +42,14 @@ namespace RobotPigs.WFA
             //NewGame();
         }
 
-        private void NewGame()
+        public void NewGame()
         {
             NumberInp inp = new NumberInp(this);
             if (inp.ShowDialog() == DialogResult.OK)
             {
                 splitContainer1.Panel2.Enabled = true;
                 _menuFileSaveGame.Enabled = true;
-                bool same = _model.N != null && _model.N == N;
+                bool same = _model.BoardSize != null && _model.BoardSize == N;
                 _model.NewGame(N);
                 if (!same)
                 {
@@ -76,14 +76,14 @@ namespace RobotPigs.WFA
         }
 
 
-        public bool isValidSize(int n)
+        public bool IsValidSize(int n)
         {
             if (n < 3)
             {
                 throw new ArgumentException("Kettőnél nagyobb számot adjatok meg!");
             }
-            int smaller = min(GameArea.Size.Width, GameArea.Size.Height);
-            int size = max(smaller / n, 40);
+            int smaller = Min(GameArea.Size.Width, GameArea.Size.Height);
+            int size = Max(smaller / n, 40);
             if (size < 20 || size * n > smaller)
             {
                 throw new ArgumentException("Túl nagy számot választottatok!");
@@ -93,14 +93,14 @@ namespace RobotPigs.WFA
         private bool GenerateTable()
         {
             // Board shouldn't be null here.
-            if (_model.N == null)
+            if (_model.BoardSize == null)
             {
                 return false; // maybe recursive
             }
             int n = N;
             _grid = new Label[n, n];
-            int smaller = min(GameArea.Size.Width, GameArea.Size.Height);
-            int size = max(smaller / n, 40);
+            int smaller = Min(GameArea.Size.Width, GameArea.Size.Height);
+            int size = Max(smaller / n, 40);
             if (size < 20 || size * n > smaller) // again, cannot happen, but to be sure.
             {
                 if (MessageBox.Show("Túl nagy táblát választottatok." + Environment.NewLine + "Szeretnétek egy új játékot indítani?", "Harcos robotmalacok csatája", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -128,9 +128,9 @@ namespace RobotPigs.WFA
 
         private bool SetupTable()
         {
-            if (_model.N == null)
+            if (_model.BoardSize == null)
                 return false;
-            int n = (int)_model.N;
+            int n = (int)_model.BoardSize;
             for (int i = 0; i < n; i++)
                 for (int j = 0; j < n; j++)
                 {
@@ -160,7 +160,7 @@ namespace RobotPigs.WFA
         {
             if (e.P != null && e.Pos != null)
             {
-                int n = (int)_model.N!;
+                int n = (int)_model.BoardSize!;
                 Pos p = (Pos)e.Pos;
                 for (int i = p.X - 1; i <= p.X + 1; i++)
                 {
@@ -182,8 +182,8 @@ namespace RobotPigs.WFA
         {
             if (e.P != null && e.Pos != null)
             {
-                if (_model.N == null) return;
-                int n = (int)_model.N;
+                if (_model.BoardSize == null) return;
+                int n = (int)_model.BoardSize;
                 Pos p = (Pos)e.Pos;
                 int dir = (int)p.Dir;
 
@@ -244,7 +244,7 @@ namespace RobotPigs.WFA
 
         private void Game_GameOver(Object? sender, EventData e)
         {
-            active = false;
+            Active = false;
             _menuFileSaveGame.Enabled = false;
             _round?.Stop();
             _round = null;
@@ -278,16 +278,16 @@ namespace RobotPigs.WFA
 
 
 
-        private async void MenuFileLoadGame_Click(Object sender, EventArgs e)
+        public async void MenuFileLoadGame_Click(Object sender, EventArgs e)
         {
             if (_openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 try
                 {
-                    await _model.LoadGameAsync(_openFileDialog.FileName);
+                    await _model.LoadAsync(_openFileDialog.FileName);
                     _menuFileSaveGame.Enabled = true;
                     splitContainer1.Panel2.Enabled = true;
-                    N = (int)_model.N!;
+                    N = (int)_model.BoardSize!;
                     foreach (var item in _grid)
                     {
                         item.Dispose();
@@ -309,7 +309,7 @@ namespace RobotPigs.WFA
         }
 
 
-        private async void MenuFileSaveGame_Click(Object sender, EventArgs e)
+        public async void MenuFileSaveGame_Click(Object sender, EventArgs e)
         {
             if (_saveFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -335,11 +335,10 @@ namespace RobotPigs.WFA
         #endregion files
 
         #region Round
-        private void StartRound()
+        public void StartRound()
         {
             _menuFileSaveGame.Enabled = false;
-            button2.Enabled = false;
-            input.Enabled = false;
+            
             _model.PrepareToPerform();
             NextButton.Text = "Következő";
             NextButton.Click += Round;
@@ -360,7 +359,7 @@ namespace RobotPigs.WFA
 
         private int activep = 1;
 
-        private void Round(Object? sender, EventArgs e)
+        public void Round(Object? sender, EventArgs e)
         {
             ClearScreen();
             if (!_model.PerformNext())
@@ -373,7 +372,7 @@ namespace RobotPigs.WFA
                 NextButton.Click += NewRoundEvent;
                 NextButton.Click -= Round;
             }
-            else if (Automatic.Checked && _round == null && active)
+            else if (Automatic.Checked && _round == null && Active)
             {
                 _round = new();
                 _round.Interval = 1000;
@@ -385,9 +384,9 @@ namespace RobotPigs.WFA
 
         private void ClearScreen()
         {
-            if (_model.N != null)
+            if (_model.BoardSize != null)
             {
-                int n = (int)_model.N;
+                int n = (int)_model.BoardSize;
                 for (int i = 0; i < n; i++)
                     for (int j = 0; j < n; j++)
                     {
@@ -401,9 +400,9 @@ namespace RobotPigs.WFA
             NewRound();
         }
 
-        private void NewRound()
+        public void NewRound()
         {
-            active = true;
+            Active = true;
             ClearScreen();
             _round?.Stop();
             _round = null;
@@ -412,8 +411,8 @@ namespace RobotPigs.WFA
             NextButton.Click += NextButton_Click;
             NextButton.Enabled = false;
             NextButton.Text = "Kezdés";
-            button2.Enabled = true;
-            button2.Text = "Rögzítés";
+            SetOrders.Enabled = true;
+            SetOrders.Text = "Rögzítés";
             input.Enabled = true;
 
             _menuFileSaveGame.Enabled = true;
@@ -425,30 +424,32 @@ namespace RobotPigs.WFA
 
         #region buttons
 
-        private void button2_Click(object sender, EventArgs e)
+        public void SetOrders_Click(object sender, EventArgs e)
         {
             String[] inp = input.Lines;
-            inp = inp.TakeWhile(x => x.Length > 0).ToArray();
+            inp = inp.SkipWhile(x => x.Length == 0).TakeWhile(x => x.Length > 0).ToArray();
             try
             {
-                Pig.Validate(inp);
-                input.Text = "";
+
                 if (activep == 1)
                 {
+                    //if (_model.N != null)// cannot happen, but compiler likes it
+                    _model.Plr1Parse(inp); // may throw
                     activep = 2;
                     activeplr.Text = activep.ToString() + "es";
-                    if (_model.N != null)// cannot happen, but compiler likes it
-                        _model.Plr1Parse(inp);
+
                 }
                 else if (activep == 2)
                 {
-                    if (_model.N != null)// cannot happen, but compiler likes it
-                        _model.Plr2Parse(inp);
+                    //if (_model.N != null)// cannot happen, but compiler likes it
+                    _model.Plr2Parse(inp); // may throw
                     activeplr.Text = "";
                     activep = 3;
-                    button2.Enabled = false;
+                    SetOrders.Enabled = false;
+                    input.Enabled = false;
                     NextButton.Enabled = true;
                 }
+                input.Text = "";
             }
             catch (ArgumentOutOfRangeException)
             {
@@ -460,7 +461,7 @@ namespace RobotPigs.WFA
             }
         }
 
-        private void Automatic_CheckedChanged(object sender, EventArgs e)
+        public void Automatic_CheckedChanged(object sender, EventArgs e)
         {
             if (sender.GetType() == typeof(CheckBox))
             {
@@ -485,17 +486,16 @@ namespace RobotPigs.WFA
 
         #region stuff
 
-        private int max(int v1, int v2)
+        private int Max(int v1, int v2)
         {
             return v1 > v2 ? v1 : v2;
         }
 
-        private int min(int width, int height)
+        private int Min(int width, int height)
         {
             return width < height ? width : height;
         }
 
         #endregion stuff
-
     }
 }

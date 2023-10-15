@@ -45,7 +45,7 @@
             NextButton = new Button();
             activeplr = new Label();
             label2 = new Label();
-            button2 = new Button();
+            SetOrders = new Button();
             Plr2Health = new Label();
             Plr1Health = new Label();
             label3 = new Label();
@@ -116,12 +116,12 @@
             // 
             // _openFileDialog
             // 
-            _openFileDialog.Filter = "Harcos Robotok tábla (*.stl)|*.stl";
+            _openFileDialog.Filter = "Harcos Robotok tábla (*.dat)|*.dat";
             _openFileDialog.Title = "Harcos Robotok tábla betöltése";
             // 
             // _saveFileDialog
             // 
-            _saveFileDialog.Filter = "Harcos Robotok tábla (*.stl)|*.stl";
+            _saveFileDialog.Filter = "Harcos Robotok tábla (*.dat)|*.dat";
             _saveFileDialog.Title = "Harcos Robotok tábla betöltése mentése";
             // 
             // splitContainer1
@@ -143,7 +143,7 @@
             splitContainer1.Panel2.Controls.Add(NextButton);
             splitContainer1.Panel2.Controls.Add(activeplr);
             splitContainer1.Panel2.Controls.Add(label2);
-            splitContainer1.Panel2.Controls.Add(button2);
+            splitContainer1.Panel2.Controls.Add(SetOrders);
             splitContainer1.Panel2.Controls.Add(Plr2Health);
             splitContainer1.Panel2.Controls.Add(Plr1Health);
             splitContainer1.Panel2.Controls.Add(label3);
@@ -207,15 +207,15 @@
             label2.TabIndex = 8;
             label2.Text = "Aktív játékos:";
             // 
-            // button2
+            // SetOrders
             // 
-            button2.Location = new Point(140, 50);
-            button2.Name = "button2";
-            button2.Size = new Size(74, 54);
-            button2.TabIndex = 2;
-            button2.Text = "Rögzítés";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
+            SetOrders.Location = new Point(140, 50);
+            SetOrders.Name = "SetOrders";
+            SetOrders.Size = new Size(74, 54);
+            SetOrders.TabIndex = 2;
+            SetOrders.Text = "Rögzítés";
+            SetOrders.UseVisualStyleBackColor = true;
+            SetOrders.Click += SetOrders_Click;
             // 
             // Plr2Health
             // 
@@ -294,7 +294,7 @@
         private Label Plr2Health;
         private Label activeplr;
         private Label label2;
-        private Button button2;
+        private Button SetOrders;
         private Panel GameArea;
         private Button NextButton;
         private CheckBox Automatic;

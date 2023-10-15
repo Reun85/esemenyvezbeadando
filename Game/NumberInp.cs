@@ -32,7 +32,7 @@ namespace RobotPigs.WFA
             {
                 int parsed = Convert.ToInt32(inp);
 
-                _g.isValidSize(parsed) ;
+                _g.IsValidSize(parsed) ;
                 _g.N = parsed;
                 DialogResult = DialogResult.OK;
                 

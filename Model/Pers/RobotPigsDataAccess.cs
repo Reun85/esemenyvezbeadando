@@ -1,5 +1,5 @@
 
-namespace RobotPigs.Pers
+namespace RobotPigs.Persistence
 {
     public class RobotPigsDataAccess : IRobotPigsDataAccess
     {
@@ -18,7 +18,8 @@ namespace RobotPigs.Pers
                 Int32 boardSize = System.Int32.Parse(line);
 
 
-                Pig[] plrs = new Pig[2];
+                Pos[] pos = new Pos[2];
+                int[] hps = new int[2];
                 int[] buff = new int[4];
                 for (int i = 0; i < 2; i++)
                 {
@@ -28,14 +29,12 @@ namespace RobotPigs.Pers
                     {
                         buff[j] = System.Int32.Parse(numbers[j]);
                     }
-                    plrs[i] = new Pig(
-                        new Pers.Pos(buff[0], buff[1], (Pers.Pos.Direction)buff[2]))
-                    {
-                        Hp = buff[3]
-                    };
+                    pos[i] =
+                        new Persistence.Pos(buff[0], buff[1], (Persistence.Pos.Direction)buff[2]);
+                    hps[i] = buff[3];
                 }
 
-                return new Board(boardSize, plrs[0], plrs[1]);
+                return new Board(boardSize, (pos[0], hps[0]), (pos[1], hps[1]));
             }
             catch (FileNotFoundException ex)
             {

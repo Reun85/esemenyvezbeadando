@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Test;
 
 using RobotPigs.Model;
-using RobotPigs.Pers;
+using RobotPigs.Persistence;
 
 public class Common
 {
@@ -204,7 +204,7 @@ public class PosTest
     public void InviewTest1()
     {
         Pos p = new Pos(5, 0, Pos.Direction.South);
-        Pos p2 = new Pos(5, 2);
+        Pos p2 = new Pos(5, 2, Pos.Direction.East);
         Assert.IsTrue(p.InView(p2));
     }
 
@@ -212,7 +212,7 @@ public class PosTest
     public void InviewTest2()
     {
         Pos p = new Pos(5, 3, Pos.Direction.South);
-        Pos p2 = new Pos(5, 2);
+        Pos p2 = new Pos(5, 2, Pos.Direction.East);
         Assert.IsFalse(p.InView(p2));
     }
 
@@ -220,7 +220,7 @@ public class PosTest
     public void InviewTest3()
     {
         Pos p = new Pos(5, 3, Pos.Direction.East);
-        Pos p2 = new Pos(5, 2);
+        Pos p2 = new Pos(5, 2, Pos.Direction.East);
         Assert.IsFalse(p.InView(p2));
     }
 
@@ -228,7 +228,7 @@ public class PosTest
     public void InviewTest4()
     {
         Pos p = new Pos(5, 3, Pos.Direction.East);
-        Pos p2 = new Pos(6, 4);
+        Pos p2 = new Pos(6, 4, Pos.Direction.East);
         Assert.IsFalse(p.InView(p2));
     }
 
@@ -236,7 +236,7 @@ public class PosTest
     public void InviewTest5()
     {
         Pos p = new Pos(5, 3, Pos.Direction.East);
-        Pos p2 = new Pos(6, 3);
+        Pos p2 = new Pos(6, 3, Pos.Direction.East);
         Assert.IsTrue(p.InView(p2));
     }
 
@@ -244,7 +244,7 @@ public class PosTest
     public void InviewTest6()
     {
         Pos p = new Pos(5, 3, Pos.Direction.East);
-        Pos p2 = new Pos(4, 3);
+        Pos p2 = new Pos(4, 3, Pos.Direction.East);
         Assert.IsFalse(p.InView(p2));
     }
 
@@ -252,7 +252,7 @@ public class PosTest
     public void InviewTest7()
     {
         Pos p = new Pos(5, 3, Pos.Direction.West);
-        Pos p2 = new Pos(4, 3);
+        Pos p2 = new Pos(4, 3, Pos.Direction.East);
         Assert.IsTrue(p.InView(p2));
     }
 
@@ -260,15 +260,15 @@ public class PosTest
     public void InviewTest8()
     {
         Pos p = new Pos(5, 3, Pos.Direction.West);
-        Pos p2 = new Pos(7, 3);
+        Pos p2 = new Pos(7, 3, Pos.Direction.East);
         Assert.IsFalse(p.InView(p2));
     }
 
     [TestMethod]
     public void InRadiusTest1()
     {
-        Pos p = new Pos(5, 3);
-        Pos p2 = new Pos(7, 3);
+        Pos p = new Pos(5, 3, Pos.Direction.East);
+        Pos p2 = new Pos(7, 3, Pos.Direction.East);
         Assert.IsFalse(p.InRadius(p2, 1));
         // Assert.IsTrue(p.inradius(p2, 1));
     }
@@ -276,8 +276,8 @@ public class PosTest
     [TestMethod]
     public void InRadiusTest2()
     {
-        Pos p = new Pos(5, 3);
-        Pos p2 = new Pos(6, 3);
+        Pos p = new Pos(5, 3, Pos.Direction.East);
+        Pos p2 = new Pos(6, 3, Pos.Direction.East);
         // Assert.IsFalse(p.inradius(p2, 1));
         Assert.IsTrue(p.InRadius(p2, 1));
     }
@@ -285,8 +285,8 @@ public class PosTest
     [TestMethod]
     public void InRadiusTest3()
     {
-        Pos p = new Pos(5, 3);
-        Pos p2 = new Pos(4, 3);
+        Pos p = new Pos(5, 3, Pos.Direction.East);
+        Pos p2 = new Pos(4, 3, Pos.Direction.East);
         // Assert.IsFalse(p.inradius(p2, 1));
         Assert.IsTrue(p.InRadius(p2, 1));
     }
@@ -294,8 +294,8 @@ public class PosTest
     [TestMethod]
     public void InRadiusTest4()
     {
-        Pos p = new Pos(9, 4);
-        Pos p2 = new Pos(7, 3);
+        Pos p = new Pos(9, 4, Pos.Direction.East);
+        Pos p2 = new Pos(7, 3,Pos.Direction.East);
         Assert.IsFalse(p.InRadius(p2, 1));
         // Assert.IsTrue(p.inradius(p2, 1));
     }
@@ -303,8 +303,8 @@ public class PosTest
     [TestMethod]
     public void InRadiusTest5()
     {
-        Pos p = new Pos(0, 2);
-        Pos p2 = new Pos(0, 1);
+        Pos p = new Pos(0, 2, Pos.Direction.East);
+        Pos p2 = new Pos(0, 1, Pos.Direction.East);
         // Assert.IsFalse(p.inradius(p2, 1));
         Assert.IsTrue(p.InRadius(p2, 1));
     }
@@ -316,10 +316,12 @@ public class PigTest
     [TestMethod]
     public void ValidateTest1()
     {
+        Board b = new Board(8);
+        Pig p = b.Plr1;
         String[] inp = { "a" };
         try
         {
-            Pig.Validate(inp);
+            p.Parse(inp);
             Assert.Fail("Should have failed.");
         }
         catch (ArgumentOutOfRangeException)
@@ -335,10 +337,12 @@ public class PigTest
     [TestMethod]
     public void ValidateTest2()
     {
+        Board b = new Board(8);
+        Pig p = b.Plr1;
         String[] inp = { "a", "b" };
         try
         {
-            Pig.Validate(inp);
+            p.Parse(inp);
             Assert.Fail("Should have failed.");
         }
         catch (ArgumentOutOfRangeException)
@@ -354,10 +358,12 @@ public class PigTest
     [TestMethod]
     public void ValidateTest3()
     {
+        Board b = new Board(8);
+        Pig p = b.Plr1;
         String[] inp = { "a", "b", "c", "d", "e" };
         try
         {
-            Pig.Validate(inp);
+            p.Parse(inp);
             Assert.Fail("Should have failed.");
         }
         catch (ArgumentOutOfRangeException)
@@ -373,10 +379,12 @@ public class PigTest
     [TestMethod]
     public void ValidateTest4()
     {
+        Board b = new Board(8);
+        Pig p = b.Plr1;
         String[] inp = { "a", "b", "c", "d", "e", "f" };
         try
         {
-            Pig.Validate(inp);
+            p.Parse(inp);
             Assert.Fail("Should have failed.");
         }
         catch (ArgumentOutOfRangeException)
@@ -392,10 +400,12 @@ public class PigTest
     [TestMethod]
     public void ValidateTest5()
     {
+        Board b = new Board(8);
+        Pig p = b.Plr1;
         String[] inp = { "előre", "hátra", "előre", "hátra", "előre" };
         try
         {
-            Pig.Validate(inp);
+            p.Parse(inp);
             // Assert.Fail("Should have failed.");
         }
         catch (ArgumentOutOfRangeException)
@@ -411,10 +421,12 @@ public class PigTest
     [TestMethod]
     public void ValidateTest6()
     {
+        Board b = new Board(8);
+        Pig p = b.Plr1;
         String[] inp = { "előre", "hátbra", "előre", "hátra", "előre" };
         try
         {
-            Pig.Validate(inp);
+            p.Parse(inp);
             Assert.Fail("Should have failed.");
         }
         catch (ArgumentOutOfRangeException)
@@ -430,11 +442,13 @@ public class PigTest
     [TestMethod]
     public void ValidateTest7()
     {
+        Board b = new Board(8);
+        Pig p = b.Plr1;
         String[] inp = { "tűz", "fordulj balra", "jobbra", "fordulj balra",
                      "ütés" };
         try
         {
-            Pig.Validate(inp);
+            p.Parse(inp);
             // Assert.Fail("Should have failed.");
         }
         catch (ArgumentOutOfRangeException)
@@ -464,7 +478,7 @@ public class RobotDataAccessTest
         
         //Make sure
         m = new GameModel(new RobotPigsDataAccess());
-        m.LoadGameAsync("Testser").Wait();
+        m.LoadAsync("Testser").Wait();
         Assert.AreEqual(3, m.Plr1!.Hp);
         Assert.AreEqual(3, m.Plr2!.Hp);
         Common.PosEqWithDirection(new Pos(5, 4, Pos.Direction.West), m.Plr2!.Pos);
@@ -487,7 +501,7 @@ public class RobotDataAccessTest
 
         // Make sure
         m = new GameModel(new RobotPigsDataAccess());
-        m.LoadGameAsync("Testser").Wait();
+        m.LoadAsync("Testser").Wait();
         Assert.AreEqual(1, m.Plr1!.Hp);
         Assert.AreEqual(3, m.Plr2!.Hp);
         Common.PosEqWithDirection(new Pos(4, 4, Pos.Direction.West), m.Plr2!.Pos);

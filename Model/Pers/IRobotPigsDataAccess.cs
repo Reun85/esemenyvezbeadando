@@ -1,4 +1,4 @@
-namespace RobotPigs.Pers
+namespace RobotPigs.Persistence
 {
     public interface IRobotPigsDataAccess
     {

@@ -1,18 +1,23 @@
 #nullable enable
 
-namespace RobotPigs.Pers
+using System.Reflection.Metadata.Ecma335;
+
+namespace RobotPigs.Persistence
 {
     public struct Pos
     {
-        public int X { get; private set; }
-        public int Y { get; private set; }
-        public Direction Dir { get; private set; }
+        private int _x;
+        private int _y;
+        private Direction _dir;
+        public int X { get => _x; private set => _x = value; }
+        public int Y { get => _y; private set => _y = value; }
+        public Direction Dir { get => _dir; private set => _dir = value; }
 
-        public Pos(int x, int y, Direction d = Direction.East)
+        public Pos(int x, int y, Direction d)
         {
-            this.X = x;
-            this.Y = y;
-            this.Dir = d;
+            this._x = x;
+            this._y = y;
+            this._dir = d;
         }
 
         public static bool SamePlace(Pos lhs, Pos rhs)
@@ -26,10 +31,10 @@ namespace RobotPigs.Pers
         public enum MovementDirection
         { Forward = 0, Right = 1, Back = 2, Left = 3 }
 
-        private int Max(int a, int b)
+        private static int Max(int a, int b)
         { return a > b ? a : b; }
 
-        private int Min(int a, int b)
+        private static int Min(int a, int b)
         { return a < b ? a : b; }
 
         public Pos Move(MovementDirection movement, int n)
@@ -96,7 +101,7 @@ namespace RobotPigs.Pers
             return Pos.SamePlace(lhs, rhs) && lhs.Dir == rhs.Dir;
         }
 
-        public override bool Equals(object? obj)
+        public readonly override bool Equals(object? obj)
         {
             //
             // See the full list of guidelines at
@@ -114,7 +119,8 @@ namespace RobotPigs.Pers
         }
 
         // override object.GetHashCode
-        public override int GetHashCode()
+        public readonly override int GetHashCode()
         { return base.GetHashCode(); }
+
     }
 }
