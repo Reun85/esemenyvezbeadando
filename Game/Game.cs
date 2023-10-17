@@ -47,6 +47,8 @@ namespace RobotPigs.WFA
             NumberInp inp = new NumberInp(this);
             if (inp.ShowDialog() == DialogResult.OK)
             {
+                _round?.Stop();
+                _round = null;
                 splitContainer1.Panel2.Enabled = true;
                 _menuFileSaveGame.Enabled = true;
                 bool same = _model.BoardSize != null && _model.BoardSize == N;
@@ -233,6 +235,7 @@ namespace RobotPigs.WFA
                     if (p != newpos)
                     {
                         l = _grid[p.X, p.Y];
+                        if(l.ForeColor == colors[e.Id-1])// It is possible that the other player has moved to their starting position
                         l.Text = "";//forecolor doesn't need to be changed
                     }
                     l = _grid[newpos.X, newpos.Y];
@@ -284,6 +287,8 @@ namespace RobotPigs.WFA
             {
                 try
                 {
+                    _round?.Stop();
+                    _round = null;
                     await _model.LoadAsync(_openFileDialog.FileName);
                     _menuFileSaveGame.Enabled = true;
                     splitContainer1.Panel2.Enabled = true;
