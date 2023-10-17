@@ -235,8 +235,8 @@ namespace RobotPigs.WFA
                     if (p != newpos)
                     {
                         l = _grid[p.X, p.Y];
-                        if(l.ForeColor == colors[e.Id-1])// It is possible that the other player has moved to their starting position
-                        l.Text = "";//forecolor doesn't need to be changed
+                        if (l.ForeColor == colors[e.Id - 1])// It is possible that the other player has moved to their starting position
+                            l.Text = "";//forecolor doesn't need to be changed
                     }
                     l = _grid[newpos.X, newpos.Y];
                     l.Text = orientation[(int)newpos.Dir];
@@ -343,7 +343,7 @@ namespace RobotPigs.WFA
         public void StartRound()
         {
             _menuFileSaveGame.Enabled = false;
-            
+
             _model.PrepareToPerform();
             NextButton.Text = "Következő";
             NextButton.Click += Round;
@@ -433,7 +433,7 @@ namespace RobotPigs.WFA
         {
             String[] inp = input.Lines;
             inp = inp.SkipWhile(x => x.Length == 0).TakeWhile(x => x.Length > 0).ToArray();
-            
+
             try
             {
 
@@ -503,5 +503,6 @@ namespace RobotPigs.WFA
         }
 
         #endregion stuff
+
     }
 }

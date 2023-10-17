@@ -39,6 +39,7 @@
             _openFileDialog = new OpenFileDialog();
             _saveFileDialog = new SaveFileDialog();
             splitContainer1 = new SplitContainer();
+            label6 = new Label();
             GameArea = new Panel();
             label5 = new Label();
             label4 = new Label();
@@ -52,6 +53,7 @@
             Plr1Health = new Label();
             label3 = new Label();
             label1 = new Label();
+            label7 = new Label();
             _menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -136,6 +138,8 @@
             // 
             // splitContainer1.Panel1
             // 
+            splitContainer1.Panel1.Controls.Add(label7);
+            splitContainer1.Panel1.Controls.Add(label6);
             splitContainer1.Panel1.Controls.Add(GameArea);
             // 
             // splitContainer1.Panel2
@@ -156,6 +160,15 @@
             splitContainer1.SplitterDistance = 443;
             splitContainer1.TabIndex = 1;
             splitContainer1.TabStop = false;
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Location = new Point(3, 168);
+            label6.Name = "label6";
+            label6.Size = new Size(80, 30);
+            label6.TabIndex = 4;
+            label6.Text = "Egyes játékos:\r\npiros";
             // 
             // GameArea
             // 
@@ -275,6 +288,15 @@
             label1.TabIndex = 0;
             label1.Text = "Egyes játékos életereje";
             // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(3, 231);
+            label7.Name = "label7";
+            label7.Size = new Size(82, 30);
+            label7.TabIndex = 5;
+            label7.Text = "Kettes játékos:\r\nzöld";
+            // 
             // Game
             // 
             ClientSize = new Size(610, 619);
@@ -289,6 +311,7 @@
             _menuStrip.ResumeLayout(false);
             _menuStrip.PerformLayout();
             splitContainer1.Panel1.ResumeLayout(false);
+            splitContainer1.Panel1.PerformLayout();
             splitContainer1.Panel2.ResumeLayout(false);
             splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
@@ -323,5 +346,7 @@
         private TextBox input;
         private Label label5;
         private Label label4;
+        private Label label6;
+        private Label label7;
     }
 }
