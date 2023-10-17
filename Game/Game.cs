@@ -287,6 +287,7 @@ namespace RobotPigs.WFA
             {
                 try
                 {
+                    Active = false;
                     _round?.Stop();
                     _round = null;
                     await _model.LoadAsync(_openFileDialog.FileName);
@@ -342,6 +343,8 @@ namespace RobotPigs.WFA
         #region Round
         public void StartRound()
         {
+
+            Active = true;
             _menuFileSaveGame.Enabled = false;
 
             _model.PrepareToPerform();
@@ -407,7 +410,7 @@ namespace RobotPigs.WFA
 
         public void NewRound()
         {
-            Active = true;
+            Active = false;
             ClearScreen();
             _round?.Stop();
             _round = null;

@@ -39,6 +39,7 @@
             _openFileDialog = new OpenFileDialog();
             _saveFileDialog = new SaveFileDialog();
             splitContainer1 = new SplitContainer();
+            label7 = new Label();
             label6 = new Label();
             GameArea = new Panel();
             label5 = new Label();
@@ -53,7 +54,6 @@
             Plr1Health = new Label();
             label3 = new Label();
             label1 = new Label();
-            label7 = new Label();
             _menuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
@@ -161,6 +161,15 @@
             splitContainer1.TabIndex = 1;
             splitContainer1.TabStop = false;
             // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(3, 231);
+            label7.Name = "label7";
+            label7.Size = new Size(82, 30);
+            label7.TabIndex = 5;
+            label7.Text = "Kettes játékos:\r\nzöld";
+            // 
             // label6
             // 
             label6.AutoSize = true;
@@ -182,9 +191,9 @@
             label5.AutoSize = true;
             label5.Location = new Point(123, 119);
             label5.Name = "label5";
-            label5.Size = new Size(467, 15);
+            label5.Size = new Size(461, 15);
             label5.TabIndex = 11;
-            label5.Text = "Parancsok: \"előre\", \"hátra\",\"jobbra\",\"balra\",\"fordulj jobbra\", \"fordulj balra\", \"ütés\", \"tűz\"";
+            label5.Text = "Parancsok: \"előre\", \"hátra\",\"balra\",\"jobbra\",\"fordulj balra\",\"fordulj jobbra\",\"ütés\", \"tűz\"";
             // 
             // label4
             // 
@@ -287,15 +296,6 @@
             label1.Size = new Size(124, 15);
             label1.TabIndex = 0;
             label1.Text = "Egyes játékos életereje";
-            // 
-            // label7
-            // 
-            label7.AutoSize = true;
-            label7.Location = new Point(3, 231);
-            label7.Name = "label7";
-            label7.Size = new Size(82, 30);
-            label7.TabIndex = 5;
-            label7.Text = "Kettes játékos:\r\nzöld";
             // 
             // Game
             // 
