@@ -6,7 +6,7 @@ namespace RobotPigs.Model
 {
     public class GameModel
     {
-        private Persistence.Board? _board;
+        private Persistence.Board _board =null!;
 
         
         private readonly Persistence.IRobotPigsDataAccess? _dataAccess;
@@ -21,21 +21,22 @@ namespace RobotPigs.Model
 
         public event EventHandler<EventData>? Moves;
 
-
-        public GameModel(Persistence.IRobotPigsDataAccess? DataAccess)
+        public event EventHandler<int>? GameCreated;
+        public GameModel(Persistence.IRobotPigsDataAccess? DataAccess,int boardSize)
         {
             _dataAccess = DataAccess;
+            NewGame(boardSize);
         }
 
         public void NewGame(int size)
-        { _board = new Persistence.Board(size); }
+        { _board = new Persistence.Board(size); GameCreated?.Invoke(this, size); }
 
         private int _PerformInd = 0;
 
 
-        public int? BoardSize { get => _board?.N; }
-        public Pig? Plr1 { get => _board?.Plr1; }
-        public Pig? Plr2 { get => _board?.Plr2; }
+        public int BoardSize { get => _board.N; }
+        public Pig Plr1 { get => _board.Plr1; }
+        public Pig Plr2 { get => _board.Plr2; }
 
         /// <throws>
         /// ArgumentOutOfRangeException => Not enough lines
@@ -47,10 +48,18 @@ namespace RobotPigs.Model
         /// Nevertheless they are validated way before.
         public void Plr1Parse(String[] inp)
         {
-            if(_board == null || _board.Plr1 == null)
-            {
-                throw new NullReferenceException();
-            }
+            _board.Plr1.Parse(inp);
+        }
+        /// <throws>
+        /// ArgumentOutOfRangeException => Not enough lines
+        /// ArgumentException => what text could not be parsed.
+        /// 
+        /// </throws>
+        /// Due to how commands will have a different effect based on the current state of the board
+        /// they will actually only be parsed when its time. 
+        /// Nevertheless they are validated way before.
+        public void Plr1Parse(Int32[] inp)
+        {
             _board.Plr1.Parse(inp);
         }
         /// <throws>
@@ -63,19 +72,23 @@ namespace RobotPigs.Model
         /// Nevertheless they are validated way before.
         public void Plr2Parse(String[] inp)
         {
-            if (_board == null || _board.Plr1 == null)
-            {
-                throw new NullReferenceException();
-            }
+            _board.Plr2.Parse(inp);
+        }
+        /// <throws>
+        /// ArgumentOutOfRangeException => Not enough lines
+        /// ArgumentException => what text could not be parsed.
+        /// 
+        /// </throws>
+        /// Due to how commands will have a different effect based on the current state of the board
+        /// they will actually only be parsed when its time. 
+        /// Nevertheless they are validated way before.
+        public void Plr2Parse(Int32[] inp)
+        {
             _board.Plr2.Parse(inp);
         }
 
         public bool PrepareToPerform()
         {
-            if (_board == null)
-            {
-                throw new InvalidOperationException("Create a new game with NewGame!");
-            }
 
             if (_board.IsReady)
             {
@@ -87,10 +100,6 @@ namespace RobotPigs.Model
 
         public bool PerformNext()
         {
-            if (_board == null)
-            {
-                throw new InvalidOperationException("Create a new game with NewGame!");
-            }
             if (_PerformInd >= Persistence.Pig.ORDERSIZE)
                 return false;
             if (!_board.IsReady)
@@ -107,14 +116,18 @@ namespace RobotPigs.Model
             {
                 // Attempt to move to same place ignore.
             }
+            else if (act1.Type == Persistence.Action.ActionType.Move && act2.Type == Persistence.Action.ActionType.Move && Persistence.Pos.SamePlace(act1.NewPos,Plr2.Pos) && Persistence.Pos.SamePlace(act2.NewPos, Plr1.Pos))
+            {
+                // They should not move over each other
+            }
             else
             {
-                if ((act1.Type == Persistence.Action.ActionType.Move && !Persistence.Pos.SamePlace(act1.NewPos, act2.NewPos) )|| act1.Type == Persistence.Action.ActionType.Turn  && _board.Plr1.Pos != act1.NewPos)
+                if ((act1.Type == Persistence.Action.ActionType.Move && !Persistence.Pos.SamePlace(act1.NewPos, act2.NewPos) )|| act1.Type == Persistence.Action.ActionType.Turn  && !Pos.equals(_board.Plr1.Pos, act1.NewPos))
                 {
                     Moves?.Invoke(this, new EventData(_board.Plr1, 1, act1.NewPos));
                     _board.Plr1.SetPos(act1.NewPos);
                 }
-                if ((act2.Type == Persistence.Action.ActionType.Move && !Persistence.Pos.SamePlace(act1.NewPos, act2.NewPos) )|| act2.Type == Persistence.Action.ActionType.Turn && _board.Plr2.Pos != act2.NewPos)
+                if ((act2.Type == Persistence.Action.ActionType.Move && !Persistence.Pos.SamePlace(act1.NewPos, act2.NewPos) )|| act2.Type == Persistence.Action.ActionType.Turn && !Pos.equals(_board.Plr2.Pos, act2.NewPos))
                 {
                     Moves?.Invoke(this, new EventData(_board.Plr2, 2, act2.NewPos));
                     _board.Plr2.SetPos(act2.NewPos);
@@ -165,25 +178,23 @@ namespace RobotPigs.Model
             }
         }
 
-        public async Task LoadAsync(String path)
+        public async Task LoadGameAsync(String path)
         {
             if (_dataAccess == null)
-                throw new InvalidOperationException("No data access is provided.");
+            {
+                throw new InvalidOperationException("No data access have been provided.");
+            }
             _board = await _dataAccess.LoadAsync(path);
+            GameCreated?.Invoke(this, _board.N);
         }
 
-        public async Task SaveAsync(String path)
+        public async Task SaveGameAsync(String path)
         {
-            if (_board == null)
-            {
-                throw new InvalidOperationException("Create a new game with NewGame!");
-            }
             if (_dataAccess == null)
-                throw new InvalidOperationException("No data access is provided.");
+            {
+                throw new InvalidOperationException("No data access have been provided.");
+            }
             await _dataAccess.SaveAsync(path, _board);
         }
-
-        // This is done this way to allow our representation to call our code
-        // periodically
     }
 }

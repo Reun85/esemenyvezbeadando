@@ -1,0 +1,124 @@
+﻿<Window x:Class="RobotPigs.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="MainWindow" ResizeMode="CanMinimize" Width="500" Height="700">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Menu -->
+        <Menu Grid.Row="0">
+            <MenuItem Header="Játék">
+                <MenuItem Header="Új játék">
+                    <MenuItem Header="4x4" Command="{Binding NewGameCommand}" CommandParameter="4" />
+                    <MenuItem Header="6x6" Command="{Binding NewGameCommand}" CommandParameter="6" />
+                    <MenuItem Header="8x8" Command="{Binding NewGameCommand}" CommandParameter="8" />
+                </MenuItem>
+                <Separator />
+                <MenuItem Header="Játék betöltése..." Command="{Binding LoadGameCommand}" />
+                <MenuItem IsEnabled="{Binding CanSave}" Header="Játék mentése..." Command="{Binding SaveGameCommand}" />
+                <Separator />
+                <MenuItem Header="Kilépés" Command="{Binding ExitCommand}" />
+            </MenuItem>
+        </Menu>
+
+        <ItemsControl Grid.Row="1" ItemsSource="{Binding Fields}">
+            <!--az mezőket tároló vezérlő-->
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <!--a gombokat egy rácsba fűzzük fel-->
+                    <UniformGrid Rows="{Binding BoardSize}" Columns="{Binding BoardSize}" Width="440" Height="440" />
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <!--az elemek gombok lesznek-->
+                <DataTemplate>
+                    <Label Content="{Binding Content}" FontSize="{Binding FontSize}" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                        <Label.Style>
+                            <!-- gomb stílusa, ahol a színét megadjuk -->
+
+                            <Style TargetType="Label">
+                                <Setter Property="BorderThickness" Value="3" />
+                                <Style.Triggers>
+                                    <!-- a szín egy adatkötés hatására fog változni -->
+                                    <DataTrigger Binding="{Binding Background}" Value="1">
+                                        <Setter Property="Background" Value="OrangeRed" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Background}" Value="2">
+                                        <Setter Property="Background" Value="GreenYellow" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Background}" Value="3">
+                                        <Setter Property="Background" Value="SkyBlue" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Background}" Value="0">
+                                        <Setter Property="Background" Value="Gray" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ForeColor}" Value="1">
+                                        <Setter Property="Foreground" Value="OrangeRed" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ForeColor}" Value="2">
+                                        <Setter Property="Foreground" Value="GreenYellow" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Label.Style>
+                    </Label>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemContainerStyle>
+                <Style>
+                    <Setter Property="Grid.Row" Value="{Binding X}" />
+                    <Setter Property="Grid.Column" Value="{Binding Y}" />
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+        </ItemsControl>
+
+        <StackPanel Grid.Row="2" Orientation="Vertical" Margin="10">
+            <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal"  Margin="40,0,0,0">
+                    <Label Content="Piros játékos életereje:" />
+                    <Label Content="{Binding Player1Health}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="100,0,0,0">
+                    <Label Content="Zöld játékos életereje:" />
+                    <Label Content="{Binding Player2Health}" />
+                </StackPanel>
+            </StackPanel>
+            <Button IsEnabled="{Binding CanStart}"  Command="{Binding NextCommand}" Margin="0,10,0,0" Width="100" Height="40">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding InRound}" Value="False">
+                                <Setter Property="Content" Value="Kezdés" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding InRound}" Value="True">
+                                <Setter Property="Content" Value="Következő" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Label Content="Aktív játékos:" />
+                <Label Content="{Binding ActivePlayer}" />
+            </StackPanel>
+
+            <UniformGrid Rows="0" Columns="5">
+                <ComboBox IsEnabled="{Binding Path=MoreInp}" Margin ="0,0,5,0" SelectedIndex="{Binding PlayerInp[0]}" ItemsSource="{Binding PossibleInps}" FontSize="10" />
+                <ComboBox IsEnabled="{Binding Path=MoreInp}" Margin ="0,0,5,0"  SelectedIndex="{Binding PlayerInp[1]}" ItemsSource="{Binding PossibleInps}" FontSize="10"  />
+                <ComboBox IsEnabled="{Binding Path=MoreInp}" Margin ="0,0,5,0" SelectedIndex="{Binding PlayerInp[2]}" ItemsSource="{Binding PossibleInps}" FontSize="10" />
+                <ComboBox IsEnabled="{Binding Path=MoreInp}" Margin ="0,0,5,0"  SelectedIndex="{Binding PlayerInp[3]}" ItemsSource="{Binding PossibleInps}" FontSize="10" />
+                <ComboBox IsEnabled="{Binding Path=MoreInp}" SelectedIndex="{Binding PlayerInp[4]}" ItemsSource="{Binding PossibleInps}" FontSize="10"/>
+            </UniformGrid>
+            <Button Content="Rögzítés" IsEnabled="{Binding Path=MoreInp}" Command="{Binding SetOrdersCommand}" Margin="0,10,0,0" Width="100" Height="40" />
+           
+
+        </StackPanel>
+    </Grid>
+</Window>

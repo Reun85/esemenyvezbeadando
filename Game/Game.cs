@@ -8,8 +8,7 @@ namespace RobotPigs.WFA
         private readonly IRobotPigsDataAccess _dataAccess;
         private readonly GameModel _model;
         private Label[,] _grid = new Label[0, 0];
-        private System.Windows.Forms.Timer? _round;
-        public int N { get; set; } = 6;
+        public int N { get; set; } = 0;
         public bool Active { get; set; } = false;
         public static readonly String[] orientation = { "⇑", "⇒", "⇓", "⇐" };
 
@@ -18,18 +17,13 @@ namespace RobotPigs.WFA
 
         #region setup
 
-        public void MenuFileNewGame_Click(Object sender, EventArgs e)
-        {
-
-            NewGame();
-        }
         public Game()
         {
             InitializeComponent();
 
             _dataAccess = new RobotPigsDataAccess();
 
-            _model = new GameModel(_dataAccess);
+            _model = new GameModel(_dataAccess, 4);
 
             _model.Loses += Game_GameOver;
             _model.HpChange += HPChange;
@@ -39,42 +33,32 @@ namespace RobotPigs.WFA
 
             splitContainer1.Panel2.Enabled = false;
             _menuFileSaveGame.Enabled = false;
-            //NewGame();
+            NewGame();
         }
 
         public void NewGame()
         {
-            NumberInp inp = new NumberInp(this);
-            if (inp.ShowDialog() == DialogResult.OK)
+            splitContainer1.Panel2.Enabled = true;
+            _menuFileSaveGame.Enabled = true;
+            bool same = _model.BoardSize == N;
+            N = _model.BoardSize;
+            if (!same)
             {
-                _round?.Stop();
-                _round = null;
-                splitContainer1.Panel2.Enabled = true;
-                _menuFileSaveGame.Enabled = true;
-                bool same = _model.BoardSize != null && _model.BoardSize == N;
-                _model.NewGame(N);
-                if (!same)
+                foreach (var item in _grid)
                 {
-                    foreach (var item in _grid)
-                    {
-                        item.Dispose();
-                    }
-                    if (!GenerateTable() || !SetupTable())
-                    {
-                        Close();
-                    }
+                    item.Dispose();
                 }
-                else
+                if (!GenerateTable() || !SetupTable())
                 {
-                    SetupTable();
-                    ClearScreen();
+                    Close();
                 }
-                NewRound();
             }
             else
             {
+                SetupTable();
+                ClearScreen();
             }
-
+            NewRound();
         }
 
 
@@ -95,10 +79,6 @@ namespace RobotPigs.WFA
         private bool GenerateTable()
         {
             // Board shouldn't be null here.
-            if (_model.BoardSize == null)
-            {
-                return false; // maybe recursive
-            }
             int n = N;
             _grid = new Label[n, n];
             int smaller = Min(GameArea.Size.Width, GameArea.Size.Height);
@@ -130,8 +110,6 @@ namespace RobotPigs.WFA
 
         private bool SetupTable()
         {
-            if (_model.BoardSize == null)
-                return false;
             int n = (int)_model.BoardSize;
             for (int i = 0; i < n; i++)
                 for (int j = 0; j < n; j++)
@@ -160,10 +138,10 @@ namespace RobotPigs.WFA
 
         private void Hits(object? sender, EventData e)
         {
-            if (e.P != null && e.Pos != null)
+            if (e.P != null && e.NewPos != null)
             {
                 int n = (int)_model.BoardSize!;
-                Pos p = (Pos)e.Pos;
+                Pos p = (Pos)e.NewPos;
                 for (int i = p.X - 1; i <= p.X + 1; i++)
                 {
                     for (int j = p.Y - 1; j <= p.Y + 1; j++)
@@ -182,11 +160,10 @@ namespace RobotPigs.WFA
 
         private void Fires(object? sender, EventData e)
         {
-            if (e.P != null && e.Pos != null)
+            if (e.P != null && e.NewPos != null)
             {
-                if (_model.BoardSize == null) return;
                 int n = (int)_model.BoardSize;
-                Pos p = (Pos)e.Pos;
+                Pos p = (Pos)e.NewPos;
                 int dir = (int)p.Dir;
 
                 if (dir == 1 || dir == 3)
@@ -226,13 +203,13 @@ namespace RobotPigs.WFA
         {
             if (e.P != null)
             {
-                Pig plr = e.P;
-                if (e.Pos != null)
+                Pig plr = (Pig)e.P;
+                if (e.NewPos != null)
                 {
                     Pos p = plr.Pos;
-                    Pos newpos = (Pos)e.Pos;
+                    Pos newpos = (Pos)e.NewPos;
                     Label l;
-                    if (p != newpos)
+                    if (Persistence.Pos.equals(p, newpos))
                     {
                         l = _grid[p.X, p.Y];
                         if (l.ForeColor == colors[e.Id - 1])// It is possible that the other player has moved to their starting position
@@ -249,8 +226,6 @@ namespace RobotPigs.WFA
         {
             Active = false;
             _menuFileSaveGame.Enabled = false;
-            _round?.Stop();
-            _round = null;
             splitContainer1.Panel2.Enabled = false;
             if (e.Id == 3 && MessageBox.Show("Döntetlen!" + Environment.NewLine + "Szeretnétek új játékot indítani?",
                             "Harcos robotmalacok csatája",
@@ -270,9 +245,19 @@ namespace RobotPigs.WFA
             if (e.P == null)
                 return;
             if (e.Id == 1)
-                Plr1Health.Text = e.P.Hp.ToString();
+            {
+                if (e.P != null)
+                {
+                    Plr1Health.Text = e.P.Hp.ToString();
+                }
+            }
             else
-                Plr2Health.Text = e.P.Hp.ToString();
+            {
+                if (e.P != null)
+                {
+                    Plr2Health.Text = e.P.Hp.ToString();
+                }
+            }
         }
 
         #endregion modelevents
@@ -288,9 +273,7 @@ namespace RobotPigs.WFA
                 try
                 {
                     Active = false;
-                    _round?.Stop();
-                    _round = null;
-                    await _model.LoadAsync(_openFileDialog.FileName);
+                    await _model.LoadGameAsync(_openFileDialog.FileName);
                     _menuFileSaveGame.Enabled = true;
                     splitContainer1.Panel2.Enabled = true;
                     N = (int)_model.BoardSize!;
@@ -321,7 +304,7 @@ namespace RobotPigs.WFA
             {
                 try
                 {
-                    await _model.SaveAsync(_saveFileDialog.FileName);
+                    await _model.SaveGameAsync(_saveFileDialog.FileName);
                 }
                 catch (BoardDataException)
                 {
@@ -351,18 +334,7 @@ namespace RobotPigs.WFA
             NextButton.Text = "Következő";
             NextButton.Click += Round;
             NextButton.Click -= NextButton_Click;
-            if (Automatic.Checked)
-            {
-                _round = new();
-                _round.Interval = 1000;
-                _round.Tick += Round;
-                _round.Start();
-                NextButton.Enabled = false;
-            }
-            else
-            {
                 Round(this, EventArgs.Empty);
-            }
         }
 
         private int activep = 1;
@@ -372,35 +344,19 @@ namespace RobotPigs.WFA
             ClearScreen();
             if (!_model.PerformNext())
             {
-                if (_round != null)
-                {
-                    _round.Tick += NewRoundEvent;
-                    _round.Tick -= Round;
-                }
                 NextButton.Click += NewRoundEvent;
                 NextButton.Click -= Round;
-            }
-            else if (Automatic.Checked && _round == null && Active)
-            {
-                _round = new();
-                _round.Interval = 1000;
-                _round.Tick += Round;
-                _round.Start();
-                NextButton.Enabled = false;
             }
         }
 
         private void ClearScreen()
         {
-            if (_model.BoardSize != null)
-            {
-                int n = (int)_model.BoardSize;
-                for (int i = 0; i < n; i++)
-                    for (int j = 0; j < n; j++)
-                    {
-                        _grid[i, j].BackColor = backcolor;
-                    }
-            }
+            int n = (int)_model.BoardSize;
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < n; j++)
+                {
+                    _grid[i, j].BackColor = backcolor;
+                }
         }
 
         private void NewRoundEvent(Object? sender, EventArgs e)
@@ -412,8 +368,6 @@ namespace RobotPigs.WFA
         {
             Active = false;
             ClearScreen();
-            _round?.Stop();
-            _round = null;
             NextButton.Click -= NewRoundEvent;
             NextButton.Click -= Round;
             NextButton.Click += NextButton_Click;
@@ -470,22 +424,6 @@ namespace RobotPigs.WFA
             }
         }
 
-        public void Automatic_CheckedChanged(object sender, EventArgs e)
-        {
-            if (sender.GetType() == typeof(CheckBox))
-            {
-                if (!Automatic.Checked)
-                {
-                    if (_round != null)
-                    {
-                        _round.Stop();
-                        NextButton.Enabled = true;
-                        _round = null;
-                    }
-                }
-            }
-        }
-
         private void NextButton_Click(object? sender, EventArgs e)
         {
             StartRound();
@@ -507,5 +445,22 @@ namespace RobotPigs.WFA
 
         #endregion stuff
 
+        private void x4ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _model.NewGame(4);
+            NewGame();
+        }
+
+        private void x6ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _model.NewGame(6);
+            NewGame();
+        }
+
+        private void x8ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _model.NewGame(8);
+            NewGame();
+        }
     }
 }

@@ -4,9 +4,6 @@
     <Compile Update="Game.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Update="NumberInp.cs">
-      <SubType>Form</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Game.resx">

@@ -1,5 +1,6 @@
 #nullable enable
 
+using System.Reflection.Metadata;
 using System.Text;
 
 namespace RobotPigs.Persistence
@@ -10,7 +11,7 @@ namespace RobotPigs.Persistence
         public const int ORDERSIZE = 5;
         private Board _board;
 
-        public String[] Orders
+        public Int32[] Orders
         {
             get => _orders;
             private
@@ -26,7 +27,7 @@ namespace RobotPigs.Persistence
 
         private int _hp;
         private Pos _pos;
-        private string[] _orders = new String[0];
+        private Int32[] _orders = new Int32[5];
 
         public Pos Pos
         {
@@ -68,42 +69,42 @@ namespace RobotPigs.Persistence
             Persistence.Action.ActionType type;
             switch (Orders[orderind])
             {
-                case "előre":
+                case 0:
                     newpos = Pos.Move(Persistence.Pos.MovementDirection.Forward, _board.N);
                     type = Persistence.Action.ActionType.Move;
                     break;
 
-                case "hátra":
+                case 1:
                     newpos = Pos.Move(Persistence.Pos.MovementDirection.Back, _board.N);
                     type = Persistence.Action.ActionType.Move;
                     break;
 
-                case "balra":
+                case 2:
                     newpos = Pos.Move(Persistence.Pos.MovementDirection.Left, _board.N);
                     type = Persistence.Action.ActionType.Move;
                     break;
 
-                case "jobbra":
+                case 3:
                     newpos = Pos.Move(Persistence.Pos.MovementDirection.Right, _board.N);
                     type = Persistence.Action.ActionType.Move;
                     break;
 
-                case "fordulj balra":
+                case 4:
                     newpos = Pos.Turn(Persistence.Pos.MovementDirection.Left);
                     type = Persistence.Action.ActionType.Turn;
                     break;
 
-                case "fordulj jobbra":
+                case 5:
                     newpos = Pos.Turn(Persistence.Pos.MovementDirection.Right);
                     type = Persistence.Action.ActionType.Turn;
                     break;
 
-                case "tűz":
+                case 6:
                     newpos = Pos;
                     type = Persistence.Action.ActionType.Fire;
                     break;
 
-                case "ütés":
+                case 7:
                     newpos = Pos;
                     type = Persistence.Action.ActionType.Hit;
                     break;
@@ -115,19 +116,27 @@ namespace RobotPigs.Persistence
             return new Persistence.Action(type, newpos);
         }
 
-        private static void Validate(String[] inp)
+        private static Int32[] Validate(String[] inp)
         {
+            int[] result = new Int32[inp.Length];
             if (inp.Length != ORDERSIZE)
             {
                 throw new ArgumentOutOfRangeException("Not the right amount of lines.");
             }
             for (int i = 0; i < ORDERSIZE; i++)
             {
-                if (!Pig.allowed.Contains(inp[i]))
+                int j;
+                for(j = 0; j < Pig.allowed.Length && Pig.allowed[j] != inp[i]; j++) { }
+                if (j == Pig.allowed.Length)
                 {
                     throw new ArgumentException($"\"{inp[i]}\" nem egy értelmes parancs!" + Environment.NewLine + "Használható parancsok: " + AllCommands());
                 }
+                else
+                {
+                    result[i] =j;
+                }
             }
+            return result;
         }
 
         public static String AllCommands()
@@ -158,7 +167,22 @@ namespace RobotPigs.Persistence
         /// Nevertheless they are validated way before.
         public void Parse(String[] inp)
         {
-            Validate(inp);
+            Orders = Validate(inp);
+            _ready = true;
+        }
+        public void Parse(Int32[] inp)
+        {
+            if (inp.Length != ORDERSIZE)
+            {
+                throw new ArgumentOutOfRangeException("Not the right amount of lines.");
+            }
+            for(int i = 0;i < ORDERSIZE; i++)
+            {
+                if (inp[i] < 0 || inp[i] >= Pig.allowed.Length)
+                {
+                    throw new ArgumentException($"Hibás index: {inp[i]}");
+                }
+            }
             Orders = inp;
             _ready = true;
         }

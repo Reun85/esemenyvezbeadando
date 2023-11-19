@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "YTSFuXdIuped9VcPUP+R1FhomZ33tIvddJEY9psAiDqExmVYcWPZ8UNkjdBRvDRcesg2+MPyKCXduZlP4NvHfA==",
+  "dgSpecHash": "RbTAkcapGORDGIQaorYOwi2DehcpcKz9+aV/831CE0AIDdpYSCBbOXc1ZYKzM4SoceyMVj3PoqiB3AQbE0Ohjw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\i7\\source\\repos\\esemenyvezbeadando\\test\\Tester.csproj",
+  "projectFilePath": "C:\\Users\\i7\\source\\repos\\esemenyvezbeadando WPF\\test\\Tester.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\i7\\.nuget\\packages\\coverlet.collector\\3.1.0\\coverlet.collector.3.1.0.nupkg.sha512",
     "C:\\Users\\i7\\.nuget\\packages\\elte.eva.saruleset\\2.0.0\\elte.eva.saruleset.2.0.0.nupkg.sha512",

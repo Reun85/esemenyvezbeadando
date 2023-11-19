@@ -31,6 +31,9 @@
             _menuStrip = new MenuStrip();
             _menuFile = new ToolStripMenuItem();
             _menuFileNewGame = new ToolStripMenuItem();
+            x4ToolStripMenuItem = new ToolStripMenuItem();
+            x6ToolStripMenuItem = new ToolStripMenuItem();
+            x8ToolStripMenuItem = new ToolStripMenuItem();
             toolStripMenuItem1 = new ToolStripSeparator();
             _menuFileLoadGame = new ToolStripMenuItem();
             _menuFileSaveGame = new ToolStripMenuItem();
@@ -45,7 +48,6 @@
             label5 = new Label();
             label4 = new Label();
             input = new TextBox();
-            Automatic = new CheckBox();
             NextButton = new Button();
             activeplr = new Label();
             label2 = new Label();
@@ -82,39 +84,60 @@
             // 
             // _menuFileNewGame
             // 
+            _menuFileNewGame.DropDownItems.AddRange(new ToolStripItem[] { x4ToolStripMenuItem, x6ToolStripMenuItem, x8ToolStripMenuItem });
             _menuFileNewGame.Name = "_menuFileNewGame";
-            _menuFileNewGame.Size = new Size(160, 22);
+            _menuFileNewGame.Size = new Size(180, 22);
             _menuFileNewGame.Text = "Új játék";
-            _menuFileNewGame.Click += MenuFileNewGame_Click;
+            // 
+            // x4ToolStripMenuItem
+            // 
+            x4ToolStripMenuItem.Name = "x4ToolStripMenuItem";
+            x4ToolStripMenuItem.Size = new Size(180, 22);
+            x4ToolStripMenuItem.Text = "4x4";
+            x4ToolStripMenuItem.Click += x4ToolStripMenuItem_Click;
+            // 
+            // x6ToolStripMenuItem
+            // 
+            x6ToolStripMenuItem.Name = "x6ToolStripMenuItem";
+            x6ToolStripMenuItem.Size = new Size(180, 22);
+            x6ToolStripMenuItem.Text = "6x6";
+            x6ToolStripMenuItem.Click += x6ToolStripMenuItem_Click;
+            // 
+            // x8ToolStripMenuItem
+            // 
+            x8ToolStripMenuItem.Name = "x8ToolStripMenuItem";
+            x8ToolStripMenuItem.Size = new Size(180, 22);
+            x8ToolStripMenuItem.Text = "8x8";
+            x8ToolStripMenuItem.Click += x8ToolStripMenuItem_Click;
             // 
             // toolStripMenuItem1
             // 
             toolStripMenuItem1.Name = "toolStripMenuItem1";
-            toolStripMenuItem1.Size = new Size(157, 6);
+            toolStripMenuItem1.Size = new Size(177, 6);
             // 
             // _menuFileLoadGame
             // 
             _menuFileLoadGame.Name = "_menuFileLoadGame";
-            _menuFileLoadGame.Size = new Size(160, 22);
+            _menuFileLoadGame.Size = new Size(180, 22);
             _menuFileLoadGame.Text = "Játék betöltése...";
             _menuFileLoadGame.Click += MenuFileLoadGame_Click;
             // 
             // _menuFileSaveGame
             // 
             _menuFileSaveGame.Name = "_menuFileSaveGame";
-            _menuFileSaveGame.Size = new Size(160, 22);
+            _menuFileSaveGame.Size = new Size(180, 22);
             _menuFileSaveGame.Text = "Játék mentése...";
             _menuFileSaveGame.Click += MenuFileSaveGame_Click;
             // 
             // toolStripMenuItem2
             // 
             toolStripMenuItem2.Name = "toolStripMenuItem2";
-            toolStripMenuItem2.Size = new Size(157, 6);
+            toolStripMenuItem2.Size = new Size(177, 6);
             // 
             // _menuFileExit
             // 
             _menuFileExit.Name = "_menuFileExit";
-            _menuFileExit.Size = new Size(160, 22);
+            _menuFileExit.Size = new Size(180, 22);
             _menuFileExit.Text = "Kilépés";
             _menuFileExit.Click += MenuFileExit_Click;
             // 
@@ -147,7 +170,6 @@
             splitContainer1.Panel2.Controls.Add(label5);
             splitContainer1.Panel2.Controls.Add(label4);
             splitContainer1.Panel2.Controls.Add(input);
-            splitContainer1.Panel2.Controls.Add(Automatic);
             splitContainer1.Panel2.Controls.Add(NextButton);
             splitContainer1.Panel2.Controls.Add(activeplr);
             splitContainer1.Panel2.Controls.Add(label2);
@@ -212,17 +234,6 @@
             input.Name = "input";
             input.Size = new Size(105, 104);
             input.TabIndex = 1;
-            // 
-            // Automatic
-            // 
-            Automatic.AutoSize = true;
-            Automatic.Location = new Point(283, 78);
-            Automatic.Name = "Automatic";
-            Automatic.Size = new Size(52, 19);
-            Automatic.TabIndex = 4;
-            Automatic.Text = "Auto";
-            Automatic.UseVisualStyleBackColor = true;
-            Automatic.CheckedChanged += Automatic_CheckedChanged;
             // 
             // NextButton
             // 
@@ -342,11 +353,13 @@
         private Button SetOrders;
         private Panel GameArea;
         private Button NextButton;
-        private CheckBox Automatic;
         private TextBox input;
         private Label label5;
         private Label label4;
         private Label label6;
         private Label label7;
+        private ToolStripMenuItem x4ToolStripMenuItem;
+        private ToolStripMenuItem x6ToolStripMenuItem;
+        private ToolStripMenuItem x8ToolStripMenuItem;
     }
 }

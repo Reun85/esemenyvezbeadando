@@ -53,14 +53,13 @@ public class BoardTest
     [TestMethod]
     public void PerformTest1()
     {
-        GameModel m = new GameModel(null); // No errors
-        m.NewGame(8);
+        GameModel m = new GameModel(null,8); // No errors
         String[] inp1 = { "fordulj balra", "fordulj balra", "fordulj balra",
                       "fordulj balra", "fordulj balra" };
         String[] inp2 = { "ütés", "tűz", "előre", "előre", "ütés" };
         m.Plr1Parse(inp1);
         m.Plr2Parse(inp2);
-        m.PrepareToPerform();
+        Assert.IsTrue(m.PrepareToPerform());
         Assert.AreEqual(true, m.PerformNext());
         Assert.AreEqual(3, m.Plr1!.Hp);
         Assert.AreEqual(true, m.PerformNext());
@@ -78,14 +77,13 @@ public class BoardTest
     [TestMethod]
     public void PerformTest2()
     {
-        GameModel m = new GameModel(null); // No errors
-        m.NewGame(8);
+        GameModel m = new GameModel(null,8); // No errors
         String[] inp1 = { "fordulj balra", "előre", "hátra", "fordulj balra",
                       "fordulj balra" };
         String[] inp2 = { "ütés", "tűz", "tűz", "tűz", "ütés" };
         m.Plr1Parse(inp1);
         m.Plr2Parse(inp2);
-        m.PrepareToPerform();
+        Assert.IsTrue(m.PrepareToPerform());
         Assert.AreEqual(true, m.PerformNext());
         Assert.AreEqual(3, m!.Plr1!.Hp);
         Assert.AreEqual(true, m.PerformNext());
@@ -468,17 +466,16 @@ public class RobotDataAccessTest
     [TestMethod]
     public void Test1()
     {
-        GameModel m = new GameModel(new RobotPigsDataAccess());
-        m.NewGame(8);
+        GameModel m = new GameModel(new RobotPigsDataAccess(),8);
 
-        m.SaveAsync("Testser").Wait();
+        m.SaveGameAsync("Testser").Wait();
 
         
         
         
         //Make sure
-        m = new GameModel(new RobotPigsDataAccess());
-        m.LoadAsync("Testser").Wait();
+        m = new GameModel(new RobotPigsDataAccess(),4);
+        m.LoadGameAsync("Testser").Wait();
         Assert.AreEqual(3, m.Plr1!.Hp);
         Assert.AreEqual(3, m.Plr2!.Hp);
         Common.PosEqWithDirection(new Pos(5, 4, Pos.Direction.West), m.Plr2!.Pos);
@@ -488,8 +485,7 @@ public class RobotDataAccessTest
     [TestMethod]
     public void Test2()
     {
-        GameModel m = new GameModel(new RobotPigsDataAccess());
-        m.NewGame(8);
+        GameModel m = new GameModel(new RobotPigsDataAccess(),8);
         String[] inp1 = { "fordulj balra", "előre", "hátra", "fordulj balra",
                       "fordulj balra" };
         String[] inp2 = { "ütés", "tűz", "tűz", "tűz", "előre" };
@@ -497,11 +493,11 @@ public class RobotDataAccessTest
         m.Plr2Parse(inp2);
         m.PrepareToPerform();
         while (m.PerformNext()) ;
-        m.SaveAsync("Testser").Wait();
+        m.SaveGameAsync("Testser").Wait();
 
         // Make sure
-        m = new GameModel(new RobotPigsDataAccess());
-        m.LoadAsync("Testser").Wait();
+        m = new GameModel(new RobotPigsDataAccess(),2);
+        m.LoadGameAsync("Testser").Wait();
         Assert.AreEqual(1, m.Plr1!.Hp);
         Assert.AreEqual(3, m.Plr2!.Hp);
         Common.PosEqWithDirection(new Pos(4, 4, Pos.Direction.West), m.Plr2!.Pos);

@@ -91,36 +91,11 @@ namespace RobotPigs.Persistence
                    this.Y - r <= rhs.Y;
         }
 
-        public static bool operator !=(Pos lhs, Pos rhs)
-        {
-            return !Pos.SamePlace(lhs, rhs) || lhs.Dir != rhs.Dir;
-        }
 
-        public static bool operator ==(Pos lhs, Pos rhs)
+        public static bool equals(Pos lhs, Pos rhs)
         {
             return Pos.SamePlace(lhs, rhs) && lhs.Dir == rhs.Dir;
         }
-
-        public readonly override bool Equals(object? obj)
-        {
-            //
-            // See the full list of guidelines at
-            //   http://go.microsoft.com/fwlink/?LinkID=85237
-            // and also the guidance for operator== at
-            //   http://go.microsoft.com/fwlink/?LinkId=85238
-            //
-
-            if (obj == null || GetType() != obj.GetType())
-            {
-                return false;
-            }
-            Pos rhs = (Pos)obj;
-            return this == rhs;
-        }
-
-        // override object.GetHashCode
-        public readonly override int GetHashCode()
-        { return base.GetHashCode(); }
 
     }
 }
