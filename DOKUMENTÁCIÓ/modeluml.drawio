@@ -1,0 +1,41 @@
+<mxfile host="app.diagrams.net" modified="2023-11-21T14:22:14.681Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/119.0" etag="pI2uLxbI3VoZ5r5G46OG" version="22.1.3" type="device">
+  <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
+    <mxGraphModel dx="1285" dy="895" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
+        <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
+        <mxCell id="380VDxpQ8Sr3hK74BQXG-98" value="Model::GameModel" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="381" y="527" width="350" height="415" as="geometry" />
+        </mxCell>
+        <mxCell id="380VDxpQ8Sr3hK74BQXG-99" value="&lt;div&gt;- _dataAccess: IRobotPigsDataAccess&lt;/div&gt;&lt;div&gt;- _board: Board&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="380VDxpQ8Sr3hK74BQXG-98" vertex="1">
+          <mxGeometry y="26" width="350" height="39" as="geometry" />
+        </mxCell>
+        <mxCell id="380VDxpQ8Sr3hK74BQXG-100" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="380VDxpQ8Sr3hK74BQXG-98" vertex="1">
+          <mxGeometry y="65" width="350" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="380VDxpQ8Sr3hK74BQXG-101" value="&lt;div&gt;+GameModel(IRobotPigsDataAccess)&lt;/div&gt;&lt;div&gt;+NewGame(int):void&lt;/div&gt;&lt;div&gt;+Plr1Parse(String[.]):void&lt;/div&gt;&lt;div&gt;+Plr2Parse(String[.]):void&lt;/div&gt;&lt;div&gt;+PerformNext():void&lt;/div&gt;&lt;div&gt;+PrepareToPerform():bool&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&amp;lt;&amp;lt;async&amp;gt;&amp;gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;+LoadAsync(String):Task&lt;/div&gt;+SaveAsync(String,Board):Task&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&amp;lt;&amp;lt;property&amp;gt;&amp;gt;&lt;/div&gt;&lt;div&gt;+BoardSize:int&lt;/div&gt;&lt;div&gt;+Plr1:Pig&lt;/div&gt;&lt;div&gt;+Plr2:Pig&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&amp;lt;&amp;lt;event&amp;gt;&amp;gt;&lt;/div&gt;&lt;div&gt;+HpChange(): EventHandler&amp;lt;EventData&amp;gt;&lt;/div&gt;&lt;div&gt;+Fires(): EventHandler&amp;lt;EventData&amp;gt;&lt;/div&gt;&lt;div&gt;+Hits(): EventHandler&amp;lt;EventData&amp;gt;&lt;/div&gt;&lt;div&gt;+Move(): EventHandler&amp;lt;EventData&amp;gt;&lt;/div&gt;&lt;div&gt;+Turn(): EventHandler&amp;lt;EventData&amp;gt;&lt;/div&gt;&lt;div&gt;+ NewBoard(): EventHandler&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="380VDxpQ8Sr3hK74BQXG-98" vertex="1">
+          <mxGeometry y="73" width="350" height="342" as="geometry" />
+        </mxCell>
+        <mxCell id="380VDxpQ8Sr3hK74BQXG-110" value="" style="endArrow=open;endFill=1;endSize=12;html=1;rounded=0;exitX=0.001;exitY=0.28;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.988;entryY=0.062;entryDx=0;entryDy=0;entryPerimeter=0;" parent="WIyWlLk6GJQsqaUBKTNV-1" source="380VDxpQ8Sr3hK74BQXG-101" target="380VDxpQ8Sr3hK74BQXG-120" edge="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="1024" y="194" as="sourcePoint" />
+            <mxPoint x="279" y="721" as="targetPoint" />
+            <Array as="points" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="380VDxpQ8Sr3hK74BQXG-120" value="Model::EventData" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+          <mxGeometry x="50" y="683" width="206" height="211" as="geometry" />
+        </mxCell>
+        <mxCell id="380VDxpQ8Sr3hK74BQXG-121" value="&lt;div&gt;- _p:Pig&lt;/div&gt;&lt;div&gt;- _pos:Pos&lt;/div&gt;&lt;div&gt;- _id:int&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="380VDxpQ8Sr3hK74BQXG-120" vertex="1">
+          <mxGeometry y="26" width="206" height="64" as="geometry" />
+        </mxCell>
+        <mxCell id="380VDxpQ8Sr3hK74BQXG-122" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="380VDxpQ8Sr3hK74BQXG-120" vertex="1">
+          <mxGeometry y="90" width="206" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="380VDxpQ8Sr3hK74BQXG-123" value="&lt;div&gt;+ EventData(Pig,int)&lt;/div&gt;&lt;div&gt;+EventData(Pig,int,Pos)&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&amp;lt;&amp;lt;property&amp;gt;&amp;gt;&lt;/div&gt;&lt;div&gt;+Pos:Pos&lt;/div&gt;&lt;div&gt;+Id:int&lt;/div&gt;&lt;div&gt;+P:Pig&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="380VDxpQ8Sr3hK74BQXG-120" vertex="1">
+          <mxGeometry y="98" width="206" height="113" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

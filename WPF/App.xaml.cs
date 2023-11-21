@@ -19,7 +19,8 @@ namespace RobotPigs.WPF
 
         private GameModel _model = null!;
         private ViewModel _viewModel = null!;
-        private MainWindow _view = null!;
+        private MainWindow _MainView = null!;
+        private IRobotPigsDataAccess _dataAccess = null!;
 
         #endregion
 
@@ -28,10 +29,7 @@ namespace RobotPigs.WPF
         /// <summary>
         /// Alkalmazás példányosítása.
         /// </summary>
-        public App()
-        {
-            Startup += new StartupEventHandler(App_Startup);
-        }
+        public App() { Startup += new StartupEventHandler(App_Startup); }
 
         #endregion
 
@@ -39,8 +37,10 @@ namespace RobotPigs.WPF
 
         private void App_Startup(object? sender, StartupEventArgs e)
         {
+            _dataAccess = new RobotPigsDataAccess();
+
             // modell létrehozása
-            _model = new GameModel(new RobotPigsDataAccess(), 4);
+            _model = new GameModel(_dataAccess, 4);
             _model.Loses += new EventHandler<EventData>(Model_GameOver);
 
             // nézemodell létrehozása
@@ -51,10 +51,11 @@ namespace RobotPigs.WPF
             _viewModel.SaveGame += new EventHandler(ViewModel_SaveGame);
 
             // nézet létrehozása
-            _view = new MainWindow();
-            _view.DataContext = _viewModel;
-            _view.Closing += new System.ComponentModel.CancelEventHandler(View_Closing); // eseménykezelés a bezáráshoz
-            _view.Show();
+            _MainView = new MainWindow();
+            _MainView.DataContext = _viewModel;
+            _MainView.Closing += new System.ComponentModel.CancelEventHandler(
+                View_Closing); // eseménykezelés a bezáráshoz
+            _MainView.Show();
         }
 
         #endregion
@@ -67,10 +68,11 @@ namespace RobotPigs.WPF
         private void View_Closing(object? sender, CancelEventArgs e)
         {
 
-            if (MessageBox.Show("Biztos, hogy ki akar lépni?", "Sudoku", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.No)
+            if (MessageBox.Show("Biztos, hogy ki akar lépni?", "Sudoku",
+                                MessageBoxButton.YesNo,
+                                MessageBoxImage.Question) == MessageBoxResult.No)
             {
                 e.Cancel = true; // töröljük a bezárást
-
             }
         }
 
@@ -105,7 +107,8 @@ namespace RobotPigs.WPF
             }
             catch (BoardDataException)
             {
-                MessageBox.Show("A fájl betöltése sikertelen!", "Harcos robotmalacok", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("A fájl betöltése sikertelen!", "Harcos robotmalacok",
+                                MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -129,13 +132,17 @@ namespace RobotPigs.WPF
                     }
                     catch (BoardDataException)
                     {
-                        MessageBox.Show("Játék mentése sikertelen!" + Environment.NewLine + "Hibás az elérési út, vagy a könyvtár nem írható.", "Hiba!", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show(
+                            "Játék mentése sikertelen!" + Environment.NewLine +
+                                "Hibás az elérési út, vagy a könyvtár nem írható.",
+                            "Hiba!", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
             }
             catch
             {
-                MessageBox.Show("A fájl mentése sikertelen!", "Harcos robotmalacok", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("A fájl mentése sikertelen!", "Harcos robotmalacok",
+                                MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -144,7 +151,7 @@ namespace RobotPigs.WPF
         /// </summary>
         private void ViewModel_ExitGame(object? sender, System.EventArgs e)
         {
-            _view.Close(); // ablak bezárása
+            _MainView.Close(); // ablak bezárása
         }
 
         #endregion
@@ -155,16 +162,14 @@ namespace RobotPigs.WPF
         {
             if (e.Id == 3)
             {
-                MessageBox.Show("Döntetlen!",
-                            "Harcos robotmalacok csatája",
-                            MessageBoxButton.OK,
-                                MessageBoxImage.Asterisk);
+                MessageBox.Show("Döntetlen!", "Harcos robotmalacok csatája",
+                                MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
             else
             {
-                MessageBox.Show("Gratulálok " + (e.Id == 1 ? "zöld" : "piros") + " játékos győztél!",
-                        "Harcos robotmalacok csatája",
-                        MessageBoxButton.OK,
+                MessageBox.Show("Gratulálok " + (e.Id == 1 ? "zöld" : "piros") +
+                                    " játékos győztél!",
+                                "Harcos robotmalacok csatája", MessageBoxButton.OK,
                                 MessageBoxImage.Asterisk);
 
                 #endregion

@@ -45,34 +45,77 @@ namespace RobotPigs.WPF.View
         #region Properties
 
         public String ActivePlayer
-        { get { return new String[] { "piros", "zöld", "" }[_activePlayer]; } }
+        {
+            get { return new String[] { "piros", "zöld", "" }[_activePlayer]; }
+        }
 
         public Int32[] PlayerInp
-        { get { return _inps; } set { _inps = value; OnPropertyChanged(nameof(PlayerInp)); } }
+        {
+            get { return _inps; }
+            set
+            {
+                _inps = value;
+                OnPropertyChanged(nameof(PlayerInp));
+            }
+        }
 
         public ObservableCollection<Field> Fields { get; set; } = null!;
         public ObservableCollection<String> PossibleInps { get; set; } = null!;
 
         public bool CanSave
-        { get { return _canSave; } set { _canSave = value; OnPropertyChanged(nameof(CanSave)); } }
+        {
+            get { return _canSave; }
+            set
+            {
+                _canSave = value;
+                OnPropertyChanged(nameof(CanSave));
+            }
+        }
 
         public bool InRound
-        { get { return _inRound; } set { _inRound = value; OnPropertyChanged(nameof(InRound)); } }
+        {
+            get { return _inRound; }
+            set
+            {
+                _inRound = value;
+                OnPropertyChanged(nameof(InRound));
+            }
+        }
 
         public bool CanStart
-        { get { return _canStart; } set { _canStart = value; OnPropertyChanged(nameof(CanStart)); } }
+        {
+            get { return _canStart; }
+            set
+            {
+                _canStart = value;
+                OnPropertyChanged(nameof(CanStart));
+            }
+        }
 
         public bool MoreInp
-        { get { return _moreInp; } set { _moreInp = value; OnPropertyChanged(nameof(MoreInp)); } }
+        {
+            get { return _moreInp; }
+            set
+            {
+                _moreInp = value;
+                OnPropertyChanged(nameof(MoreInp));
+            }
+        }
 
         public Int32 BoardSize
-        { get { return n; } }
+        {
+            get { return n; }
+        }
 
         public Int32 Player1Health
-        { get { return _model.Plr1.Hp; } }
+        {
+            get { return _model.Plr1.Hp; }
+        }
 
         public Int32 Player2Health
-        { get { return _model.Plr2.Hp; } }
+        {
+            get { return _model.Plr2.Hp; }
+        }
 
         #endregion Properties
 
@@ -104,7 +147,8 @@ namespace RobotPigs.WPF.View
             _model.NewGame(4);
 
             // parancsok kezelése
-            NewGameCommand = new DelegateCommand(param => { OnNewGame(Convert.ToInt32(param)); });
+            NewGameCommand =
+                new DelegateCommand(param => { OnNewGame(Convert.ToInt32(param)); });
             LoadGameCommand = new DelegateCommand(param => OnLoadGame());
             SaveGameCommand = new DelegateCommand(param => OnSaveGame());
             ExitCommand = new DelegateCommand(param => OnExitGame());
@@ -178,15 +222,9 @@ namespace RobotPigs.WPF.View
             }
         }
 
-        private int GetElement(Pos p)
-        {
-            return p.X + p.Y * n;
-        }
+        private int GetElement(Pos p) { return p.X + p.Y * n; }
 
-        private int GetElement(int i, int j)
-        {
-            return i + j * n;
-        }
+        private int GetElement(int i, int j) { return i + j * n; }
 
         #endregion Private methods
 
@@ -264,8 +302,11 @@ namespace RobotPigs.WPF.View
                     Pos newPos = (Pos)e.NewPos;
                     if (!Persistence.Pos.equals(p, newPos))
                     {
-                        if (Fields[GetElement(p)].ForeColor == e.Id)// It is possible that the other player has moved to their starting position
-                            Fields[GetElement(p)].Data = 4;//forecolor doesn't need to be changed
+                        if (Fields[GetElement(p)].ForeColor ==
+                            e.Id) // It is possible that the other player has moved to their
+                                  // starting position
+                            Fields[GetElement(p)].Data =
+                                4; // forecolor doesn't need to be changed
                     }
                     Fields[GetElement(newPos)].Data = (int)newPos.Dir;
                     Fields[GetElement(newPos)].ForeColor = e.Id;
@@ -319,10 +360,7 @@ namespace RobotPigs.WPF.View
             PlayerInp = new Int32[5] { 0, 0, 0, 0, 0 };
         }
 
-        private void OnNewGame(int size)
-        {
-            NewGame?.Invoke(this, size);
-        }
+        private void OnNewGame(int size) { NewGame?.Invoke(this, size); }
 
         private void StartRound()
         {
@@ -356,20 +394,11 @@ namespace RobotPigs.WPF.View
             }
         }
 
-        private void OnLoadGame()
-        {
-            LoadGame?.Invoke(this, EventArgs.Empty);
-        }
+        private void OnLoadGame() { LoadGame?.Invoke(this, EventArgs.Empty); }
 
-        private void OnSaveGame()
-        {
-            SaveGame?.Invoke(this, EventArgs.Empty);
-        }
+        private void OnSaveGame() { SaveGame?.Invoke(this, EventArgs.Empty); }
 
-        private void OnExitGame()
-        {
-            ExitGame?.Invoke(this, EventArgs.Empty);
-        }
+        private void OnExitGame() { ExitGame?.Invoke(this, EventArgs.Empty); }
 
         #endregion Event methods
     }
