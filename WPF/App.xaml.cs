@@ -10,25 +10,19 @@ using Microsoft.Win32;
 
 namespace RobotPigs.WPF
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
         #region Fields
 
         private GameModel _model = null!;
         private ViewModel _viewModel = null!;
-        private MainWindow _MainView = null!;
+        private MainWindow _mainView = null!;
         private IRobotPigsDataAccess _dataAccess = null!;
 
         #endregion
 
         #region Constructors
 
-        /// <summary>
-        /// Alkalmazás példányosítása.
-        /// </summary>
         public App() { Startup += new StartupEventHandler(App_Startup); }
 
         #endregion
@@ -48,27 +42,24 @@ namespace RobotPigs.WPF
             _viewModel.NewGame += ViewModel_NewGame;
             _viewModel.ExitGame += new EventHandler(ViewModel_ExitGame);
             _viewModel.LoadGame += new EventHandler(ViewModel_LoadGame);
-            _viewModel.SaveGame += new EventHandler(ViewModel_SaveGame);
+            _viewModel.SaveGame += new EventHandler(ViewModel_AsyncSaveGame);
 
             // nézet létrehozása
-            _MainView = new MainWindow();
-            _MainView.DataContext = _viewModel;
-            _MainView.Closing += new System.ComponentModel.CancelEventHandler(
+            _mainView = new MainWindow();
+            _mainView.DataContext = _viewModel;
+            _mainView.Closing += new System.ComponentModel.CancelEventHandler(
                 View_Closing); // eseménykezelés a bezáráshoz
-            _MainView.Show();
+            _mainView.Show();
         }
 
         #endregion
 
         #region View event handlers
 
-        /// <summary>
-        /// Nézet bezárásának eseménykezelője.
-        /// </summary>
         private void View_Closing(object? sender, CancelEventArgs e)
         {
 
-            if (MessageBox.Show("Biztos, hogy ki akar lépni?", "Sudoku",
+            if (MessageBox.Show("Biztos, hogy ki akar lépni?", "Harcos robotmalacok",
                                 MessageBoxButton.YesNo,
                                 MessageBoxImage.Question) == MessageBoxResult.No)
             {
@@ -91,7 +82,8 @@ namespace RobotPigs.WPF
         /// <summary>
         /// Játék betöltésének eseménykezelője.
         /// </summary>
-        private async void ViewModel_LoadGame(object? sender, System.EventArgs e)
+        private async void ViewModel_AsyncLoadGame(object? sender,
+                                                   System.EventArgs e)
         {
 
             try
@@ -115,7 +107,7 @@ namespace RobotPigs.WPF
         /// <summary>
         /// Játék mentésének eseménykezelője.
         /// </summary>
-        private async void ViewModel_SaveGame(object? sender, EventArgs e)
+        private async void ViewModel_AsyncSaveGame(object? sender, EventArgs e)
         {
 
             try
@@ -151,7 +143,7 @@ namespace RobotPigs.WPF
         /// </summary>
         private void ViewModel_ExitGame(object? sender, System.EventArgs e)
         {
-            _MainView.Close(); // ablak bezárása
+            _mainView.Close(); // ablak bezárása
         }
 
         #endregion

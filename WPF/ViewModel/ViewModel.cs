@@ -10,15 +10,12 @@ using RobotPigs.Persistence;
 
 namespace RobotPigs.WPF.View
 {
-    /// <summary>
-    /// Sudoku nézetmodell típusa.
-    /// </summary>
     public class ViewModel : ViewModelBase
     {
         #region Fields
 
         private GameModel _model; // modell
-        private int n;
+        private int _n;
         private bool _canSave = true;
         private bool _canStart = false;
         private bool _moreInp = false;
@@ -104,7 +101,7 @@ namespace RobotPigs.WPF.View
 
         public Int32 BoardSize
         {
-            get { return n; }
+            get { return _n; }
         }
 
         public Int32 Player1Health
@@ -158,7 +155,7 @@ namespace RobotPigs.WPF.View
             PossibleInps = new ObservableCollection<String>(Pig.allowed);
         }
 
-        public void NewGameEvent(object? sender, int N)
+        public void NewGameEvent(Object? sender, int N)
         {
             InRound = false;
             CanStart = false;
@@ -166,17 +163,17 @@ namespace RobotPigs.WPF.View
             CanSave = true;
             _activePlayer = 0;
             OnPropertyChanged(nameof(ActivePlayer));
-            if (n != N)
+            if (_n != N)
             {
-                n = N;
+                _n = N;
                 OnPropertyChanged(nameof(BoardSize));
-                int size = 440 / n > 40 ? 440 / n : 40;
+                int size = 440 / _n > 40 ? 440 / _n : 40;
                 Field.FontSize = size * 3 / 4;
                 Fields = new ObservableCollection<Field>();
 
-                for (int i = 0; i < n; i++)
+                for (int i = 0; i < _n; i++)
                 {
-                    for (int j = 0; j < n; j++)
+                    for (int j = 0; j < _n; j++)
                     {
                         var gridItem = new Field
                         {
@@ -222,15 +219,15 @@ namespace RobotPigs.WPF.View
             }
         }
 
-        private int GetElement(Pos p) { return p.X + p.Y * n; }
+        private int GetElement(Pos p) { return p.X + p.Y * _n; }
 
-        private int GetElement(int i, int j) { return i + j * n; }
+        private int GetElement(int i, int j) { return i + j * _n; }
 
         #endregion Private methods
 
         #region Game event handlers
 
-        private void Model_Hits(object? sender, EventData e)
+        private void Model_Hits(Object? sender, EventData e)
         {
             if (e.P != null && e.NewPos != null)
             {
@@ -239,7 +236,7 @@ namespace RobotPigs.WPF.View
                 {
                     for (int j = p.Y - 1; j <= p.Y + 1; j++)
                     {
-                        if ((i != p.X || j != p.Y) && i >= 0 && i < n && j >= 0 && j < n)
+                        if ((i != p.X || j != p.Y) && i >= 0 && i < _n && j >= 0 && j < _n)
                         {
                             if (Fields[GetElement(i, j)].Background != 0)
                                 Fields[GetElement(i, j)].Background = 3;
@@ -262,7 +259,7 @@ namespace RobotPigs.WPF.View
                 {
                     int change = dir == 1 ? 1 : -1;
                     int j = p.Y;
-                    for (int i = p.X; i >= 0 && i < n; i += change)
+                    for (int i = p.X; i >= 0 && i < _n; i += change)
                     {
                         if (i != p.X || j != p.Y)
                         {
@@ -277,7 +274,7 @@ namespace RobotPigs.WPF.View
                 {
                     int change = dir == 0 ? -1 : 1;
                     int i = p.X;
-                    for (int j = p.Y; j >= 0 && j < n; j += change)
+                    for (int j = p.Y; j >= 0 && j < _n; j += change)
                     {
                         if (i != p.X || j != p.Y)
                         {

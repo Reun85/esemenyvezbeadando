@@ -1,6 +1,5 @@
 #nullable enable
 
-using System.Reflection.Metadata;
 using System.Text;
 
 namespace RobotPigs.Persistence
@@ -42,7 +41,11 @@ namespace RobotPigs.Persistence
             set => _hp = value;
         }
 
-        public bool IsReady { get => _ready; set => _ready = value; }
+        public bool IsReady
+        {
+            get => _ready;
+            set => _ready = value;
+        }
 
         public Pig(Pos pos, Board b)
         {
@@ -126,14 +129,18 @@ namespace RobotPigs.Persistence
             for (int i = 0; i < ORDERSIZE; i++)
             {
                 int j;
-                for(j = 0; j < Pig.allowed.Length && Pig.allowed[j] != inp[i]; j++) { }
+                for (j = 0; j < Pig.allowed.Length && Pig.allowed[j] != inp[i]; j++)
+                {
+                }
                 if (j == Pig.allowed.Length)
                 {
-                    throw new ArgumentException($"\"{inp[i]}\" nem egy értelmes parancs!" + Environment.NewLine + "Használható parancsok: " + AllCommands());
+                    throw new ArgumentException($"\"{inp[i]}\" nem egy értelmes parancs!" +
+                                                Environment.NewLine +
+                                                "Használható parancsok: " + AllCommands());
                 }
                 else
                 {
-                    result[i] =j;
+                    result[i] = j;
                 }
             }
             return result;
@@ -154,16 +161,15 @@ namespace RobotPigs.Persistence
             return ret.ToString();
         }
 
-        public void TakeDmg()
-        { Hp -= 1; }
+        public void TakeDmg() { Hp -= 1; }
 
         /// <throws>
         /// ArgumentOutOfRangeException => Not enough lines
         /// ArgumentException => what text could not be parsed.
         ///
         /// </throws>
-        /// Due to how commands will have a different effect based on the current state of the board
-        /// they will actually only be parsed when its time.
+        /// Due to how commands will have a different effect based on the current
+        /// state of the board they will actually only be parsed when its time.
         /// Nevertheless they are validated way before.
         public void Parse(String[] inp)
         {
@@ -176,7 +182,7 @@ namespace RobotPigs.Persistence
             {
                 throw new ArgumentOutOfRangeException("Not the right amount of lines.");
             }
-            for(int i = 0;i < ORDERSIZE; i++)
+            for (int i = 0; i < ORDERSIZE; i++)
             {
                 if (inp[i] < 0 || inp[i] >= Pig.allowed.Length)
                 {
@@ -190,14 +196,21 @@ namespace RobotPigs.Persistence
 
     public class Action
     {
-        public enum ActionType
-        { Move, Turn, Hit, Fire }
+        public enum ActionType { Move, Turn, Hit, Fire }
 
         private ActionType _type;
         private Pos _newpos;
 
-        public ActionType Type { get => _type; set => _type = value; }
-        public Pos NewPos { get => _newpos; set => _newpos = value; }
+        public ActionType Type
+        {
+            get => _type;
+            set => _type = value;
+        }
+        public Pos NewPos
+        {
+            get => _newpos;
+            set => _newpos = value;
+        }
 
         public Action(ActionType t, Pos p)
         {
