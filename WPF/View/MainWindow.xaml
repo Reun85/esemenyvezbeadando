@@ -12,7 +12,6 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <!-- Menu -->
         <Menu Grid.Row="0">
             <MenuItem Header="Játék">
                 <MenuItem Header="Új játék">
@@ -29,24 +28,18 @@
         </Menu>
 
         <ItemsControl Grid.Row="1" ItemsSource="{Binding Fields}">
-            <!--az mezőket tároló vezérlő-->
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <!--a gombokat egy rácsba fűzzük fel-->
                     <UniformGrid Rows="{Binding BoardSize}" Columns="{Binding BoardSize}" Width="440" Height="440" />
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemTemplate>
-                <!--az elemek gombok lesznek-->
                 <DataTemplate>
                     <Label Content="{Binding Content}" FontSize="{Binding FontSize}" FontWeight="Bold" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                         <Label.Style>
-                            <!-- gomb stílusa, ahol a színét megadjuk -->
-
                             <Style TargetType="Label">
                                 <Setter Property="BorderThickness" Value="3" />
                                 <Style.Triggers>
-                                    <!-- a szín egy adatkötés hatására fog változni -->
                                     <DataTrigger Binding="{Binding Background}" Value="1">
                                         <Setter Property="Background" Value="OrangeRed" />
                                     </DataTrigger>
@@ -117,8 +110,6 @@
                 <ComboBox IsEnabled="{Binding Path=MoreInp}" SelectedIndex="{Binding PlayerInp[4]}" ItemsSource="{Binding PossibleInps}" FontSize="10"/>
             </UniformGrid>
             <Button Content="Rögzítés" IsEnabled="{Binding Path=MoreInp}" Command="{Binding SetOrdersCommand}" Margin="0,10,0,0" Width="100" Height="40" />
-           
-
         </StackPanel>
     </Grid>
 </Window>
