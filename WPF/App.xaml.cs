@@ -41,14 +41,14 @@ namespace RobotPigs.WPF
             _viewModel = new ViewModel(_model);
             _viewModel.NewGame += ViewModel_NewGame;
             _viewModel.ExitGame += new EventHandler(ViewModel_ExitGame);
-            _viewModel.LoadGame += new EventHandler(ViewModel_LoadGame);
+            _viewModel.LoadGame += new EventHandler(ViewModel_AsyncLoadGame);
             _viewModel.SaveGame += new EventHandler(ViewModel_AsyncSaveGame);
 
             // nézet létrehozása
             _mainView = new MainWindow();
             _mainView.DataContext = _viewModel;
             _mainView.Closing += new System.ComponentModel.CancelEventHandler(
-                View_Closing); // eseménykezelés a bezáráshoz
+                View_Closing);
             _mainView.Show();
         }
 
@@ -63,7 +63,7 @@ namespace RobotPigs.WPF
                                 MessageBoxButton.YesNo,
                                 MessageBoxImage.Question) == MessageBoxResult.No)
             {
-                e.Cancel = true; // töröljük a bezárást
+                e.Cancel = true; 
             }
         }
 
@@ -71,29 +71,24 @@ namespace RobotPigs.WPF
 
         #region ViewModel event handlers
 
-        /// <summary>
-        /// Új játék indításának eseménykezelője.
-        /// </summary>
+
         private void ViewModel_NewGame(object? sender, int size)
         {
             _model.NewGame(size);
         }
 
-        /// <summary>
-        /// Játék betöltésének eseménykezelője.
-        /// </summary>
+
         private async void ViewModel_AsyncLoadGame(object? sender,
                                                    System.EventArgs e)
         {
 
             try
             {
-                OpenFileDialog openFileDialog = new OpenFileDialog(); // dialógusablak
+                OpenFileDialog openFileDialog = new OpenFileDialog();
                 openFileDialog.Title = "Harcos robotmalacok játék betöltése";
                 openFileDialog.Filter = "Harcos robotmalacok játék|*.dat";
                 if (openFileDialog.ShowDialog() == true)
                 {
-                    // játék betöltése
                     await _model.LoadGameAsync(openFileDialog.FileName);
                 }
             }
@@ -103,23 +98,18 @@ namespace RobotPigs.WPF
                                 MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
-        /// <summary>
-        /// Játék mentésének eseménykezelője.
-        /// </summary>
         private async void ViewModel_AsyncSaveGame(object? sender, EventArgs e)
         {
 
             try
             {
-                SaveFileDialog saveFileDialog = new SaveFileDialog(); // dialógablak
+                SaveFileDialog saveFileDialog = new SaveFileDialog(); 
                 saveFileDialog.Title = "Harcos robotmalacok játék betöltése";
                 saveFileDialog.Filter = "Harcos robotmalacok játék|*.dat";
                 if (saveFileDialog.ShowDialog() == true)
                 {
                     try
                     {
-                        // játéktábla mentése
                         await _model.SaveGameAsync(saveFileDialog.FileName);
                     }
                     catch (BoardDataException)
@@ -138,12 +128,9 @@ namespace RobotPigs.WPF
             }
         }
 
-        /// <summary>
-        /// Játékból való kilépés eseménykezelője.
-        /// </summary>
         private void ViewModel_ExitGame(object? sender, System.EventArgs e)
         {
-            _mainView.Close(); // ablak bezárása
+            _mainView.Close();
         }
 
         #endregion

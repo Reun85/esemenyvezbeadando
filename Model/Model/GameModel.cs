@@ -20,7 +20,7 @@ namespace RobotPigs.Model
 
         public event EventHandler<EventData>? Moves;
 
-        public event EventHandler<int>? NewBoard;
+        public event EventHandler? NewBoard;
         public GameModel(Persistence.IRobotPigsDataAccess? DataAccess,
                          int boardSize)
         {
@@ -31,7 +31,7 @@ namespace RobotPigs.Model
         public void NewGame(int size)
         {
             _board = new Persistence.Board(size);
-            NewBoard?.Invoke(this, size);
+            NewBoard?.Invoke(this,EventArgs.Empty);
         }
 
         private int _PerformInd = 0;
@@ -183,7 +183,7 @@ namespace RobotPigs.Model
                 throw new InvalidOperationException("No data access have been provided.");
             }
             _board = await _dataAccess.LoadAsync(path);
-            NewBoard?.Invoke(this, _board.N);
+            NewBoard?.Invoke(this,EventArgs.Empty);
         }
 
         public async Task SaveGameAsync(String path)

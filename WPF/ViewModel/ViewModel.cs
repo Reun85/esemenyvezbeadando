@@ -135,7 +135,7 @@ namespace RobotPigs.WPF.View
             // játék csatlakoztatása
             _model = model;
 
-            _model.GameCreated += NewGameEvent;
+            _model.NewBoard += NewGameEvent;
             _model.Fires += new EventHandler<EventData>(Model_Fires);
             _model.Hits += new EventHandler<EventData>(Model_Hits);
             _model.Moves += new EventHandler<EventData>(Model_Moves);
@@ -155,7 +155,7 @@ namespace RobotPigs.WPF.View
             PossibleInps = new ObservableCollection<String>(Pig.allowed);
         }
 
-        public void NewGameEvent(Object? sender, int N)
+        public void NewGameEvent(Object? sender, EventArgs e)
         {
             InRound = false;
             CanStart = false;
@@ -163,6 +163,7 @@ namespace RobotPigs.WPF.View
             CanSave = true;
             _activePlayer = 0;
             OnPropertyChanged(nameof(ActivePlayer));
+            int N = _model.BoardSize;
             if (_n != N)
             {
                 _n = N;
