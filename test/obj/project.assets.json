@@ -6551,11 +6551,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\i7\\source\\repos\\esemenyvezbeadando WPF\\test\\Tester.csproj",
+      "projectUniqueName": "C:\\Users\\i7\\source\\repos\\esemenyvezbeadando MAUI\\test\\Tester.csproj",
       "projectName": "Tester",
-      "projectPath": "C:\\Users\\i7\\source\\repos\\esemenyvezbeadando WPF\\test\\Tester.csproj",
+      "projectPath": "C:\\Users\\i7\\source\\repos\\esemenyvezbeadando MAUI\\test\\Tester.csproj",
       "packagesPath": "C:\\Users\\i7\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\i7\\source\\repos\\esemenyvezbeadando WPF\\test\\obj\\",
+      "outputPath": "C:\\Users\\i7\\source\\repos\\esemenyvezbeadando MAUI\\test\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "E:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -6570,6 +6570,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "C:\\Users\\i7\\Desktop\\Minden\\Programming and Design\\VS\\Nugets": {},
         "https://api.nuget.org/v3/index.json": {}
       },
@@ -6577,8 +6578,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\i7\\source\\repos\\esemenyvezbeadando WPF\\Model\\Model.csproj": {
-              "projectPath": "C:\\Users\\i7\\source\\repos\\esemenyvezbeadando WPF\\Model\\Model.csproj"
+            "C:\\Users\\i7\\source\\repos\\esemenyvezbeadando MAUI\\Model\\Model.csproj": {
+              "projectPath": "C:\\Users\\i7\\source\\repos\\esemenyvezbeadando MAUI\\Model\\Model.csproj"
             }
           }
         }
@@ -6627,26 +6628,12 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[6.0.22, 6.0.22]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[6.0.22, 6.0.22]"
-          },
-          {
-            "name": "Microsoft.WindowsDesktop.App.Ref",
-            "version": "[6.0.22, 6.0.22]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100-rc.1.23455.8\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   }

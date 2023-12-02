@@ -34,8 +34,8 @@ namespace RobotPigs.WPF
             _dataAccess = new RobotPigsDataAccess();
 
             // modell létrehozása
-            _model = new GameModel(_dataAccess, 4);
-            _model.Loses += new EventHandler<EventData>(Model_GameOver);
+            _model = new GameModel(_dataAccess);
+            _model.GameOver += new EventHandler<EventData>(Model_GameOver);
 
             // nézemodell létrehozása
             _viewModel = new ViewModel(_model);
@@ -151,8 +151,9 @@ namespace RobotPigs.WPF
                                 "Harcos robotmalacok csatája", MessageBoxButton.OK,
                                 MessageBoxImage.Asterisk);
 
-                #endregion
+               
             }
         }
+        #endregion
     }
 }

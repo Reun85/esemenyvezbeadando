@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "RbTAkcapGORDGIQaorYOwi2DehcpcKz9+aV/831CE0AIDdpYSCBbOXc1ZYKzM4SoceyMVj3PoqiB3AQbE0Ohjw==",
+  "dgSpecHash": "EIg1tPQelmunYq+Tb2nqS2orKGhjA8nIY0cU5WD9hCJ3BtLdYDYG4K+aUYGKOvhNiwkg3WznPEpipbks8UwZNA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\i7\\source\\repos\\esemenyvezbeadando WPF\\test\\Tester.csproj",
+  "projectFilePath": "C:\\Users\\i7\\source\\repos\\esemenyvezbeadando MAUI\\test\\Tester.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\i7\\.nuget\\packages\\coverlet.collector\\3.1.0\\coverlet.collector.3.1.0.nupkg.sha512",
     "C:\\Users\\i7\\.nuget\\packages\\elte.eva.saruleset\\2.0.0\\elte.eva.saruleset.2.0.0.nupkg.sha512",
@@ -95,10 +95,7 @@
     "C:\\Users\\i7\\.nuget\\packages\\system.threading.tasks.extensions\\4.3.0\\system.threading.tasks.extensions.4.3.0.nupkg.sha512",
     "C:\\Users\\i7\\.nuget\\packages\\system.threading.timer\\4.3.0\\system.threading.timer.4.3.0.nupkg.sha512",
     "C:\\Users\\i7\\.nuget\\packages\\system.xml.readerwriter\\4.3.0\\system.xml.readerwriter.4.3.0.nupkg.sha512",
-    "C:\\Users\\i7\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512",
-    "C:\\Users\\i7\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.22\\microsoft.windowsdesktop.app.ref.6.0.22.nupkg.sha512",
-    "C:\\Users\\i7\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.22\\microsoft.netcore.app.ref.6.0.22.nupkg.sha512",
-    "C:\\Users\\i7\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.22\\microsoft.aspnetcore.app.ref.6.0.22.nupkg.sha512"
+    "C:\\Users\\i7\\.nuget\\packages\\system.xml.xdocument\\4.3.0\\system.xml.xdocument.4.3.0.nupkg.sha512"
   ],
   "logs": []
 }

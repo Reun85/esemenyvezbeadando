@@ -1,15 +1,20 @@
 
+using System.IO;
+
 namespace RobotPigs.Persistence
 {
     public class RobotPigsDataAccess : IRobotPigsDataAccess
     {
-        /// <summary>
-        ///  Load a file.
-        /// </summary>
-        /// <param name="path">Path to file.</param>
-        /// <returns>The loaded Board.</returns>
+        private String? _directory = String.Empty;
+
+        public RobotPigsDataAccess(String? saveDirectory = null)
+        {
+            _directory = saveDirectory;
+        }
         public async Task<Board> LoadAsync(String path)
         {
+            if (!String.IsNullOrEmpty(_directory))
+                path = Path.Combine(_directory, path);
             try
             {
                 using StreamReader reader = new(path); // fájl megnyitása
@@ -50,13 +55,10 @@ namespace RobotPigs.Persistence
             }
         }
 
-        /// <summary>
-        /// Save into a file.
-        /// </summary>
-        /// <param name="path">Path to the file.</param>
-        /// <param name="board">The board to save..</param>
         public async Task SaveAsync(String path, Board board)
         {
+            if (!String.IsNullOrEmpty(_directory))
+                path = Path.Combine(_directory, path);
             try
             {
                 using StreamWriter writer = new(path); // fájl megnyitása

@@ -7,6 +7,7 @@ namespace RobotPigs.Model
     public class GameModel
     {
         private Persistence.Board _board = null!;
+        private Persistence.Board? _board2 = null;
 
         private readonly Persistence.IRobotPigsDataAccess? _dataAccess;
 
@@ -16,16 +17,14 @@ namespace RobotPigs.Model
 
         public event EventHandler<EventData>? Hits;
 
-        public event EventHandler<EventData>? Loses;
+        public event EventHandler<EventData>? GameOver;
 
         public event EventHandler<EventData>? Moves;
 
         public event EventHandler? NewBoard;
-        public GameModel(Persistence.IRobotPigsDataAccess? DataAccess,
-                         int boardSize)
+        public GameModel(Persistence.IRobotPigsDataAccess? DataAccess)
         {
             _dataAccess = DataAccess;
-            NewGame(boardSize);
         }
 
         public void NewGame(int size)
@@ -82,6 +81,7 @@ namespace RobotPigs.Model
 
             if (_board.IsReady)
             {
+                _board2 = new Board(_board);
                 _PerformInd = 0;
                 return true;
             }
@@ -137,18 +137,23 @@ namespace RobotPigs.Model
             Perform(_board.Plr2, 2, act2, _board.Plr1);
             if (_board.Plr1.Hp == 0 && _board.Plr2.Hp == 0)
             {
-                Loses?.Invoke(this, new EventData(null, 3));
+                GameOver?.Invoke(this, new EventData(null, 3));
             }
             else if (_board.Plr1.Hp == 0)
             {
-                Loses?.Invoke(this, new EventData(_board.Plr1, 1));
+                GameOver?.Invoke(this, new EventData(_board.Plr1, 1));
             }
             else if (_board.Plr2.Hp == 0)
             {
-                Loses?.Invoke(this, new EventData(_board.Plr2, 2));
+                GameOver?.Invoke(this, new EventData(_board.Plr2, 2));
             }
             _PerformInd++;
-            return _PerformInd < Persistence.Pig.ORDERSIZE;
+            if(_PerformInd >= Persistence.Pig.ORDERSIZE)
+            {
+                _board2 = null;
+                return false;
+            }
+            return true;
         }
 
         private void TakeDmg(Persistence.Pig p, int pignum)
@@ -192,7 +197,10 @@ namespace RobotPigs.Model
             {
                 throw new InvalidOperationException("No data access have been provided.");
             }
-            await _dataAccess.SaveAsync(path, _board);
+            if(_board2 == null)
+                await _dataAccess.SaveAsync(path, _board);
+            else
+                await _dataAccess.SaveAsync(path, _board2);
         }
     }
 }

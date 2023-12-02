@@ -33,6 +33,15 @@ namespace RobotPigs.Persistence
             this._plr2.Hp = plr2.Item2;
         }
 
+        public Board(Board b)
+        {
+            this._n = b._n;
+            this._plr1 = new Pig(b.Plr1.Pos, this);
+            this._plr1.Hp = b.Plr1.Hp;
+            this._plr2 = new Pig(b.Plr2.Pos, this);
+            this._plr2.Hp = b.Plr2.Hp;
+        }
+
 
         public bool IsReady => Plr1.IsReady && Plr2.IsReady;
     }

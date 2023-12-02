@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RobotPigs.View.GamePage"
+             Title="">
+    <ContentPage.MenuBarItems>
+        <MenuBarItem Text="Menü">
+            <MenuFlyoutSubItem Text="Új játék">
+                <MenuFlyoutItem Text="4x4" Command="{Binding NewGameCommand}" CommandParameter="4" />
+                <MenuFlyoutItem Text="6x6" Command="{Binding NewGameCommand}" CommandParameter="6" />
+                <MenuFlyoutItem Text="8x8" Command="{Binding NewGameCommand}" CommandParameter="8" />
+            </MenuFlyoutSubItem>
+            <MenuFlyoutSeparator />
+            <MenuFlyoutItem Text="Játék betöltése..." Command="{Binding LoadGameCommand}" />
+            <MenuFlyoutItem Text="Játék mentése..." Command="{Binding SaveGameCommand}" IsEnabled="{Binding CanSave}" />
+        </MenuBarItem>
+    </ContentPage.MenuBarItems>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+
+        <Grid
+    Grid.Row="1"
+    BindableLayout.ItemsSource="{Binding Fields}"
+    RowDefinitions="{Binding GameTableRows}"
+    ColumnDefinitions="{Binding GameTableColumns}"
+    ColumnSpacing="4"
+    RowSpacing="4">
+            <!-- a játéktáblát egy sorfolytos listával valósítjuk meg -->
+            <BindableLayout.ItemTemplate>
+                <DataTemplate>
+                    <Button
+    Grid.Row="{Binding X}"
+    Grid.Column="{Binding Y}"
+    Text="{Binding Content}"
+    Padding="0"
+    FontAttributes="Bold"
+    FontSize="Header"
+    VerticalOptions="FillAndExpand"
+    HorizontalOptions="FillAndExpand">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Style.Triggers>
+                                    <DataTrigger TargetType="Button" Binding="{Binding Background}" Value="1">
+                                        <Setter Property="Background" Value="OrangeRed" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Button" Binding="{Binding Background}" Value="2">
+                                        <Setter Property="Background" Value="GreenYellow" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Button" Binding="{Binding Background}" Value="3">
+                                        <Setter Property="Background" Value="SkyBlue" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Button" Binding="{Binding Background}" Value="0">
+                                        <Setter Property="Background" Value="Gray" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Button" Binding="{Binding ForeColor}" Value="1">
+                                        <Setter Property="TextColor" Value="OrangeRed" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Button" Binding="{Binding ForeColor}" Value="2">
+                                        <Setter Property="TextColor" Value="GreenYellow" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+
+        </Grid>
+        <VerticalStackLayout Grid.Row="2">
+
+            <HorizontalStackLayout HorizontalOptions="FillAndExpand">
+                <HorizontalStackLayout Margin="40,00,0,0">
+                    <Label Text="Piros játékos életereje:" />
+                    <Label Text="{Binding Player1Health}" />
+                </HorizontalStackLayout>
+                <HorizontalStackLayout HorizontalOptions="End" Margin="100,00,0,0">
+                    <Label Text="Zöld játékos életereje:" />
+                    <Label Text="{Binding Player2Health}" />
+                </HorizontalStackLayout>
+            </HorizontalStackLayout>
+
+            <Button Margin="0,10,0,10" IsEnabled="{Binding CanStart}"  Command="{Binding NextCommand}" Width="100" Height="40">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding InRound}" Value="False">
+                                <Setter Property="Text" Value="Kezdés" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Button" Binding="{Binding InRound}" Value="True">
+                                <Setter Property="Text" Value="Következő" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            <HorizontalStackLayout Margin="0,10,0,10" HorizontalOptions="Center">
+                <Label Text="Aktív játékos:" />
+                <Label Text="{Binding ActivePlayer}" />
+            </HorizontalStackLayout>
+
+            <HorizontalStackLayout>
+                <Picker IsEnabled="{Binding Path=MoreInp}" Margin ="0,0,5,0" SelectedIndex="{Binding PlayerInp[0]}" ItemsSource="{Binding PossibleInps}" FontSize="10" />
+                <Picker IsEnabled="{Binding Path=MoreInp}" Margin ="0,0,5,0"  SelectedIndex="{Binding PlayerInp[1]}" ItemsSource="{Binding PossibleInps}" FontSize="10"  />
+                <Picker IsEnabled="{Binding Path=MoreInp}" Margin ="0,0,5,0" SelectedIndex="{Binding PlayerInp[2]}" ItemsSource="{Binding PossibleInps}" FontSize="10" />
+                <Picker IsEnabled="{Binding Path=MoreInp}" Margin ="0,0,5,0"  SelectedIndex="{Binding PlayerInp[3]}" ItemsSource="{Binding PossibleInps}" FontSize="10" />
+                <Picker IsEnabled="{Binding Path=MoreInp}" SelectedIndex="{Binding PlayerInp[4]}" ItemsSource="{Binding PossibleInps}" FontSize="10"/>
+            </HorizontalStackLayout>
+            <Button Text="Rögzítés" IsEnabled="{Binding Path=MoreInp}" Command="{Binding SetOrdersCommand}" Margin="0,10,0,10" Width="100" Height="40" />
+        </VerticalStackLayout>
+
+    </Grid>
+</ContentPage>

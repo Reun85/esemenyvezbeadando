@@ -4,13 +4,12 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using System.Windows.Automation;
 using RobotPigs.Model;
 using RobotPigs.Persistence;
 
-namespace RobotPigs.WPF.View
+namespace RobotPigs.ViewModel
 {
-    public class ViewModel : ViewModelBase
+    public class RobotPigsViewModel : ViewModelBase
     {
         #region Fields
 
@@ -25,7 +24,7 @@ namespace RobotPigs.WPF.View
 
         #endregion Fields
 
-        #region Delegates
+        #region Properties
 
         public DelegateCommand NewGameCommand { get; private set; }
 
@@ -37,9 +36,6 @@ namespace RobotPigs.WPF.View
         public DelegateCommand SetOrdersCommand { get; private set; }
         public DelegateCommand NextCommand { get; private set; }
 
-        #endregion Delegates
-
-        #region Properties
 
         public String ActivePlayer
         {
@@ -102,8 +98,31 @@ namespace RobotPigs.WPF.View
         public Int32 BoardSize
         {
             get { return _n; }
+            set
+            {
+                _n = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(GameTableRows));
+                OnPropertyChanged(nameof(GameTableColumns));
+            }
         }
 
+        /// <summary>
+        /// Segédproperty a tábla méretezéséhez
+        /// </summary>
+        public RowDefinitionCollection GameTableRows
+        {
+            get => new RowDefinitionCollection(Enumerable.Repeat(new RowDefinition(GridLength.Star), BoardSize).ToArray());
+        }
+
+
+        /// <summary>
+        /// Segédproperty a tábla méretezéséhez
+        /// </summary>
+        public ColumnDefinitionCollection GameTableColumns
+        {
+            get => new ColumnDefinitionCollection(Enumerable.Repeat(new ColumnDefinition(GridLength.Star), BoardSize).ToArray());
+        }
         public Int32 Player1Health
         {
             get { return _model.Plr1.Hp; }
@@ -130,7 +149,7 @@ namespace RobotPigs.WPF.View
 
         #region Constructors
 
-        public ViewModel(GameModel model)
+        public RobotPigsViewModel(GameModel model)
         {
             // játék csatlakoztatása
             _model = model;
@@ -141,8 +160,7 @@ namespace RobotPigs.WPF.View
             _model.Moves += new EventHandler<EventData>(Model_Moves);
             _model.HpChange += new EventHandler<EventData>(Model_HpChange);
             _model.GameOver += new EventHandler<EventData>(Model_GameOver);
-            _model.NewGame(4);
-
+           
             // parancsok kezelése
             NewGameCommand =
                 new DelegateCommand(param => { OnNewGame(Convert.ToInt32(param)); });
@@ -153,10 +171,14 @@ namespace RobotPigs.WPF.View
             NextCommand = new DelegateCommand(param => Next());
 
             PossibleInps = new ObservableCollection<String>(Pig.allowed);
+
+
+            _model.NewGame(4);
         }
 
         public void NewGameEvent(Object? sender, EventArgs e)
         {
+            PlayerInp = new Int32[5] { 0, 0, 0, 0, 0 };
             InRound = false;
             CanStart = false;
             MoreInp = true;
@@ -166,8 +188,7 @@ namespace RobotPigs.WPF.View
             int N = _model.BoardSize;
             if (_n != N)
             {
-                _n = N;
-                OnPropertyChanged(nameof(BoardSize));
+                BoardSize = N;
                 int size = 440 / _n > 40 ? 440 / _n : 40;
                 Field.FontSize = size * 3/5;
                 Fields = new ObservableCollection<Field>();
