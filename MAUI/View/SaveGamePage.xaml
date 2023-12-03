@@ -3,6 +3,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="RobotPigs.View.SaveGamePage"
+             xmlns:local="clr-namespace:RobotPigs.ViewModel"
              Title="Játék mentése">
     <VerticalStackLayout Spacing="8" Margin="4">
         <Entry x:Name="saveNameEntry" Placeholder="Add meg a mentés nevét ..." />
@@ -12,7 +13,7 @@
         <!-- a fájlnevet a beviteli mezőtől vesszük át -->
         <ListView ItemsSource="{Binding StoredGames}">
             <ListView.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="local:StoredGameViewModel">
                     <TextCell
                         Text="{Binding Name}"
                         TextColor="{AppThemeBinding Light={StaticResource Gray900}, Dark={StaticResource White}}"

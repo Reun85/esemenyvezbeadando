@@ -11,7 +11,7 @@
         {
             return await Task.Run(() => Directory.GetFiles(FileSystem.AppDataDirectory)
                 .Select(Path.GetFileName)
-                .Where(name => name?.EndsWith(".stl") ?? false)
+                .Where(name => name?.EndsWith(".hrm") ?? false)
                 .OfType<String>());
         }
 

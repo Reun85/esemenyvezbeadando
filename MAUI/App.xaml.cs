@@ -1,6 +1,7 @@
 using RobotPigs.Persistence;
 using RobotPigs.ViewModel;
 using RobotPigs.Model;
+using Microsoft.Maui.Controls;
 
 namespace RobotPigs.View
 {
@@ -34,7 +35,10 @@ namespace RobotPigs.View
             };
             MainPage = _appShell;
         }
-
+        public bool AvailableSuspendedGame()
+        {
+            return File.Exists(Path.Combine(FileSystem.AppDataDirectory, SuspendedGameSavePath));
+        }
         protected override Window CreateWindow(IActivationState? activationState)
         {
             Window window = base.CreateWindow(activationState);
@@ -47,7 +51,7 @@ namespace RobotPigs.View
             // amikor az alkalmazás fókuszba kerül
             window.Activated += (s, e) =>
             {
-                if (!File.Exists(Path.Combine(FileSystem.AppDataDirectory, SuspendedGameSavePath)))
+                if (!AvailableSuspendedGame())
                     return;
 
                 Task.Run(async () =>

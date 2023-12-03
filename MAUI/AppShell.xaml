@@ -6,10 +6,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:RobotPigs.View"
     Shell.FlyoutBehavior="Disabled">
-
+    
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:GamePage}"
         Route="MainPage" />
-
+  
 </Shell>

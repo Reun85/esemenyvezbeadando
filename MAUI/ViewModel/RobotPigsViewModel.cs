@@ -172,8 +172,7 @@ namespace RobotPigs.ViewModel
 
             PossibleInps = new ObservableCollection<String>(Pig.allowed);
 
-
-            _model.NewGame(4);
+                _model.NewGame(4);
         }
 
         public void NewGameEvent(Object? sender, EventArgs e)

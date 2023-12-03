@@ -1,7 +1,6 @@
 ﻿using RobotPigs.Persistence;
 using RobotPigs.ViewModel;
 using RobotPigs.Model;
-using System.ComponentModel;
 
 namespace RobotPigs.View
 {
@@ -111,14 +110,13 @@ namespace RobotPigs.View
         /// </summary>
         private async void StoredGameBrowserViewModel_GameLoading(object? sender, StoredGameEventArgs e)
         {
-            await Navigation.PopAsync(); // visszanavigálunk
 
             // betöltjük az elmentett játékot, amennyiben van
             try
             {
+                await Navigation.PopAsync(); // visszanavigálunk a játék táblára
                 await _gameModel.LoadGameAsync(e.Name);
 
-                await Navigation.PopAsync(); // visszanavigálunk a játék táblára
                 await DisplayAlert("Harcos robotmalacok csatája játék", "Sikeres betöltés.", "OK");
 
             }
@@ -133,12 +131,12 @@ namespace RobotPigs.View
         /// </summary>
         private async void StoredGameBrowserViewModel_GameSaving(object? sender, StoredGameEventArgs e)
         {
-            await Navigation.PopAsync(); // visszanavigálunk
             
 
             try
             {
                 // elmentjük a játékot
+                await Navigation.PopAsync(); // visszanavigálunk
                 await _gameModel.SaveGameAsync(e.Name);
                 await DisplayAlert("Harcos robotmalacok csatája játék", "Sikeres mentés.", "OK");
             }

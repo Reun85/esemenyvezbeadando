@@ -48,7 +48,7 @@ namespace RobotPigs.ViewModel
                 string? fileName = Path.GetFileNameWithoutExtension(param?.ToString()?.Trim());
                 if (!String.IsNullOrEmpty(fileName))
                 {
-                    fileName += ".stl";
+                    fileName += ".hrm";
                     OnGameSaving(fileName);
                 }
             });
