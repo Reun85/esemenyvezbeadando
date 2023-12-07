@@ -62,6 +62,7 @@ namespace RobotPigs.ViewModel
             {
                 _canSave = value;
                 OnPropertyChanged(nameof(CanSave));
+                SaveGameCommand.RaiseCanExecuteChanged();
             }
         }
 
@@ -165,19 +166,22 @@ namespace RobotPigs.ViewModel
             NewGameCommand =
                 new DelegateCommand(param => { OnNewGame(Convert.ToInt32(param)); });
             LoadGameCommand = new DelegateCommand(param => OnLoadGame());
-            SaveGameCommand = new DelegateCommand(param => OnSaveGame());
+            SaveGameCommand = new DelegateCommand(_=>CanSave,param => OnSaveGame());
             ExitCommand = new DelegateCommand(param => OnExitGame());
             SetOrdersCommand = new DelegateCommand(param => SetOrders());
             NextCommand = new DelegateCommand(param => Next());
 
             PossibleInps = new ObservableCollection<String>(Pig.allowed);
+            
 
-                _model.NewGame(4);
+            _model.NewGame(4);
         }
 
         public void NewGameEvent(Object? sender, EventArgs e)
         {
             PlayerInp = new Int32[5] { 0, 0, 0, 0, 0 };
+            OnPropertyChanged(nameof(PlayerInp));
+
             InRound = false;
             CanStart = false;
             MoreInp = true;
