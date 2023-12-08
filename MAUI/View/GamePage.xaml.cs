@@ -3,21 +3,30 @@ namespace RobotPigs.View
 
     public partial class GamePage : ContentPage
     {
-        private bool isLandscape = false;
-        public bool IsLandscape { get { return isLandscape; } set { isLandscape = value; OnPropertyChanged(nameof(IsLandscape)); } }
+        double width, height;
         public GamePage()
         {
             InitializeComponent();
         }
-        protected override void OnSizeAllocated(
-Double width, Double height)
+
+        protected override void OnSizeAllocated(double width, double height)
         {
             base.OnSizeAllocated(width, height);
 
-            if (width > height)
-                IsLandscape = true;
-            else
-                        IsLandscape = false;
+            if (width != this.width || height != this.height)
+            {
+                this.width = width;
+                this.height = height;
+
+                if (width > height)
+                {
+                    _stackLayout.Orientation = StackOrientation.Horizontal;
+                }
+                else
+                {
+                    _stackLayout.Orientation = StackOrientation.Vertical;
+                }
+            }
         }
     }
 }

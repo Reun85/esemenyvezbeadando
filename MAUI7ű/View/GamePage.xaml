@@ -23,39 +23,25 @@
         </MenuBarItem>
     </ContentPage.MenuBarItems>
     -->
-    
-    <Grid>
-        <StackLayout x:Name="_stackLayout">
-            <Label>asd</Label>
-            <Label>asd</Label>
-            <Label>asd</Label>
 
-            <Label>asd</Label>
-            <Label>asd</Label>
-            <Label>asd</Label>
-            <Label>asd</Label>
-            <Label>asd</Label>
-            <Label>asd</Label>
-            <Label>asd</Label>
-            <Label>asd</Label>
-            <Label>asd</Label>
-        </StackLayout>
+    <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <VerticalStackLayout VerticalOptions="Fill">
-            <HorizontalStackLayout Margin="10,0,0,0" HorizontalOptions="Start">
+
+        <StackLayout x:Name="_barLayout" HorizontalOptions="FillAndExpand">
+            <HorizontalStackLayout Margin="10,0,0,0" HorizontalOptions="Start" VerticalOptions="Start">
             <Button FontSize="12"  Text=" Új játék 4x4" Command="{Binding NewGameCommand}" CommandParameter="4" />
             <Button FontSize="12" Text=" Új játék 6x6" Command="{Binding NewGameCommand}" CommandParameter="6" />
             <Button  FontSize="12" Text=" Új játék 8x8" Command="{Binding NewGameCommand}" CommandParameter="8" />
             </HorizontalStackLayout>
-        <HorizontalStackLayout Margin="0,0,10,0"  HorizontalOptions="End">
+            <HorizontalStackLayout Margin="0,0,10,0"  VerticalOptions="End" HorizontalOptions="End">
             <Button  FontSize="12" Text="Játék betöltése..." Command="{Binding LoadGameCommand}" />
             <Button  FontSize="12" Text="Játék mentése..." Command="{Binding SaveGameCommand}"  />
         </HorizontalStackLayout>
-        </VerticalStackLayout>
+        </StackLayout>
 
 
         <Grid
@@ -66,6 +52,7 @@
     ColumnSpacing="4"
     RowSpacing="4">
             <!-- a játéktáblát egy sorfolytos listával valósítjuk meg -->
+            
             <BindableLayout.ItemTemplate>
                 <DataTemplate x:DataType="local:Field">
                     <Label
@@ -79,6 +66,8 @@
     FontSize="Header"
     VerticalOptions="FillAndExpand"
     HorizontalOptions="FillAndExpand">
+                        
+                                
                         <Label.Style>
                             <Style TargetType="Label">
                                 <Style.Triggers>
@@ -121,7 +110,7 @@
                 </HorizontalStackLayout>
             </HorizontalStackLayout>
 
-            <Button Margin="0,10,0,10" IsEnabled="{Binding CanStart}"  Command="{Binding NextCommand}" Width="100" Height="40">
+            <Button Margin="0,10,0,10" IsEnabled="{Binding CanStart}"  Command="{Binding NextCommand}" WidthRequest="100" HeightRequest="40">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Style.Triggers>
@@ -147,7 +136,7 @@
                 <Picker  HorizontalOptions="Fill" IsEnabled="{Binding Path=MoreInp}" Margin ="0,0,5,0"  SelectedIndex="{Binding PlayerInp[3]}" ItemsSource="{Binding PossibleInps}" FontSize="10" />
                 <Picker  HorizontalOptions="Fill" IsEnabled="{Binding Path=MoreInp}" SelectedIndex="{Binding PlayerInp[4]}" ItemsSource="{Binding PossibleInps}" FontSize="10"/>
             </StackLayout>
-            <Button Text="Rögzítés" IsEnabled="{Binding Path=MoreInp}" Command="{Binding SetOrdersCommand}" Margin="0,10,0,10" Width="100" Height="40" />
+            <Button Text="Rögzítés" IsEnabled="{Binding Path=MoreInp}" Command="{Binding SetOrdersCommand}" Margin="0,10,0,10" WidthRequest="100" HeightRequest="40" />
         </VerticalStackLayout>
 
     </Grid>
