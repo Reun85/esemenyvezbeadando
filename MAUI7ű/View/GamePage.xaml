@@ -66,8 +66,11 @@
     FontSize="Header"
     VerticalOptions="FillAndExpand"
     HorizontalOptions="FillAndExpand">
-                        
-                                
+
+
+                        <Label.FontSize>
+                            <OnIdiom Phone="100" Tablet="100" Desktop="100"/>
+                        </Label.FontSize>
                         <Label.Style>
                             <Style TargetType="Label">
                                 <Style.Triggers>
