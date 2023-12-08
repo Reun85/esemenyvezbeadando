@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" ?>
+    
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="RobotPigs.View.GamePage"
+             x:Name="ContentPage"
+             xmlns:local="clr-namespace:RobotPigs.ViewModel"
+             Title="Harcos robotmalacok csatája">
+    <!-- Know issue that this wont work the second time navigating to this page.
+    https://github.com/dotnet/maui/issues/13848
+    -->
+    <!--
+    <ContentPage.MenuBarItems>
+        <MenuBarItem Text="Menü">
+            <MenuFlyoutSubItem Text="Új játék">
+                <MenuFlyoutItem Text="4x4" Command="{Binding NewGameCommand}" CommandParameter="4" />
+                <MenuFlyoutItem Text="6x6" Command="{Binding NewGameCommand}" CommandParameter="6" />
+                <MenuFlyoutItem Text="8x8" Command="{Binding NewGameCommand}" CommandParameter="8" />
+            </MenuFlyoutSubItem>
+            <MenuFlyoutSeparator />
+            <MenuFlyoutItem Text="Játék betöltése..." Command="{Binding LoadGameCommand}" />
+            <MenuFlyoutItem Text="Játék mentése..." Command="{Binding SaveGameCommand}"  />
+        </MenuBarItem>
+    </ContentPage.MenuBarItems>
+    -->
+
+    
+        <VerticalStackLayout VerticalOptions="Fill">
+        <StackLayout HorizontalOptions="FillAndExpand">
+            <HorizontalStackLayout Margin="10,0,0,0" HorizontalOptions="Start" VerticalOptions="Start">
+            <Button FontSize="12"  Text=" Új játék 4x4" Command="{Binding NewGameCommand}" CommandParameter="4" />
+            <Button FontSize="12" Text=" Új játék 6x6" Command="{Binding NewGameCommand}" CommandParameter="6" />
+            <Button  FontSize="12" Text=" Új játék 8x8" Command="{Binding NewGameCommand}" CommandParameter="8" />
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Margin="0,0,10,0"  VerticalOptions="End" HorizontalOptions="End">
+            <Button  FontSize="12" Text="Játék betöltése..." Command="{Binding LoadGameCommand}" />
+            <Button  FontSize="12" Text="Játék mentése..." Command="{Binding SaveGameCommand}"  />
+        </HorizontalStackLayout>
+        </StackLayout>
+
+        <StackLayout x:Name="_pageLayout" >
+            <Grid
+    BindableLayout.ItemsSource="{Binding Fields}"
+    RowDefinitions="{Binding GameTableRows}"
+    ColumnDefinitions="{Binding GameTableColumns}"
+    ColumnSpacing="4"
+    RowSpacing="4">
+            <!-- a játéktáblát egy sorfolytos listával valósítjuk meg -->
+            
+            <BindableLayout.ItemTemplate>
+                <DataTemplate x:DataType="local:Field">
+                    <Label
+    Grid.Row="{Binding X}"
+    Grid.Column="{Binding Y}"
+    Text="{Binding Content}"
+    Padding="0"
+    FontAttributes="Bold"
+                        HorizontalTextAlignment="Center"
+                        VerticalTextAlignment="Center"
+    FontSize="Header"
+    VerticalOptions="FillAndExpand"
+    HorizontalOptions="FillAndExpand">
+
+
+                        <Label.FontSize>
+                            <OnIdiom Phone="100" Tablet="100" Desktop="100"/>
+                        </Label.FontSize>
+                        <Label.Style>
+                            <Style TargetType="Label">
+                                <Style.Triggers>
+                                    <DataTrigger TargetType="Label" Binding="{Binding Background}" Value="1">
+                                        <Setter Property="Background" Value="OrangeRed" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Label" Binding="{Binding Background}" Value="2">
+                                        <Setter Property="Background" Value="GreenYellow" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Label" Binding="{Binding Background}" Value="3">
+                                        <Setter Property="Background" Value="SkyBlue" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Label" Binding="{Binding Background}" Value="0">
+                                        <Setter Property="Background" Value="Gray" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Label" Binding="{Binding ForeColor}" Value="1">
+                                        <Setter Property="TextColor" Value="OrangeRed" />
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Label" Binding="{Binding ForeColor}" Value="2">
+                                        <Setter Property="TextColor" Value="GreenYellow" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Label.Style>
+                    </Label>
+                </DataTemplate>
+            </BindableLayout.ItemTemplate>
+
+        </Grid>
+        <VerticalStackLayout>
+                <!--HorizontalOptions="CenterAndExpand"-->
+           <HorizontalStackLayout Margin="10,0,0,10">
+                <HorizontalStackLayout Margin="0,0,10,0" HorizontalOptions="Start">
+                    <Label Text="Piros játékos életereje:" />
+                    <Label Text="{Binding Player1Health}" />
+                </HorizontalStackLayout>
+                    <!--HorizontalOptions="End"-->
+                    <HorizontalStackLayout Margin="10,0,0,0" >
+                    <Label Text="Zöld játékos életereje:" />
+                    <Label Text="{Binding Player2Health}" />
+                </HorizontalStackLayout>
+            </HorizontalStackLayout>
+
+            <Button Margin="0,10,0,10" IsEnabled="{Binding CanStart}"  Command="{Binding NextCommand}" WidthRequest="100" HeightRequest="40">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Style.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding InRound}" Value="False">
+                                <Setter Property="Text" Value="Kezdés" />
+                            </DataTrigger>
+                            <DataTrigger TargetType="Button" Binding="{Binding InRound}" Value="True">
+                                <Setter Property="Text" Value="Következő" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+                <!--HorizontalOptions="Center"-->
+                <HorizontalStackLayout Margin="10,10,0,10">
+                <Label Text="Aktív játékos:" />
+                <Label Text="{Binding ActivePlayer}" />
+                </HorizontalStackLayout>
+            <!--HorizontalOptions="Fill"-->
+                <StackLayout Orientation="Horizontal" Margin="10,10,0,10">
+                <Picker HorizontalOptions="Fill"  IsEnabled="{Binding Path=MoreInp}" Margin ="0,0,5,0"  SelectedIndex="{Binding PlayerInp[0]}" ItemsSource="{Binding PossibleInps}" FontSize="10" />
+                <Picker   HorizontalOptions="Fill" IsEnabled="{Binding Path=MoreInp}" Margin ="0,0,5,0"  SelectedIndex="{Binding PlayerInp[1]}" ItemsSource="{Binding PossibleInps}" FontSize="10"  />
+                <Picker   HorizontalOptions="Fill" IsEnabled="{Binding Path=MoreInp}" Margin ="0,0,5,0" SelectedIndex="{Binding PlayerInp[2]}" ItemsSource="{Binding PossibleInps}" FontSize="10" />
+                <Picker  HorizontalOptions="Fill" IsEnabled="{Binding Path=MoreInp}" Margin ="0,0,5,0"  SelectedIndex="{Binding PlayerInp[3]}" ItemsSource="{Binding PossibleInps}" FontSize="10" />
+                <Picker  HorizontalOptions="Fill" IsEnabled="{Binding Path=MoreInp}" SelectedIndex="{Binding PlayerInp[4]}" ItemsSource="{Binding PossibleInps}" FontSize="10"/>
+            </StackLayout>
+            <Button Text="Rögzítés" IsEnabled="{Binding Path=MoreInp}" Command="{Binding SetOrdersCommand}" Margin="0,10,0,10" WidthRequest="100" HeightRequest="40" />
+        </VerticalStackLayout>
+    </StackLayout>
+        </VerticalStackLayout>
+</ContentPage>

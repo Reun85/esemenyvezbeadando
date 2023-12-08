@@ -15,6 +15,8 @@ Double width, Double height)
         {
             if (width != this.width || height != this.height)
             {
+                this.width = width;
+                this.height = height;
                 base.OnSizeAllocated(width, height);
                 // orientáció meghatározása
                 if (width > height)
