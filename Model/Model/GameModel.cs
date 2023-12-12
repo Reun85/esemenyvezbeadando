@@ -188,6 +188,7 @@ namespace RobotPigs.Model
                 throw new InvalidOperationException("No data access have been provided.");
             }
             _board = await _dataAccess.LoadAsync(path);
+            _board2 = null;
             NewBoard?.Invoke(this,EventArgs.Empty);
         }
 

@@ -13,18 +13,18 @@ namespace RobotPigs.View
         /// </summary>
         private const string SuspendedGameSavePath = "SuspendedGame";
 
-        private readonly AppShell _appShell;
-        private readonly IRobotPigsDataAccess _dataAccess;
-        private readonly GameModel _gameModel;
-        private readonly IStore _store;
-        private readonly RobotPigsViewModel _viewModel;
+        private AppShell _appShell;
+        private IRobotPigsDataAccess _dataAccess;
+        private GameModel _gameModel;
+        private IStore _store;
+        private RobotPigsViewModel _viewModel;
 
         public App()
         {
             InitializeComponent();
-
             _store = new RobotPigsStore();
             _dataAccess = new RobotPigsDataAccess(FileSystem.AppDataDirectory);
+            
 
             _gameModel = new GameModel(_dataAccess);
             _viewModel = new RobotPigsViewModel(_gameModel);
@@ -34,6 +34,7 @@ namespace RobotPigs.View
                 BindingContext = _viewModel
             };
             MainPage = _appShell;
+
         }
         public bool AvailableSuspendedGame()
         {
@@ -46,26 +47,28 @@ namespace RobotPigs.View
             // az alkalmazás indításakor
             window.Created += (s, e) =>
             {
+
             };
 
             // amikor az alkalmazás fókuszba kerül
             window.Activated += (s, e) =>
             {
-                if (!AvailableSuspendedGame())
-                    return;
+                bool av = AvailableSuspendedGame();
 
-                Task.Run(async () =>
-                {
-                    // betöltjük a felfüggesztett játékot, amennyiben van
-                    try
+                if (av) {
+                    Task.Run(async () =>
                     {
-                        await _gameModel.LoadGameAsync(SuspendedGameSavePath);
+                        // betöltjük a felfüggesztett játékot, amennyiben van
+                        try
+                        {
+                            await _gameModel.LoadGameAsync(SuspendedGameSavePath);
 
-                    }
-                    catch
-                    {
-                    }
-                });
+                        }
+                        catch
+                        {
+                        }
+                    });
+            }
             };
 
             // amikor az alkalmazás fókuszt veszt
@@ -82,6 +85,7 @@ namespace RobotPigs.View
                     {
                     }
                 });
+                
             };
 
             return window;

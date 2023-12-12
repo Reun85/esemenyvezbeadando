@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "EIg1tPQelmunYq+Tb2nqS2orKGhjA8nIY0cU5WD9hCJ3BtLdYDYG4K+aUYGKOvhNiwkg3WznPEpipbks8UwZNA==",
+  "dgSpecHash": "CjrTuypzzLpDCZyc2gq/hjIAU+4z35qR9HCXHTz3magTNp2QzJV7Vr7rUqiRFihTQYzW2c3kwN1WCtRBubqG/w==",
   "success": true,
-  "projectFilePath": "C:\\Users\\i7\\source\\repos\\esemenyvezbeadando MAUI\\test\\Tester.csproj",
+  "projectFilePath": "C:\\Users\\i7\\source\\repos\\esemenyvezbeadando MAUI - Copy\\test\\Tester.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\i7\\.nuget\\packages\\coverlet.collector\\3.1.0\\coverlet.collector.3.1.0.nupkg.sha512",
     "C:\\Users\\i7\\.nuget\\packages\\elte.eva.saruleset\\2.0.0\\elte.eva.saruleset.2.0.0.nupkg.sha512",

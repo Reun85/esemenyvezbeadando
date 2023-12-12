@@ -26,17 +26,17 @@
 
     
         <VerticalStackLayout VerticalOptions="Fill">
-        <StackLayout HorizontalOptions="FillAndExpand">
-            <HorizontalStackLayout Margin="10,0,0,0" HorizontalOptions="Start" VerticalOptions="Start">
-            <Button FontSize="12"  Text=" Új játék 4x4" Command="{Binding NewGameCommand}" CommandParameter="4" />
-            <Button FontSize="12" Text=" Új játék 6x6" Command="{Binding NewGameCommand}" CommandParameter="6" />
-            <Button  FontSize="12" Text=" Új játék 8x8" Command="{Binding NewGameCommand}" CommandParameter="8" />
+        <FlexLayout Wrap="Wrap" HorizontalOptions="CenterAndExpand">
+            <HorizontalStackLayout Padding="0,00,10,00" HorizontalOptions="Start" VerticalOptions="Start">
+                <Button FontSize="Small" Margin="5,5,5,5" Text=" Új játék 4x4" Command="{Binding NewGameCommand}" CommandParameter="4" />
+                <Button FontSize="Small" Margin="5,5,5,5" Text=" Új játék 6x6" Command="{Binding NewGameCommand}" CommandParameter="6" />
+                <Button  FontSize="Small" Margin="5,5,5,5" Text=" Új játék 8x8" Command="{Binding NewGameCommand}" CommandParameter="8" />
             </HorizontalStackLayout>
-            <HorizontalStackLayout Margin="0,0,10,0"  VerticalOptions="End" HorizontalOptions="End">
-            <Button  FontSize="12" Text="Játék betöltése..." Command="{Binding LoadGameCommand}" />
-            <Button  FontSize="12" Text="Játék mentése..." Command="{Binding SaveGameCommand}"  />
+            <HorizontalStackLayout Padding="10,0,10,00" VerticalOptions="End" HorizontalOptions="End">
+                <Button  FontSize="Small" Margin="5,5,5,5" Text="Játék betöltése..." Command="{Binding LoadGameCommand}" />
+                <Button  FontSize="Small" Margin="5,5,5,5" Text="Játék mentése..." Command="{Binding SaveGameCommand}"  />
         </HorizontalStackLayout>
-        </StackLayout>
+        </FlexLayout>
 
         <StackLayout x:Name="_pageLayout" >
             <Grid
@@ -63,7 +63,7 @@
 
 
                         <Label.FontSize>
-                            <OnIdiom Phone="40" Tablet="50" Desktop="100"/>
+                            <OnIdiom Phone="30" Tablet="40" Desktop="80"/>
                         </Label.FontSize>
                         <Label.Style>
                             <Style TargetType="Label">
@@ -96,7 +96,7 @@
         </Grid>
         <VerticalStackLayout>
                 <!--HorizontalOptions="CenterAndExpand"-->
-           <HorizontalStackLayout Margin="10,0,0,10">
+           <HorizontalStackLayout HorizontalOptions="CenterAndExpand" Margin="10,0,0,10">
                 <HorizontalStackLayout Margin="0,0,10,0" HorizontalOptions="Start">
                     <Label Text="Piros játékos életereje:" />
                     <Label Text="{Binding Player1Health}" />
@@ -108,34 +108,32 @@
                 </HorizontalStackLayout>
             </HorizontalStackLayout>
 
-            <Button Margin="0,10,0,10" IsEnabled="{Binding CanStart}"  Command="{Binding NextCommand}" WidthRequest="100" HeightRequest="40">
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Style.Triggers>
-                            <DataTrigger TargetType="Button" Binding="{Binding InRound}" Value="False">
-                                <Setter Property="Text" Value="Kezdés" />
-                            </DataTrigger>
-                            <DataTrigger TargetType="Button" Binding="{Binding InRound}" Value="True">
-                                <Setter Property="Text" Value="Következő" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
-                <!--HorizontalOptions="Center"-->
-                <HorizontalStackLayout Margin="10,10,0,10">
-                <Label Text="Aktív játékos:" />
-                <Label Text="{Binding ActivePlayer}" />
+                <Button Margin="0,10,0,10" IsEnabled="{Binding CanStart}"  Command="{Binding NextCommand}" WidthRequest="100" HeightRequest="40">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Style.Triggers>
+                                <DataTrigger TargetType="Button" Binding="{Binding InRound}" Value="False">
+                                    <Setter Property="Text" Value="Kezdés" />
+                                </DataTrigger>
+                                <DataTrigger TargetType="Button" Binding="{Binding InRound}" Value="True">
+                                    <Setter Property="Text" Value="Következő" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
+                <HorizontalStackLayout HorizontalOptions="CenterAndExpand" Margin="10,10,0,10">
+                    <Label Text="Aktív játékos:" />
+                    <Label Text="{Binding ActivePlayer}" />
                 </HorizontalStackLayout>
-            <!--HorizontalOptions="Fill"-->
-                <StackLayout Orientation="Horizontal" Margin="10,10,0,10">
-                <Picker HorizontalOptions="Fill"  IsEnabled="{Binding Path=MoreInp}" Margin ="0,0,5,0"  SelectedIndex="{Binding PlayerInp[0]}" ItemsSource="{Binding PossibleInps}" FontSize="10" />
-                <Picker   HorizontalOptions="Fill" IsEnabled="{Binding Path=MoreInp}" Margin ="0,0,5,0"  SelectedIndex="{Binding PlayerInp[1]}" ItemsSource="{Binding PossibleInps}" FontSize="10"  />
-                <Picker   HorizontalOptions="Fill" IsEnabled="{Binding Path=MoreInp}" Margin ="0,0,5,0" SelectedIndex="{Binding PlayerInp[2]}" ItemsSource="{Binding PossibleInps}" FontSize="10" />
-                <Picker  HorizontalOptions="Fill" IsEnabled="{Binding Path=MoreInp}" Margin ="0,0,5,0"  SelectedIndex="{Binding PlayerInp[3]}" ItemsSource="{Binding PossibleInps}" FontSize="10" />
-                <Picker  HorizontalOptions="Fill" IsEnabled="{Binding Path=MoreInp}" SelectedIndex="{Binding PlayerInp[4]}" ItemsSource="{Binding PossibleInps}" FontSize="10"/>
-            </StackLayout>
-            <Button Text="Rögzítés" IsEnabled="{Binding Path=MoreInp}" Command="{Binding SetOrdersCommand}" Margin="0,10,0,10" WidthRequest="100" HeightRequest="40" />
+                <FlexLayout HorizontalOptions="CenterAndExpand" Wrap="Wrap" Padding="5,5,5,5" Margin="10,10,0,10">
+                    <Picker HorizontalOptions="Fill" IsEnabled="{Binding Path=MoreInp}" Margin ="0,0,5,0"  SelectedIndex="{Binding PlayerInp[0]}" ItemsSource="{Binding PossibleInps}" FontSize="Medium" />
+                    <Picker   HorizontalOptions="Fill" IsEnabled="{Binding Path=MoreInp}" Margin ="0,0,5,0"  SelectedIndex="{Binding PlayerInp[1]}" ItemsSource="{Binding PossibleInps}" FontSize="Medium"  />
+                    <Picker   HorizontalOptions="Fill" IsEnabled="{Binding Path=MoreInp}" Margin ="0,0,5,0" SelectedIndex="{Binding PlayerInp[2]}" ItemsSource="{Binding PossibleInps}" FontSize="Medium" />
+                    <Picker  HorizontalOptions="Fill" IsEnabled="{Binding Path=MoreInp}" Margin ="0,0,5,0"  SelectedIndex="{Binding PlayerInp[3]}" ItemsSource="{Binding PossibleInps}" FontSize="Medium" />
+                    <Picker  HorizontalOptions="Fill" IsEnabled="{Binding Path=MoreInp}" SelectedIndex="{Binding PlayerInp[4]}" ItemsSource="{Binding PossibleInps}" FontSize="Medium"/>
+            </FlexLayout>
+                <Button Text="Rögzítés" Padding="5,5,5,5" IsEnabled="{Binding Path=MoreInp}" Command="{Binding SetOrdersCommand}" Margin="0,10,0,10" WidthRequest="100" HeightRequest="40" />
         </VerticalStackLayout>
     </StackLayout>
         </VerticalStackLayout>

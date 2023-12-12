@@ -1,20 +1,38 @@
-<mxfile host="app.diagrams.net" modified="2023-11-22T10:02:31.383Z" agent="Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/119.0" etag="DHaLYpT3aza3dOpsoIXt" version="22.1.3" type="device">
+<mxfile host="app.diagrams.net" modified="2023-12-06T09:12:26.992Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0" etag="4_vnumMrVqTh3XjGXnnu" version="22.1.5" type="device">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
-    <mxGraphModel dx="683" dy="444" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="912" dy="977" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
         <mxCell id="380VDxpQ8Sr3hK74BQXG-16" value="View::App : Application" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
-          <mxGeometry x="260" y="50" width="348" height="420" as="geometry" />
+          <mxGeometry x="279" y="32" width="348" height="171" as="geometry" />
         </mxCell>
-        <mxCell id="380VDxpQ8Sr3hK74BQXG-17" value="&lt;div&gt;- _dataAccess: IRobotPigsDataAccess&lt;/div&gt;&lt;div&gt;- _model: GameModel&lt;/div&gt;&lt;div&gt;- _viewModel: ViewModel&lt;br&gt;&lt;/div&gt;- _mainWindow: MainWindow&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="380VDxpQ8Sr3hK74BQXG-16" vertex="1">
-          <mxGeometry y="26" width="348" height="84" as="geometry" />
+        <mxCell id="380VDxpQ8Sr3hK74BQXG-17" value="&lt;div&gt;- _SuspendedGameSavePath: string&lt;/div&gt;&lt;div&gt;- _appShell: AppShell&lt;br&gt;&lt;/div&gt;&lt;div&gt;- _dataAccess: IRobotPigsDataAccess&lt;/div&gt;&lt;div&gt;- _gameModel: GameModel&lt;/div&gt;&lt;div&gt;- _store: IStore&lt;/div&gt;&lt;div&gt;- _viewModel: RobotPigsViewModel&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="380VDxpQ8Sr3hK74BQXG-16" vertex="1">
+          <mxGeometry y="26" width="348" height="98" as="geometry" />
         </mxCell>
         <mxCell id="380VDxpQ8Sr3hK74BQXG-18" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="380VDxpQ8Sr3hK74BQXG-16" vertex="1">
-          <mxGeometry y="110" width="348" height="8" as="geometry" />
+          <mxGeometry y="124" width="348" height="8" as="geometry" />
         </mxCell>
-        <mxCell id="380VDxpQ8Sr3hK74BQXG-19" value="&lt;div&gt;+Game()&lt;/div&gt;&lt;div&gt;-NewGame():void&lt;/div&gt;&lt;div&gt;-SetupTable():bool&lt;/div&gt;&lt;div&gt;-GenerateTable():bool&lt;/div&gt;&lt;div&gt;+Hits(object,EventData):void&lt;/div&gt;&lt;div&gt;+Fires(object,EventData):void&lt;/div&gt;&lt;div&gt;+Moves(object,EventData):void&lt;/div&gt;&lt;div&gt;+HPChange(object,EventData):void&lt;/div&gt;&lt;div&gt;+GameOver(object,EventData):void&lt;/div&gt;&lt;div&gt;+MenuFileNewGame_Click(object,EventArgs):void&lt;/div&gt;&lt;div&gt;+NewRound():void&lt;/div&gt;&lt;div&gt;+StartRound():void&lt;/div&gt;&lt;div&gt;+Round(object,EventArgs):void&lt;/div&gt;&lt;div&gt;+SetOrders_Click(object,EventArgs):void&lt;/div&gt;&lt;div&gt;+NextButton_Click(object,EventArgs):void&lt;/div&gt;&lt;div&gt;+Automatic_Checked(object,EventArgs):void&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&amp;lt;&amp;lt;async&amp;gt;&amp;gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;+MenuFileLoadGame_Click(object,EventArgs):void&lt;/div&gt;&lt;div&gt;+MenuFileSaveGame_Click(object,EventArgs):void&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="380VDxpQ8Sr3hK74BQXG-16" vertex="1">
-          <mxGeometry y="118" width="348" height="302" as="geometry" />
+        <mxCell id="380VDxpQ8Sr3hK74BQXG-19" value="&lt;div&gt;+ App()&lt;/div&gt;&lt;div&gt;+ CreateWindow(IActivationState?): Window&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="380VDxpQ8Sr3hK74BQXG-16" vertex="1">
+          <mxGeometry y="132" width="348" height="39" as="geometry" />
+        </mxCell>
+        <mxCell id="dRzNpCYBZ3YUkUuLLsCT-0" value="" style="endArrow=diamondThin;endFill=0;endSize=24;html=1;rounded=0;entryX=0.666;entryY=1.097;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.458;exitY=-0.001;exitDx=0;exitDy=0;exitPerimeter=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="dRzNpCYBZ3YUkUuLLsCT-5" target="380VDxpQ8Sr3hK74BQXG-19">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="103" y="465" as="sourcePoint" />
+            <mxPoint x="263" y="465" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dRzNpCYBZ3YUkUuLLsCT-5" value="View::AppShell : Shell" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="274" y="253" width="510" height="402" as="geometry" />
+        </mxCell>
+        <mxCell id="dRzNpCYBZ3YUkUuLLsCT-6" value="&lt;div&gt;- _dataAccess: IRobotPigsDataAccess&lt;/div&gt;&lt;div&gt;- _gameModel: GameModel&lt;/div&gt;&lt;div&gt;- _store: IStore&lt;/div&gt;&lt;div&gt;- _viewModel: RobotPigsViewModel&lt;/div&gt;&lt;div&gt;- _storedGameBrowserModel: StoredGameBrowserModel&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="dRzNpCYBZ3YUkUuLLsCT-5">
+          <mxGeometry y="26" width="510" height="89" as="geometry" />
+        </mxCell>
+        <mxCell id="dRzNpCYBZ3YUkUuLLsCT-7" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="dRzNpCYBZ3YUkUuLLsCT-5">
+          <mxGeometry y="115" width="510" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="dRzNpCYBZ3YUkUuLLsCT-8" value="&lt;div&gt;+ AppShell(IStore, IRobotPigsDataAccess, GameModel, RobotPigsViewModel)&lt;/div&gt;&lt;div&gt;+ Model_GameOver(object?, EventData): void&lt;/div&gt;&lt;div&gt;+ ViewModel_NewGame(object?, int): void&lt;/div&gt;&lt;div&gt;+ ViewModel_AsyncLoadGame(object?, System.EventArgs): void &lt;br&gt;&lt;/div&gt;&lt;div&gt;+ ViewModel_AsyncSaveGame(object?, EventArgs): void&lt;/div&gt;&lt;div&gt;+ StoredGameBrowserViewModel_GameLoading(object?, StoredGameEventArgs): void&lt;/div&gt;&lt;div&gt;+ StoredGameBrowserViewModel_GameSaving(object?, StoredGameEventArgs): void&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="dRzNpCYBZ3YUkUuLLsCT-5">
+          <mxGeometry y="123" width="510" height="279" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

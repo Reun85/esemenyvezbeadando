@@ -150,7 +150,7 @@ namespace RobotPigs.ViewModel
 
         #region Constructors
 
-        public RobotPigsViewModel(GameModel model)
+        public RobotPigsViewModel(GameModel model,bool loadedgame = false)
         {
             // játék csatlakoztatása
             _model = model;
@@ -173,7 +173,7 @@ namespace RobotPigs.ViewModel
 
             PossibleInps = new ObservableCollection<String>(Pig.allowed);
             
-
+            if(!loadedgame)
             _model.NewGame(4);
         }
 
